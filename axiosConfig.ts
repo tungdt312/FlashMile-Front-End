@@ -1,7 +1,7 @@
 
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
-const BACKEND_URL = "https://flashmile-core.onrender.com/";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const axiosInstance = axios.create({
     paramsSerializer: (params) => {
