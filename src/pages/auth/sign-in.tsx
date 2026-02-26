@@ -15,9 +15,10 @@ const SignIn = () => {
     }
     return (
         <div>
+
             <input value={credentialId} onChange={(e) => setCredentialId(e.target.value)}/>
             <input value={password} onChange={(e) => setPassword(e.target.value)}/>
-            <button onClick={login}>Login</button>
+            <button className={"bg-blue-500"} onClick={login}>Login</button>
         </div>
     )
 }
