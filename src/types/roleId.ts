@@ -5,7 +5,6 @@
  * OpenAPI spec version: v0
  */
 
-export interface TokenRotationRequest {
-  /** @minLength 1 */
-  refreshToken: string;
+export interface RoleId {
+  value?: string;
 }

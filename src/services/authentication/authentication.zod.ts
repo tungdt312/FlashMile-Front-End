@@ -16,6 +16,16 @@ export const VerifyCodeBody = zod.object({
   "code": zod.string().optional()
 })
 
+export const VerifyCodeResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "token": zod.string().optional(),
+  "expiresIn": zod.number().optional()
+}).optional()
+})
+
 /**
  * @summary Send Verification Code
  */
@@ -25,11 +35,33 @@ export const SendVerificationBody = zod.object({
   "recipient": zod.string().optional()
 })
 
+export const SendVerificationResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.unknown().optional()
+})
+
 /**
  * @summary Rotate Token
  */
+
+
+
 export const RotateTokenBody = zod.object({
-  "refreshToken": zod.string().optional()
+  "refreshToken": zod.string().min(1)
+})
+
+export const RotateTokenResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "accessToken": zod.string().optional(),
+  "refreshToken": zod.string().optional(),
+  "expiresIn": zod.number().optional(),
+  "tokenType": zod.string().optional()
+}).optional()
 })
 
 /**
@@ -38,6 +70,13 @@ export const RotateTokenBody = zod.object({
 export const ResetPasswordBody = zod.object({
   "verificationToken": zod.string().optional(),
   "newPassword": zod.string().optional()
+})
+
+export const ResetPasswordResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.unknown().optional()
 })
 
 /**
@@ -50,11 +89,35 @@ export const RegisterUserBody = zod.object({
   "password": zod.string().optional()
 })
 
+export const RegisterUserResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "fullName": zod.string().optional(),
+  "email": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "emailVerified": zod.boolean().optional(),
+  "phoneVerified": zod.boolean().optional()
+}).optional()
+})
+
 /**
  * @summary Logout User
  */
+
+
+
 export const LogoutUserBody = zod.object({
-  "refreshToken": zod.string().optional()
+  "refreshToken": zod.string().min(1)
+})
+
+export const LogoutUserResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.unknown().optional()
 })
 
 /**
@@ -63,5 +126,17 @@ export const LogoutUserBody = zod.object({
 export const LoginBody = zod.object({
   "credentialId": zod.string().optional(),
   "password": zod.string().optional()
+})
+
+export const LoginResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "accessToken": zod.string().optional(),
+  "refreshToken": zod.string().optional(),
+  "expiresIn": zod.number().optional(),
+  "tokenType": zod.string().optional()
+}).optional()
 })
 

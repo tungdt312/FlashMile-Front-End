@@ -5,7 +5,7 @@
  * OpenAPI spec version: v0
  */
 
-export interface TokenRotationRequest {
-  /** @minLength 1 */
-  refreshToken: string;
+export interface UpdateProfileRequest {
+  fullName?: string;
+  email?: string;
 }

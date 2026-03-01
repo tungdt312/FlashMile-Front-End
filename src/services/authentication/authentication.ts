@@ -4,31 +4,28 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import {
-  useMutation
-} from '@tanstack/react-query';
-import type {
-  MutationFunction,
-  QueryClient,
-  UseMutationOptions,
-  UseMutationResult
-} from '@tanstack/react-query';
+import type {MutationFunction, QueryClient, UseMutationOptions, UseMutationResult} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 
 import type {
-  LoginQuery,
-  ProcessVerificationQuery,
-  RegisterCommand,
-  ResetPasswordCommand,
-  SendVerificationCodeQuery,
-  TokenRotationRequest
+    ApiResponseLoginResult,
+    ApiResponseRegisterResult,
+    ApiResponseVerificationResult,
+    ApiResponseVoid,
+    ErrorResponse,
+    LoginQuery,
+    ProcessVerificationQuery,
+    RegisterCommand,
+    ResetPasswordCommand,
+    SendVerificationCodeQuery,
+    TokenRotationRequest
 } from '../../types';
 
-import { axiosInstanceFn } from '../../../axiosConfig';
-import type { ErrorType , BodyType } from '../../../axiosConfig';
+import type {BodyType, ErrorType} from '../../../axiosConfig';
+import {axiosInstanceFn} from '../../../axiosConfig';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
 
 
 /**
@@ -36,447 +33,495 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  */
 export const verifyCode = (
     processVerificationQuery: BodyType<ProcessVerificationQuery>,
- options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+    options?: SecondParameter<typeof axiosInstanceFn>, signal?: AbortSignal
 ) => {
-      
-      
-      return axiosInstanceFn<Blob>(
-      {url: `/api/v1/auth/verify-code`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: processVerificationQuery,
-        responseType: 'blob', signal
-    },
-      options);
+
+
+    return axiosInstanceFn<ApiResponseVerificationResult>(
+        {
+            url: `/api/v1/auth/verify-code`, method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            data: processVerificationQuery, signal
+        },
+        options);
+}
+
+
+export const getVerifyCodeMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof verifyCode>>, TError, {
+                                data: BodyType<ProcessVerificationQuery>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+): UseMutationOptions<Awaited<ReturnType<typeof verifyCode>>, TError, {
+    data: BodyType<ProcessVerificationQuery>
+}, TContext> => {
+
+    const mutationKey = ['verifyCode'];
+    const {mutation: mutationOptions, request: requestOptions} = options ?
+        options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+            options
+            : {...options, mutation: {...options.mutation, mutationKey}}
+        : {mutation: {mutationKey,}, request: undefined};
+
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyCode>>, {
+        data: BodyType<ProcessVerificationQuery>
+    }> = (props) => {
+        const {data} = props ?? {};
+
+        return verifyCode(data, requestOptions)
     }
-  
 
 
-export const getVerifyCodeMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyCode>>, TError,{data: BodyType<ProcessVerificationQuery>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
-): UseMutationOptions<Awaited<ReturnType<typeof verifyCode>>, TError,{data: BodyType<ProcessVerificationQuery>}, TContext> => {
+    return {mutationFn, ...mutationOptions}
+}
 
-const mutationKey = ['verifyCode'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type VerifyCodeMutationResult = NonNullable<Awaited<ReturnType<typeof verifyCode>>>
+export type VerifyCodeMutationBody = BodyType<ProcessVerificationQuery>
+export type VerifyCodeMutationError = ErrorType<ErrorResponse>
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyCode>>, {data: BodyType<ProcessVerificationQuery>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  verifyCode(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type VerifyCodeMutationResult = NonNullable<Awaited<ReturnType<typeof verifyCode>>>
-    export type VerifyCodeMutationBody = BodyType<ProcessVerificationQuery>
-    export type VerifyCodeMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary Verify Code
  */
-export const useVerifyCode = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyCode>>, TError,{data: BodyType<ProcessVerificationQuery>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof verifyCode>>,
-        TError,
-        {data: BodyType<ProcessVerificationQuery>},
-        TContext
-      > => {
-      return useMutation(getVerifyCodeMutationOptions(options), queryClient);
-    }
-    /**
+export const useVerifyCode = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof verifyCode>>, TError, {
+                                data: BodyType<ProcessVerificationQuery>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+    , queryClient?: QueryClient): UseMutationResult<
+    Awaited<ReturnType<typeof verifyCode>>,
+    TError,
+    { data: BodyType<ProcessVerificationQuery> },
+    TContext
+> => {
+    return useMutation(getVerifyCodeMutationOptions(options), queryClient);
+}
+/**
  * @summary Send Verification Code
  */
 export const sendVerification = (
     sendVerificationCodeQuery: BodyType<SendVerificationCodeQuery>,
- options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+    options?: SecondParameter<typeof axiosInstanceFn>, signal?: AbortSignal
 ) => {
-      
-      
-      return axiosInstanceFn<Blob>(
-      {url: `/api/v1/auth/send-verification`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sendVerificationCodeQuery,
-        responseType: 'blob', signal
-    },
-      options);
+
+
+    return axiosInstanceFn<ApiResponseVoid>(
+        {
+            url: `/api/v1/auth/send-verification`, method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            data: sendVerificationCodeQuery, signal
+        },
+        options);
+}
+
+
+export const getSendVerificationMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof sendVerification>>, TError, {
+                                data: BodyType<SendVerificationCodeQuery>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+): UseMutationOptions<Awaited<ReturnType<typeof sendVerification>>, TError, {
+    data: BodyType<SendVerificationCodeQuery>
+}, TContext> => {
+
+    const mutationKey = ['sendVerification'];
+    const {mutation: mutationOptions, request: requestOptions} = options ?
+        options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+            options
+            : {...options, mutation: {...options.mutation, mutationKey}}
+        : {mutation: {mutationKey,}, request: undefined};
+
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<typeof sendVerification>>, {
+        data: BodyType<SendVerificationCodeQuery>
+    }> = (props) => {
+        const {data} = props ?? {};
+
+        return sendVerification(data, requestOptions)
     }
-  
 
 
-export const getSendVerificationMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendVerification>>, TError,{data: BodyType<SendVerificationCodeQuery>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
-): UseMutationOptions<Awaited<ReturnType<typeof sendVerification>>, TError,{data: BodyType<SendVerificationCodeQuery>}, TContext> => {
+    return {mutationFn, ...mutationOptions}
+}
 
-const mutationKey = ['sendVerification'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type SendVerificationMutationResult = NonNullable<Awaited<ReturnType<typeof sendVerification>>>
+export type SendVerificationMutationBody = BodyType<SendVerificationCodeQuery>
+export type SendVerificationMutationError = ErrorType<ErrorResponse>
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sendVerification>>, {data: BodyType<SendVerificationCodeQuery>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  sendVerification(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type SendVerificationMutationResult = NonNullable<Awaited<ReturnType<typeof sendVerification>>>
-    export type SendVerificationMutationBody = BodyType<SendVerificationCodeQuery>
-    export type SendVerificationMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary Send Verification Code
  */
-export const useSendVerification = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendVerification>>, TError,{data: BodyType<SendVerificationCodeQuery>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof sendVerification>>,
-        TError,
-        {data: BodyType<SendVerificationCodeQuery>},
-        TContext
-      > => {
-      return useMutation(getSendVerificationMutationOptions(options), queryClient);
-    }
-    /**
+export const useSendVerification = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof sendVerification>>, TError, {
+                                data: BodyType<SendVerificationCodeQuery>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+    , queryClient?: QueryClient): UseMutationResult<
+    Awaited<ReturnType<typeof sendVerification>>,
+    TError,
+    { data: BodyType<SendVerificationCodeQuery> },
+    TContext
+> => {
+    return useMutation(getSendVerificationMutationOptions(options), queryClient);
+}
+/**
  * @summary Rotate Token
  */
 export const rotateToken = (
     tokenRotationRequest: BodyType<TokenRotationRequest>,
- options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+    options?: SecondParameter<typeof axiosInstanceFn>, signal?: AbortSignal
 ) => {
-      
-      
-      return axiosInstanceFn<Blob>(
-      {url: `/api/v1/auth/rotate-token`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: tokenRotationRequest,
-        responseType: 'blob', signal
-    },
-      options);
+
+
+    return axiosInstanceFn<ApiResponseLoginResult>(
+        {
+            url: `/api/v1/auth/rotate-token`, method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            data: tokenRotationRequest, signal
+        },
+        options);
+}
+
+
+export const getRotateTokenMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof rotateToken>>, TError, {
+                                data: BodyType<TokenRotationRequest>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+): UseMutationOptions<Awaited<ReturnType<typeof rotateToken>>, TError, {
+    data: BodyType<TokenRotationRequest>
+}, TContext> => {
+
+    const mutationKey = ['rotateToken'];
+    const {mutation: mutationOptions, request: requestOptions} = options ?
+        options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+            options
+            : {...options, mutation: {...options.mutation, mutationKey}}
+        : {mutation: {mutationKey,}, request: undefined};
+
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<typeof rotateToken>>, {
+        data: BodyType<TokenRotationRequest>
+    }> = (props) => {
+        const {data} = props ?? {};
+
+        return rotateToken(data, requestOptions)
     }
-  
 
 
-export const getRotateTokenMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof rotateToken>>, TError,{data: BodyType<TokenRotationRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
-): UseMutationOptions<Awaited<ReturnType<typeof rotateToken>>, TError,{data: BodyType<TokenRotationRequest>}, TContext> => {
+    return {mutationFn, ...mutationOptions}
+}
 
-const mutationKey = ['rotateToken'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type RotateTokenMutationResult = NonNullable<Awaited<ReturnType<typeof rotateToken>>>
+export type RotateTokenMutationBody = BodyType<TokenRotationRequest>
+export type RotateTokenMutationError = ErrorType<ErrorResponse>
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof rotateToken>>, {data: BodyType<TokenRotationRequest>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  rotateToken(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type RotateTokenMutationResult = NonNullable<Awaited<ReturnType<typeof rotateToken>>>
-    export type RotateTokenMutationBody = BodyType<TokenRotationRequest>
-    export type RotateTokenMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary Rotate Token
  */
-export const useRotateToken = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof rotateToken>>, TError,{data: BodyType<TokenRotationRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof rotateToken>>,
-        TError,
-        {data: BodyType<TokenRotationRequest>},
-        TContext
-      > => {
-      return useMutation(getRotateTokenMutationOptions(options), queryClient);
-    }
-    /**
+export const useRotateToken = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof rotateToken>>, TError, {
+                                data: BodyType<TokenRotationRequest>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+    , queryClient?: QueryClient): UseMutationResult<
+    Awaited<ReturnType<typeof rotateToken>>,
+    TError,
+    { data: BodyType<TokenRotationRequest> },
+    TContext
+> => {
+    return useMutation(getRotateTokenMutationOptions(options), queryClient);
+}
+/**
  * @summary Reset Password
  */
 export const resetPassword = (
     resetPasswordCommand: BodyType<ResetPasswordCommand>,
- options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+    options?: SecondParameter<typeof axiosInstanceFn>, signal?: AbortSignal
 ) => {
-      
-      
-      return axiosInstanceFn<Blob>(
-      {url: `/api/v1/auth/reset-password`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: resetPasswordCommand,
-        responseType: 'blob', signal
-    },
-      options);
+
+
+    return axiosInstanceFn<ApiResponseVoid>(
+        {
+            url: `/api/v1/auth/reset-password`, method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            data: resetPasswordCommand, signal
+        },
+        options);
+}
+
+
+export const getResetPasswordMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError, {
+                                data: BodyType<ResetPasswordCommand>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+): UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError, {
+    data: BodyType<ResetPasswordCommand>
+}, TContext> => {
+
+    const mutationKey = ['resetPassword'];
+    const {mutation: mutationOptions, request: requestOptions} = options ?
+        options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+            options
+            : {...options, mutation: {...options.mutation, mutationKey}}
+        : {mutation: {mutationKey,}, request: undefined};
+
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetPassword>>, {
+        data: BodyType<ResetPasswordCommand>
+    }> = (props) => {
+        const {data} = props ?? {};
+
+        return resetPassword(data, requestOptions)
     }
-  
 
 
-export const getResetPasswordMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordCommand>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
-): UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordCommand>}, TContext> => {
+    return {mutationFn, ...mutationOptions}
+}
 
-const mutationKey = ['resetPassword'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type ResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword>>>
+export type ResetPasswordMutationBody = BodyType<ResetPasswordCommand>
+export type ResetPasswordMutationError = ErrorType<ErrorResponse>
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetPassword>>, {data: BodyType<ResetPasswordCommand>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  resetPassword(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword>>>
-    export type ResetPasswordMutationBody = BodyType<ResetPasswordCommand>
-    export type ResetPasswordMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary Reset Password
  */
-export const useResetPassword = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordCommand>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof resetPassword>>,
-        TError,
-        {data: BodyType<ResetPasswordCommand>},
-        TContext
-      > => {
-      return useMutation(getResetPasswordMutationOptions(options), queryClient);
-    }
-    /**
+export const useResetPassword = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError, {
+                                data: BodyType<ResetPasswordCommand>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+    , queryClient?: QueryClient): UseMutationResult<
+    Awaited<ReturnType<typeof resetPassword>>,
+    TError,
+    { data: BodyType<ResetPasswordCommand> },
+    TContext
+> => {
+    return useMutation(getResetPasswordMutationOptions(options), queryClient);
+}
+/**
  * @summary Register User
  */
 export const registerUser = (
     registerCommand: BodyType<RegisterCommand>,
- options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+    options?: SecondParameter<typeof axiosInstanceFn>, signal?: AbortSignal
 ) => {
-      
-      
-      return axiosInstanceFn<Blob>(
-      {url: `/api/v1/auth/register`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: registerCommand,
-        responseType: 'blob', signal
-    },
-      options);
+
+
+    return axiosInstanceFn<ApiResponseRegisterResult>(
+        {
+            url: `/api/v1/auth/register`, method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            data: registerCommand, signal
+        },
+        options);
+}
+
+
+export const getRegisterUserMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof registerUser>>, TError, {
+                                data: BodyType<RegisterCommand>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+): UseMutationOptions<Awaited<ReturnType<typeof registerUser>>, TError, {
+    data: BodyType<RegisterCommand>
+}, TContext> => {
+
+    const mutationKey = ['registerUser'];
+    const {mutation: mutationOptions, request: requestOptions} = options ?
+        options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+            options
+            : {...options, mutation: {...options.mutation, mutationKey}}
+        : {mutation: {mutationKey,}, request: undefined};
+
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<typeof registerUser>>, {
+        data: BodyType<RegisterCommand>
+    }> = (props) => {
+        const {data} = props ?? {};
+
+        return registerUser(data, requestOptions)
     }
-  
 
 
-export const getRegisterUserMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof registerUser>>, TError,{data: BodyType<RegisterCommand>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
-): UseMutationOptions<Awaited<ReturnType<typeof registerUser>>, TError,{data: BodyType<RegisterCommand>}, TContext> => {
+    return {mutationFn, ...mutationOptions}
+}
 
-const mutationKey = ['registerUser'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type RegisterUserMutationResult = NonNullable<Awaited<ReturnType<typeof registerUser>>>
+export type RegisterUserMutationBody = BodyType<RegisterCommand>
+export type RegisterUserMutationError = ErrorType<ErrorResponse>
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof registerUser>>, {data: BodyType<RegisterCommand>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  registerUser(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type RegisterUserMutationResult = NonNullable<Awaited<ReturnType<typeof registerUser>>>
-    export type RegisterUserMutationBody = BodyType<RegisterCommand>
-    export type RegisterUserMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary Register User
  */
-export const useRegisterUser = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof registerUser>>, TError,{data: BodyType<RegisterCommand>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof registerUser>>,
-        TError,
-        {data: BodyType<RegisterCommand>},
-        TContext
-      > => {
-      return useMutation(getRegisterUserMutationOptions(options), queryClient);
-    }
-    /**
+export const useRegisterUser = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof registerUser>>, TError, {
+                                data: BodyType<RegisterCommand>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+    , queryClient?: QueryClient): UseMutationResult<
+    Awaited<ReturnType<typeof registerUser>>,
+    TError,
+    { data: BodyType<RegisterCommand> },
+    TContext
+> => {
+    return useMutation(getRegisterUserMutationOptions(options), queryClient);
+}
+/**
  * @summary Logout User
  */
 export const logoutUser = (
     tokenRotationRequest: BodyType<TokenRotationRequest>,
- options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+    options?: SecondParameter<typeof axiosInstanceFn>, signal?: AbortSignal
 ) => {
-      
-      
-      return axiosInstanceFn<Blob>(
-      {url: `/api/v1/auth/logout`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: tokenRotationRequest,
-        responseType: 'blob', signal
-    },
-      options);
+
+
+    return axiosInstanceFn<ApiResponseVoid>(
+        {
+            url: `/api/v1/auth/logout`, method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            data: tokenRotationRequest, signal
+        },
+        options);
+}
+
+
+export const getLogoutUserMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof logoutUser>>, TError, {
+                                data: BodyType<TokenRotationRequest>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+): UseMutationOptions<Awaited<ReturnType<typeof logoutUser>>, TError, {
+    data: BodyType<TokenRotationRequest>
+}, TContext> => {
+
+    const mutationKey = ['logoutUser'];
+    const {mutation: mutationOptions, request: requestOptions} = options ?
+        options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+            options
+            : {...options, mutation: {...options.mutation, mutationKey}}
+        : {mutation: {mutationKey,}, request: undefined};
+
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<typeof logoutUser>>, {
+        data: BodyType<TokenRotationRequest>
+    }> = (props) => {
+        const {data} = props ?? {};
+
+        return logoutUser(data, requestOptions)
     }
-  
 
 
-export const getLogoutUserMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logoutUser>>, TError,{data: BodyType<TokenRotationRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
-): UseMutationOptions<Awaited<ReturnType<typeof logoutUser>>, TError,{data: BodyType<TokenRotationRequest>}, TContext> => {
+    return {mutationFn, ...mutationOptions}
+}
 
-const mutationKey = ['logoutUser'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type LogoutUserMutationResult = NonNullable<Awaited<ReturnType<typeof logoutUser>>>
+export type LogoutUserMutationBody = BodyType<TokenRotationRequest>
+export type LogoutUserMutationError = ErrorType<ErrorResponse>
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof logoutUser>>, {data: BodyType<TokenRotationRequest>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  logoutUser(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type LogoutUserMutationResult = NonNullable<Awaited<ReturnType<typeof logoutUser>>>
-    export type LogoutUserMutationBody = BodyType<TokenRotationRequest>
-    export type LogoutUserMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary Logout User
  */
-export const useLogoutUser = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logoutUser>>, TError,{data: BodyType<TokenRotationRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof logoutUser>>,
-        TError,
-        {data: BodyType<TokenRotationRequest>},
-        TContext
-      > => {
-      return useMutation(getLogoutUserMutationOptions(options), queryClient);
-    }
-    /**
+export const useLogoutUser = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof logoutUser>>, TError, {
+                                data: BodyType<TokenRotationRequest>
+                            }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+    , queryClient?: QueryClient): UseMutationResult<
+    Awaited<ReturnType<typeof logoutUser>>,
+    TError,
+    { data: BodyType<TokenRotationRequest> },
+    TContext
+> => {
+    return useMutation(getLogoutUserMutationOptions(options), queryClient);
+}
+/**
  * @summary User Login
  */
 export const login = (
     loginQuery: BodyType<LoginQuery>,
- options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+    options?: SecondParameter<typeof axiosInstanceFn>, signal?: AbortSignal
 ) => {
-      
-      
-      return axiosInstanceFn<Blob>(
-      {url: `/api/v1/auth/login`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: loginQuery,
-        responseType: 'blob', signal
-    },
-      options);
+
+
+    return axiosInstanceFn<ApiResponseLoginResult>(
+        {
+            url: `/api/v1/auth/login`, method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            data: loginQuery, signal
+        },
+        options);
+}
+
+
+export const getLoginMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: BodyType<LoginQuery> }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: BodyType<LoginQuery> }, TContext> => {
+
+    const mutationKey = ['login'];
+    const {mutation: mutationOptions, request: requestOptions} = options ?
+        options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+            options
+            : {...options, mutation: {...options.mutation, mutationKey}}
+        : {mutation: {mutationKey,}, request: undefined};
+
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, { data: BodyType<LoginQuery> }> = (props) => {
+        const {data} = props ?? {};
+
+        return login(data, requestOptions)
     }
-  
 
 
-export const getLoginMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginQuery>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
-): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginQuery>}, TContext> => {
+    return {mutationFn, ...mutationOptions}
+}
 
-const mutationKey = ['login'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
+export type LoginMutationBody = BodyType<LoginQuery>
+export type LoginMutationError = ErrorType<ErrorResponse>
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, {data: BodyType<LoginQuery>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  login(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
-    export type LoginMutationBody = BodyType<LoginQuery>
-    export type LoginMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary User Login
  */
-export const useLogin = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginQuery>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof login>>,
-        TError,
-        {data: BodyType<LoginQuery>},
-        TContext
-      > => {
-      return useMutation(getLoginMutationOptions(options), queryClient);
-    }
+export const useLogin = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: {
+                            mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: BodyType<LoginQuery> }, TContext>,
+                            request?: SecondParameter<typeof axiosInstanceFn>
+                        }
+    , queryClient?: QueryClient): UseMutationResult<
+    Awaited<ReturnType<typeof login>>,
+    TError,
+    { data: BodyType<LoginQuery> },
+    TContext
+> => {
+    return useMutation(getLoginMutationOptions(options), queryClient);
+}
     

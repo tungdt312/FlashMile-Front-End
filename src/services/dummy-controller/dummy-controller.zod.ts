@@ -4,8 +4,8 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import * as zod from 'zod';
 
-export interface TokenRotationRequest {
-  /** @minLength 1 */
-  refreshToken: string;
-}
+
+export const GetDummyResponse = zod.string()
+

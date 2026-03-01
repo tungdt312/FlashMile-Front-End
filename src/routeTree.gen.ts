@@ -11,7 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
+import { Route as AuthenticatedRouteMeRouteImport } from './routes/_authenticatedRoute/me'
+import { Route as AuthenticatedRouteContactListRouteImport } from './routes/_authenticatedRoute/contact-list'
+import { Route as authVerifyEmailRouteImport } from './routes/(auth)/verify-email'
+import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
+import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
+import { Route as AuthenticatedRouteUsersIndexRouteImport } from './routes/_authenticatedRoute/users/index'
+import { Route as AuthenticatedRouteRolesIndexRouteImport } from './routes/_authenticatedRoute/roles/index'
+import { Route as AuthenticatedRouteUsersUserIdRouteImport } from './routes/_authenticatedRoute/users/$userId'
+import { Route as AuthenticatedRouteRolesRoleIdRouteImport } from './routes/_authenticatedRoute/roles/$roleId'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -23,40 +31,151 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthSignInRoute = AuthSignInRouteImport.update({
-  id: '/auth/sign-in',
-  path: '/auth/sign-in',
+const AuthenticatedRouteMeRoute = AuthenticatedRouteMeRouteImport.update({
+  id: '/_authenticatedRoute/me',
+  path: '/me',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteContactListRoute =
+  AuthenticatedRouteContactListRouteImport.update({
+    id: '/_authenticatedRoute/contact-list',
+    path: '/contact-list',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const authVerifyEmailRoute = authVerifyEmailRouteImport.update({
+  id: '/(auth)/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authSignUpRoute = authSignUpRouteImport.update({
+  id: '/(auth)/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authSignInRoute = authSignInRouteImport.update({
+  id: '/(auth)/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteUsersIndexRoute =
+  AuthenticatedRouteUsersIndexRouteImport.update({
+    id: '/_authenticatedRoute/users/',
+    path: '/users/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedRouteRolesIndexRoute =
+  AuthenticatedRouteRolesIndexRouteImport.update({
+    id: '/_authenticatedRoute/roles/',
+    path: '/roles/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedRouteUsersUserIdRoute =
+  AuthenticatedRouteUsersUserIdRouteImport.update({
+    id: '/_authenticatedRoute/users/$userId',
+    path: '/users/$userId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedRouteRolesRoleIdRoute =
+  AuthenticatedRouteRolesRoleIdRouteImport.update({
+    id: '/_authenticatedRoute/roles/$roleId',
+    path: '/roles/$roleId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth/sign-in': typeof AuthSignInRoute
+  '/sign-in': typeof authSignInRoute
+  '/sign-up': typeof authSignUpRoute
+  '/verify-email': typeof authVerifyEmailRoute
+  '/contact-list': typeof AuthenticatedRouteContactListRoute
+  '/me': typeof AuthenticatedRouteMeRoute
+  '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
+  '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
+  '/roles/': typeof AuthenticatedRouteRolesIndexRoute
+  '/users/': typeof AuthenticatedRouteUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth/sign-in': typeof AuthSignInRoute
+  '/sign-in': typeof authSignInRoute
+  '/sign-up': typeof authSignUpRoute
+  '/verify-email': typeof authVerifyEmailRoute
+  '/contact-list': typeof AuthenticatedRouteContactListRoute
+  '/me': typeof AuthenticatedRouteMeRoute
+  '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
+  '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
+  '/roles': typeof AuthenticatedRouteRolesIndexRoute
+  '/users': typeof AuthenticatedRouteUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth/sign-in': typeof AuthSignInRoute
+  '/(auth)/sign-in': typeof authSignInRoute
+  '/(auth)/sign-up': typeof authSignUpRoute
+  '/(auth)/verify-email': typeof authVerifyEmailRoute
+  '/_authenticatedRoute/contact-list': typeof AuthenticatedRouteContactListRoute
+  '/_authenticatedRoute/me': typeof AuthenticatedRouteMeRoute
+  '/_authenticatedRoute/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
+  '/_authenticatedRoute/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
+  '/_authenticatedRoute/roles/': typeof AuthenticatedRouteRolesIndexRoute
+  '/_authenticatedRoute/users/': typeof AuthenticatedRouteUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/auth/sign-in'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/sign-in'
+    | '/sign-up'
+    | '/verify-email'
+    | '/contact-list'
+    | '/me'
+    | '/roles/$roleId'
+    | '/users/$userId'
+    | '/roles/'
+    | '/users/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/auth/sign-in'
-  id: '__root__' | '/' | '/about' | '/auth/sign-in'
+  to:
+    | '/'
+    | '/about'
+    | '/sign-in'
+    | '/sign-up'
+    | '/verify-email'
+    | '/contact-list'
+    | '/me'
+    | '/roles/$roleId'
+    | '/users/$userId'
+    | '/roles'
+    | '/users'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/(auth)/sign-in'
+    | '/(auth)/sign-up'
+    | '/(auth)/verify-email'
+    | '/_authenticatedRoute/contact-list'
+    | '/_authenticatedRoute/me'
+    | '/_authenticatedRoute/roles/$roleId'
+    | '/_authenticatedRoute/users/$userId'
+    | '/_authenticatedRoute/roles/'
+    | '/_authenticatedRoute/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AuthSignInRoute: typeof AuthSignInRoute
+  authSignInRoute: typeof authSignInRoute
+  authSignUpRoute: typeof authSignUpRoute
+  authVerifyEmailRoute: typeof authVerifyEmailRoute
+  AuthenticatedRouteContactListRoute: typeof AuthenticatedRouteContactListRoute
+  AuthenticatedRouteMeRoute: typeof AuthenticatedRouteMeRoute
+  AuthenticatedRouteRolesRoleIdRoute: typeof AuthenticatedRouteRolesRoleIdRoute
+  AuthenticatedRouteUsersUserIdRoute: typeof AuthenticatedRouteUsersUserIdRoute
+  AuthenticatedRouteRolesIndexRoute: typeof AuthenticatedRouteRolesIndexRoute
+  AuthenticatedRouteUsersIndexRoute: typeof AuthenticatedRouteUsersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,11 +194,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/sign-in': {
-      id: '/auth/sign-in'
-      path: '/auth/sign-in'
-      fullPath: '/auth/sign-in'
-      preLoaderRoute: typeof AuthSignInRouteImport
+    '/_authenticatedRoute/me': {
+      id: '/_authenticatedRoute/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof AuthenticatedRouteMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticatedRoute/contact-list': {
+      id: '/_authenticatedRoute/contact-list'
+      path: '/contact-list'
+      fullPath: '/contact-list'
+      preLoaderRoute: typeof AuthenticatedRouteContactListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/verify-email': {
+      id: '/(auth)/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof authVerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/sign-up': {
+      id: '/(auth)/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof authSignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/sign-in': {
+      id: '/(auth)/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof authSignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticatedRoute/users/': {
+      id: '/_authenticatedRoute/users/'
+      path: '/users'
+      fullPath: '/users/'
+      preLoaderRoute: typeof AuthenticatedRouteUsersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticatedRoute/roles/': {
+      id: '/_authenticatedRoute/roles/'
+      path: '/roles'
+      fullPath: '/roles/'
+      preLoaderRoute: typeof AuthenticatedRouteRolesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticatedRoute/users/$userId': {
+      id: '/_authenticatedRoute/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof AuthenticatedRouteUsersUserIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticatedRoute/roles/$roleId': {
+      id: '/_authenticatedRoute/roles/$roleId'
+      path: '/roles/$roleId'
+      fullPath: '/roles/$roleId'
+      preLoaderRoute: typeof AuthenticatedRouteRolesRoleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -88,7 +263,15 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AuthSignInRoute: AuthSignInRoute,
+  authSignInRoute: authSignInRoute,
+  authSignUpRoute: authSignUpRoute,
+  authVerifyEmailRoute: authVerifyEmailRoute,
+  AuthenticatedRouteContactListRoute: AuthenticatedRouteContactListRoute,
+  AuthenticatedRouteMeRoute: AuthenticatedRouteMeRoute,
+  AuthenticatedRouteRolesRoleIdRoute: AuthenticatedRouteRolesRoleIdRoute,
+  AuthenticatedRouteUsersUserIdRoute: AuthenticatedRouteUsersUserIdRoute,
+  AuthenticatedRouteRolesIndexRoute: AuthenticatedRouteRolesIndexRoute,
+  AuthenticatedRouteUsersIndexRoute: AuthenticatedRouteUsersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

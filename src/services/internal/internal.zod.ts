@@ -11,7 +11,23 @@ export const SyncPermissionsBody = zod.object({
   "packageName": zod.string().optional()
 })
 
+export const SyncPermissionsResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.unknown().optional()
+})
+
 export const DebugOtpQueryParams = zod.object({
   "phoneNumber": zod.string()
+})
+
+export const DebugOtpResponse = zod.object({
+  "timestamp": zod.string().datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "otp": zod.string().optional()
+}).optional()
 })
 

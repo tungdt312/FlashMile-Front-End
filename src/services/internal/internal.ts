@@ -24,7 +24,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ApiResponseDebugOtpResult,
+  ApiResponseVoid,
   DebugOtpParams,
+  ErrorResponse,
   SyncPermissionCommand
 } from '../../types';
 
@@ -42,18 +45,17 @@ export const syncPermissions = (
 ) => {
       
       
-      return axiosInstanceFn<Blob>(
+      return axiosInstanceFn<ApiResponseVoid>(
       {url: `/api/v1/internal/permissions/sync`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: syncPermissionCommand,
-        responseType: 'blob', signal
+      data: syncPermissionCommand, signal
     },
       options);
     }
   
 
 
-export const getSyncPermissionsMutationOptions = <TError = ErrorType<unknown>,
+export const getSyncPermissionsMutationOptions = <TError = ErrorType<ErrorResponse>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof syncPermissions>>, TError,{data: BodyType<SyncPermissionCommand>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
 ): UseMutationOptions<Awaited<ReturnType<typeof syncPermissions>>, TError,{data: BodyType<SyncPermissionCommand>}, TContext> => {
 
@@ -82,9 +84,9 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
     export type SyncPermissionsMutationResult = NonNullable<Awaited<ReturnType<typeof syncPermissions>>>
     export type SyncPermissionsMutationBody = BodyType<SyncPermissionCommand>
-    export type SyncPermissionsMutationError = ErrorType<unknown>
+    export type SyncPermissionsMutationError = ErrorType<ErrorResponse>
 
-    export const useSyncPermissions = <TError = ErrorType<unknown>,
+    export const useSyncPermissions = <TError = ErrorType<ErrorResponse>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof syncPermissions>>, TError,{data: BodyType<SyncPermissionCommand>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof syncPermissions>>,
@@ -100,10 +102,9 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return axiosInstanceFn<Blob>(
+      return axiosInstanceFn<ApiResponseDebugOtpResult>(
       {url: `/api/v1/internal/debug-otp`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       options);
     }
@@ -118,7 +119,7 @@ export const getDebugOtpQueryKey = (params?: DebugOtpParams,) => {
     }
 
     
-export const getDebugOtpQueryOptions = <TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<unknown>>(params: DebugOtpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof debugOtp>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+export const getDebugOtpQueryOptions = <TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<ErrorResponse>>(params: DebugOtpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof debugOtp>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -137,10 +138,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type DebugOtpQueryResult = NonNullable<Awaited<ReturnType<typeof debugOtp>>>
-export type DebugOtpQueryError = ErrorType<unknown>
+export type DebugOtpQueryError = ErrorType<ErrorResponse>
 
 
-export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<unknown>>(
+export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<ErrorResponse>>(
  params: DebugOtpParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof debugOtp>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof debugOtp>>,
@@ -150,7 +151,7 @@ export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError
       >, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<unknown>>(
+export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<ErrorResponse>>(
  params: DebugOtpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof debugOtp>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof debugOtp>>,
@@ -160,12 +161,12 @@ export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError
       >, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<unknown>>(
+export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<ErrorResponse>>(
  params: DebugOtpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof debugOtp>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<unknown>>(
+export function useDebugOtp<TData = Awaited<ReturnType<typeof debugOtp>>, TError = ErrorType<ErrorResponse>>(
  params: DebugOtpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof debugOtp>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {

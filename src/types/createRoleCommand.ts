@@ -5,7 +5,8 @@
  * OpenAPI spec version: v0
  */
 
-export interface TokenRotationRequest {
-  /** @minLength 1 */
-  refreshToken: string;
+export interface CreateRoleCommand {
+  name?: string;
+  description?: string;
+  isDefault?: boolean;
 }

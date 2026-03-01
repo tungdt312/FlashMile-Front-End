@@ -19,6 +19,10 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
+import type {
+  ErrorResponse
+} from '../../types';
+
 import { axiosInstanceFn } from '../../../axiosConfig';
 import type { ErrorType } from '../../../axiosConfig';
 
@@ -33,9 +37,8 @@ export const getDummy = (
 ) => {
       
       
-      return axiosInstanceFn<Blob>(
-      {url: `/dummy`, method: 'GET',
-        responseType: 'blob', signal
+      return axiosInstanceFn<string>(
+      {url: `/dummy`, method: 'GET', signal
     },
       options);
     }
@@ -50,7 +53,7 @@ export const getGetDummyQueryKey = () => {
     }
 
     
-export const getGetDummyQueryOptions = <TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDummy>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+export const getGetDummyQueryOptions = <TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<ErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDummy>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -69,10 +72,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetDummyQueryResult = NonNullable<Awaited<ReturnType<typeof getDummy>>>
-export type GetDummyQueryError = ErrorType<unknown>
+export type GetDummyQueryError = ErrorType<ErrorResponse>
 
 
-export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<unknown>>(
+export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<ErrorResponse>>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDummy>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDummy>>,
@@ -82,7 +85,7 @@ export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError
       >, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<unknown>>(
+export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<ErrorResponse>>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDummy>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDummy>>,
@@ -92,12 +95,12 @@ export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError
       >, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<unknown>>(
+export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<ErrorResponse>>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDummy>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<unknown>>(
+export function useGetDummy<TData = Awaited<ReturnType<typeof getDummy>>, TError = ErrorType<ErrorResponse>>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDummy>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {

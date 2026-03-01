@@ -19,6 +19,10 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
+import type {
+  ErrorResponse
+} from '../../types';
+
 import { axiosInstanceFn } from '../../../axiosConfig';
 import type { ErrorType } from '../../../axiosConfig';
 
@@ -53,7 +57,7 @@ export const getRedirectToProviderQueryKey = (provider: string,) => {
     }
 
     
-export const getRedirectToProviderQueryOptions = <TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<unknown>>(provider: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof redirectToProvider>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+export const getRedirectToProviderQueryOptions = <TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<ErrorResponse>>(provider: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof redirectToProvider>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -72,10 +76,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type RedirectToProviderQueryResult = NonNullable<Awaited<ReturnType<typeof redirectToProvider>>>
-export type RedirectToProviderQueryError = ErrorType<unknown>
+export type RedirectToProviderQueryError = ErrorType<ErrorResponse>
 
 
-export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<unknown>>(
+export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<ErrorResponse>>(
  provider: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof redirectToProvider>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof redirectToProvider>>,
@@ -85,7 +89,7 @@ export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirect
       >, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<unknown>>(
+export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<ErrorResponse>>(
  provider: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof redirectToProvider>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof redirectToProvider>>,
@@ -95,7 +99,7 @@ export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirect
       >, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<unknown>>(
+export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<ErrorResponse>>(
  provider: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof redirectToProvider>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -103,7 +107,7 @@ export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirect
  * @summary Endpoint giúp đăng nhập bằng OAuth2. Hiện tại hỗ trợ Google
  */
 
-export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<unknown>>(
+export function useRedirectToProvider<TData = Awaited<ReturnType<typeof redirectToProvider>>, TError = ErrorType<ErrorResponse>>(
  provider: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof redirectToProvider>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {

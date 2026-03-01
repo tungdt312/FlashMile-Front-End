@@ -5,7 +5,9 @@
  * OpenAPI spec version: v0
  */
 
-export interface TokenRotationRequest {
-  /** @minLength 1 */
-  refreshToken: string;
-}
+export type GetAllRolesParams = {
+filter?: string;
+sorts?: string[];
+page?: number;
+size?: number;
+};
