@@ -1,6 +1,6 @@
 export const ACCESS_TOKEN_STORAGE_KEY = "access_token";
 export const REFRESH_TOKEN_STORAGE_KEY = "refresh_token";
-
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 export const PUBLIC_ENDPOINTS = [
     "/auth/login",
     "/auth/rotate-token",

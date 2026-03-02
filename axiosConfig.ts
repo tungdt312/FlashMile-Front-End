@@ -1,13 +1,12 @@
 
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 import {
-    ACCESS_TOKEN_STORAGE_KEY,
+    ACCESS_TOKEN_STORAGE_KEY, BACKEND_URL,
     PUBLIC_ENDPOINTS,
     REFRESH_TOKEN_STORAGE_KEY
 } from "./src/constants/securityConstant.ts";
 import {rotateToken} from "./src/services/authentication/authentication.ts";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const axiosInstance = axios.create({
     paramsSerializer: (params) => {

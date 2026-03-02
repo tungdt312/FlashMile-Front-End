@@ -1,0 +1,82 @@
+{
+  "hash": "4a03f99b",
+  "configHash": "523c2354",
+  "lockfileHash": "61063ffe",
+  "browserHash": "0b89eddc",
+  "optimized": {
+    "@tanstack/react-query": {
+      "src": "../../node_modules/@tanstack/react-query/build/modern/index.js",
+      "file": "@tanstack_react-query.js",
+      "fileHash": "28931397",
+      "needsInterop": false
+    },
+    "@tanstack/react-router": {
+      "src": "../../node_modules/@tanstack/react-router/dist/esm/index.dev.js",
+      "file": "@tanstack_react-router.js",
+      "fileHash": "11fd5276",
+      "needsInterop": false
+    },
+    "@tanstack/react-router-devtools": {
+      "src": "../../node_modules/@tanstack/react-router-devtools/dist/esm/index.js",
+      "file": "@tanstack_react-router-devtools.js",
+      "fileHash": "071c3b0f",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "2d6ae67e",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "72ee0f51",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "e783f578",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "5171f4cb",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "FloatingTanStackRouterDevtools-B7vy70jP-GCU7WS3V": {
+      "file": "FloatingTanStackRouterDevtools-B7vy70jP-GCU7WS3V.js"
+    },
+    "chunk-LV7GKBLD": {
+      "file": "chunk-LV7GKBLD.js"
+    },
+    "chunk-7WO645K6": {
+      "file": "chunk-7WO645K6.js"
+    },
+    "chunk-AU2MKR2E": {
+      "file": "chunk-AU2MKR2E.js"
+    },
+    "chunk-VX2H6PUQ": {
+      "file": "chunk-VX2H6PUQ.js"
+    },
+    "BaseTanStackRouterDevtoolsPanel-Bmws3ikM-4RECDV7U": {
+      "file": "BaseTanStackRouterDevtoolsPanel-Bmws3ikM-4RECDV7U.js"
+    },
+    "chunk-6CRIMLQK": {
+      "file": "chunk-6CRIMLQK.js"
+    },
+    "chunk-I4LPBS3J": {
+      "file": "chunk-I4LPBS3J.js"
+    },
+    "chunk-WPF5HZSR": {
+      "file": "chunk-WPF5HZSR.js"
+    },
+    "chunk-G3PMV62Z": {
+      "file": "chunk-G3PMV62Z.js"
+    }
+  }
+}
