@@ -167,3 +167,7 @@
     @apply bg-background text-foreground;
   }
 }
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

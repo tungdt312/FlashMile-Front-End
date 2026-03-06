@@ -2,7 +2,7 @@ import {Button} from "../../components/ui/button.tsx";
 import {FcGoogle} from "react-icons/fc";
 import {Link, useNavigate} from "@tanstack/react-router";
 import {motion} from "motion/react"
-import {containerVariants, itemVariants} from "../../lib/motion.ts";
+import {containerVariants, fadeIn} from "../../lib/motion.ts";
 
 const Landpage = () => {
     const navigate = useNavigate();
@@ -24,31 +24,32 @@ const Landpage = () => {
                 variants={containerVariants} // Áp dụng các biến thể
                 className={"p-8 gap-8 flex flex-col items-center justify-end md:justify-center h-full w-full z-10 bg-linear-to-t from-[#1E1E1E] to-[#1E1E1E]/70"}>
                 <div className={"gap-4 flex flex-col items-center justify-center w-full max-w-xs"}>
-                    <motion.img variants={itemVariants} src={'/full-logo.svg'} alt=""/>
-                    <motion.div variants={itemVariants}
+                    <motion.img variants={fadeIn("up")} src={'/full-logo.svg'} alt=""/>
+                    <motion.div variants={fadeIn("up")}
                                 className={"text-3xl font-bold text-center w-full text-primary-foreground"}>With
                         FlashMile, Delivery in a flash.
                     </motion.div>
                 </div>
                 <motion.div
-                    variants={itemVariants}
+                    variants={fadeIn("up")}
                     className={"gap-4 flex flex-col items-center justify-center w-full max-w-xs"}>
-                    <Button asChild
-                            className={"rounded-full w-full text-primary-foreground bg-linear-to-r from-primary to-brand cursor-pointer"}>
-                        <motion.button
-                            whileHover={{scale: 1.1}}
-                            whileTap={{scale: 0.95}}
-                            onClick={() => navigate({to: "/sign-up"})}>
+                    <motion.button
+                        className={"w-full"}
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.95}}
+                        onClick={() => navigate({to: "/sign-up"})}>
+                        <Button className={"font-bold rounded-full w-full text-primary-foreground bg-linear-to-r from-primary to-brand cursor-pointer"}>
                             Create new account
-                        </motion.button>
-                    </Button>
+                        </Button>
+                    </motion.button>
 
                     <Button variant={"outline"}
-                            className={"rounded-full w-full text-primary-foreground bg-transparent cursor-pointer"}>
+                            className={"font-bold rounded-full w-full text-primary-foreground bg-transparent cursor-pointer"}>
                         <FcGoogle/>
                         Continue with Google
                     </Button>
-                    <Link to={"/sign-in"} className={"text-primary font-medium text-sm"}>Sign in</Link>
+                    <span className={"text-primary-foreground text-sm"}>Have an account? <Link to={"/sign-in"}
+                                                                                               className={"text-primary font-semibold text-sm"}>Go to sign in</Link></span>
                 </motion.div>
             </motion.div>
         </div>
