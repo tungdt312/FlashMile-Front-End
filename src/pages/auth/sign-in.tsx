@@ -83,7 +83,7 @@ const SignIn = () => {
                                            onChange={(e) => field.handleChange(e.target.value)}/>
                                     {field.state.meta.errors.length > 0 && (
                                         <FieldError>
-                                            {field.state.meta.errors.map((err: any) =>
+                                            {field.state.meta.errors.map((err) =>
                                                 typeof err === 'object' ? err.message : err
                                             ).join(", ")}
                                         </FieldError>
@@ -111,7 +111,7 @@ const SignIn = () => {
                                     </InputGroup>
                                     {field.state.meta.errors.length > 0 && (
                                         <FieldError>
-                                            {field.state.meta.errors.map((err: any) =>
+                                            {field.state.meta.errors.map((err) =>
                                                 typeof err === 'object' ? err.message : err
                                             ).join(", ")}
                                         </FieldError>
