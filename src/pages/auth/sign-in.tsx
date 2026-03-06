@@ -2,46 +2,46 @@ import {useState} from "react";
 import {Button} from "../../components/ui/button.tsx";
 import {LuArrowLeft, LuEye, LuEyeClosed, LuLoaderCircle} from "react-icons/lu";
 import {useRouter} from "@tanstack/react-router";
-import {Field, FieldLabel} from "../../components/ui/field.tsx";
+import {Field, FieldError, FieldLabel} from "../../components/ui/field.tsx";
 import {Input} from "../../components/ui/input.tsx";
 import {Separator} from "../../components/ui/separator.tsx";
 import {FcGoogle} from "react-icons/fc";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
-import {z} from "zod";
 import {useForm} from "@tanstack/react-form";
 import {useLogin} from "../../services/authentication/authentication.ts";
 import {toast} from "sonner";
+import z from "zod";
+import {useAuthStore} from "../../lib/global.ts";
 
-const formSchema = z.object({
-    credentialId: z
-        .string(),
-    password: z
-        .string(),
+const LoginBody = z.object({
+    "credentialId": z.string().min(1, "Credential ID is required."),
+    "password": z.string().min(1, "Password is required."),
 })
 
 const SignIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
+    const authStore = useAuthStore();
     const loginService = useLogin(
         {
             mutation: {
                 onSuccess: (res) => {
                     // res ở đây chính là LoginMutationResult
-                    console.log("Đăng nhập thành công!", res.data);
                     if (!res.data?.accessToken) {
-                        toast.error("Access Token not found!");
+                        toast.error("Login failed.");
+                        console.log("Access Token not found!");
                         return;
                     }
+                    authStore.setAccessToken(res.data.accessToken);
                     // Lưu token (ví dụ dùng localStorage hoặc Zustand)
-                    localStorage.setItem('accessToken', res.data.accessToken);
                     // Chuyển hướng sang Dashboard
                     router.navigate({to: '/dashboard'});
                 },
                 onError: (err) => {
                     // err ở đây là LoginMutationError
-                    toast.error(err.response?.data.message || "Wrong credential id or password!");
-                }
-            }
+                    toast.error(err.response?.data.message || "Wrong credential ID or password!");
+                },
+            },
         }
     );
 
@@ -51,7 +51,7 @@ const SignIn = () => {
             password: '',
         },
         validators: {
-            onSubmit: formSchema,
+            onSubmit: LoginBody,
         },
         onSubmit: async ({value}) => {
             console.log(value)
@@ -81,6 +81,13 @@ const SignIn = () => {
                                     <FieldLabel htmlFor={field.name}>Credential Id</FieldLabel>
                                     <Input id={field.name} autoComplete="off" placeholder="Phone/Email"
                                            onChange={(e) => field.handleChange(e.target.value)}/>
+                                    {field.state.meta.errors.length > 0 && (
+                                        <FieldError>
+                                            {field.state.meta.errors.map((err: any) =>
+                                                typeof err === 'object' ? err.message : err
+                                            ).join(", ")}
+                                        </FieldError>
+                                    )}
                                 </Field>
                             )
                         }
@@ -102,6 +109,13 @@ const SignIn = () => {
                                             {showPassword ? <LuEye/> : <LuEyeClosed/>}
                                         </InputGroupAddon>
                                     </InputGroup>
+                                    {field.state.meta.errors.length > 0 && (
+                                        <FieldError>
+                                            {field.state.meta.errors.map((err: any) =>
+                                                typeof err === 'object' ? err.message : err
+                                            ).join(", ")}
+                                        </FieldError>
+                                    )}
                                 </Field>
                             )
                         }
