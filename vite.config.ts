@@ -47,4 +47,9 @@ export default defineConfig({
         ,
     }
     ,
+    server: {
+        port: 3000,      // Ép Vite chạy ở port 3000
+        strictPort: true, // Nếu port 3000 đã bị dùng, Vite sẽ báo lỗi thay vì tự đổi sang 3001
+        host: true       // Cho phép truy cập qua mạng nội bộ (IP máy)
+    }
 })

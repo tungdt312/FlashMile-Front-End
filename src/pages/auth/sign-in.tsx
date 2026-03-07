@@ -57,7 +57,6 @@ const SignIn = () => {
             onSubmit: LoginBody,
         },
         onSubmit: async ({value}) => {
-            console.log(value)
             loginService.mutate({data: value});
         },
     });

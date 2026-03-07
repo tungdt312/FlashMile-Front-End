@@ -1,9 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
+import SignUp from "../../pages/auth/sign-up.tsx";
 
 export const Route = createFileRoute('/(auth)/sign-up')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/(auth)/sign-up"!</div>
+  return <SignUp/>
 }
