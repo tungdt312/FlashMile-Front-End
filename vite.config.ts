@@ -27,7 +27,7 @@ export default defineConfig({
                     short_name: 'FlashMile',
                     start_url: '/',
                     theme_color: '#ffffff',
-                    display: 'standalone',
+                    display: 'fullscreen',
                 },
                 workbox: {
                     globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
