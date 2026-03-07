@@ -7,7 +7,7 @@ import {containerVariants, fadeIn} from "../../lib/motion.ts";
 const Landpage = () => {
     const navigate = useNavigate();
     return (
-        <div className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center">
+        <div className="relative w-full h-dvh overflow-hidden flex flex-col items-center justify-center">
             <motion.div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{

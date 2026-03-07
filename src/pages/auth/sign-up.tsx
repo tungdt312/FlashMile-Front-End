@@ -19,7 +19,7 @@ const SignUp = () => {
     const [token, setToken] = useState("")
 
     return (
-        <div className="w-full h-screen flex flex-col items-center p-8">
+        <div className="w-full h-dvh flex flex-col items-center p-8">
             <div className="flex items-center justify-start w-full">
                 <Button variant={"outline"} className={"size-10"} onClick={() => router.history.back()}>
                     <LuArrowLeft/>
