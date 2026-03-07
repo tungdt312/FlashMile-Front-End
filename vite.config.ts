@@ -26,6 +26,7 @@ export default defineConfig({
                     name: 'FlashMile Delivery Application',
                     short_name: 'FlashMile',
                     start_url: '/',
+                    theme_color: '#ffffff',
                     display: 'standalone',
                 },
                 workbox: {

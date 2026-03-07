@@ -33,15 +33,11 @@ const Landpage = () => {
                 <motion.div
                     variants={fadeIn("up")}
                     className={"gap-4 flex flex-col items-center justify-center w-full max-w-xs"}>
-                    <motion.button
-                        className={"w-full"}
-                        whileHover={{scale: 1.1}}
-                        whileTap={{scale: 0.95}}
-                        onClick={() => navigate({to: "/sign-up"})}>
-                        <Button className={"font-bold rounded-full w-full text-primary-foreground bg-linear-to-r from-primary to-brand cursor-pointer"}>
-                            Create new account
-                        </Button>
-                    </motion.button>
+
+                    <Button onClick={() => navigate({to: "/sign-up"})}
+                            className={"font-bold rounded-full w-full text-primary-foreground bg-linear-to-r from-primary to-brand cursor-pointer"}>
+                        Create new account
+                    </Button>
 
                     <Button variant={"outline"}
                             className={"font-bold rounded-full w-full text-primary-foreground bg-transparent cursor-pointer"}>

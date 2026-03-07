@@ -96,7 +96,7 @@ const VerifyEmail = ({code}: { code: string }) => {
                                              autoComplete="off"
                                              placeholder="abc@gmail.com"
                                              onChange={(e) => setEmail(e.target.value)}/>
-                            <InputGroupAddon className={counter > 0 ? "cursor-default" : "cursor-pointer"}
+                            <InputGroupAddon className={(counter > 0) ? "cursor-default" : "cursor-pointer"}
                                              align={"inline-end"}
                                              onClick={sendCode}>
                                 {(counter > 0) ? `${counter} s` : "Send code"}
