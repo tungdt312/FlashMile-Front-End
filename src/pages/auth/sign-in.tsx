@@ -39,9 +39,12 @@ const SignIn = () => {
                 },
                 onError: (err) => {
                     // err ở đây là LoginMutationError
-                    toast.error(err.response?.data.message || "Wrong credential ID or password!");
-                },
+                    toast.error(err.response?.data.message || "Wrong credential id or password!");
+                }
             },
+            request: {
+                withCredentials: true
+            }
         }
     );
 
