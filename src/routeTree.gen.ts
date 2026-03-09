@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteMeRouteImport } from './routes/_authenticatedRoute/me'
 import { Route as AuthenticatedRouteDashboardRouteImport } from './routes/_authenticatedRoute/dashboard'
@@ -25,11 +24,6 @@ import { Route as AuthenticatedRouteRolesIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedRouteUsersUserIdRouteImport } from './routes/_authenticatedRoute/users/$userId'
 import { Route as AuthenticatedRouteRolesRoleIdRouteImport } from './routes/_authenticatedRoute/roles/$roleId'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -109,7 +103,6 @@ const AuthenticatedRouteRolesRoleIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/multi-factor': typeof authMultiFactorRoute
   '/recovery': typeof authRecoveryRoute
   '/reset-password': typeof authResetPasswordRoute
@@ -126,7 +119,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/multi-factor': typeof authMultiFactorRoute
   '/recovery': typeof authRecoveryRoute
   '/reset-password': typeof authResetPasswordRoute
@@ -144,7 +136,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/(auth)/multi-factor': typeof authMultiFactorRoute
   '/(auth)/recovery': typeof authRecoveryRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
@@ -163,7 +154,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/multi-factor'
     | '/recovery'
     | '/reset-password'
@@ -180,7 +170,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/multi-factor'
     | '/recovery'
     | '/reset-password'
@@ -197,7 +186,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/(auth)/multi-factor'
     | '/(auth)/recovery'
     | '/(auth)/reset-password'
@@ -215,7 +203,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   authMultiFactorRoute: typeof authMultiFactorRoute
   authRecoveryRoute: typeof authRecoveryRoute
   authResetPasswordRoute: typeof authResetPasswordRoute
@@ -233,13 +220,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -343,7 +323,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   authMultiFactorRoute: authMultiFactorRoute,
   authRecoveryRoute: authRecoveryRoute,
   authResetPasswordRoute: authResetPasswordRoute,

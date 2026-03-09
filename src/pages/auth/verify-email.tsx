@@ -61,7 +61,7 @@ const VerifyEmail = ({code}: { code: string }) => {
         return () => clearInterval(timer);
     }, [counter]);
     return (
-        <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8">
+        <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8 bg-background">
             <div className="flex items-center justify-start w-full">
                 <Button variant={"outline"} className={"size-10"} onClick={() => router.history.back()}>
                     <LuArrowLeft/>

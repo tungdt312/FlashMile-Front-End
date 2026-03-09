@@ -1,20 +1,20 @@
-import {createRootRoute, Outlet, useLocation} from '@tanstack/react-router'
+import {createRootRoute, Outlet} from '@tanstack/react-router'
 import {TanStackRouterDevtools} from '@tanstack/react-router-devtools'
-import { AnimatePresence, motion } from 'motion/react'
+import {Ssgoi} from "@ssgoi/react";
+import {drill} from "@ssgoi/core/view-transitions";
 
 const RootLayout = () => {
-    const location = useLocation();
     return (<>
-        <AnimatePresence mode={"popLayout"}>
-            <motion.div
-                key={location.pathname}
-                initial={{x: "100%", opacity: 0}}
-                animate={{x: 0, opacity: 1}}
-                transition={{duration: 0.3, ease: "easeInOut"}}
-            >
-            <Outlet/>
-            </motion.div>
-        </AnimatePresence>
+        <Ssgoi config={{
+            defaultTransition: drill({direction: "enter"}), transitions: [{
+                from: "*",
+                to: "*",
+                transition: drill({direction: "enter"}),
+                symmetric: true,
+            }]
+        }}>
+            <div style={{position: "relative"}}><Outlet/></div>
+        </Ssgoi>
         <TanStackRouterDevtools/>
     </>)
 

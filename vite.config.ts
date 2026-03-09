@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import * as path from "node:path";
 import {tanstackRouter} from "@tanstack/router-plugin/vite";
 import {VitePWA} from "vite-plugin-pwa";
-
+import SsgoiAutoKey from "@ssgoi/react/unplugin/vite";
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
@@ -13,6 +13,7 @@ export default defineConfig({
             autoCodeSplitting: true,
         }),
         react(),
+        SsgoiAutoKey(),
         VitePWA({
                 manifest: {
                     background_color: '#ffffff',
