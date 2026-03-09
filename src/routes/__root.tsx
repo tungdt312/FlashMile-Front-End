@@ -1,23 +1,94 @@
-import {createRootRoute, Outlet, useLocation} from '@tanstack/react-router'
-import {TanStackRouterDevtools} from '@tanstack/react-router-devtools'
-import { AnimatePresence, motion } from 'motion/react'
+import {
+    createRootRoute,
+    Outlet,
+    useRouterState,
+} from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Ssgoi, type SsgoiConfig } from "@ssgoi/react";
+import { drill, slide } from "@ssgoi/react/view-transitions";
+import { useCallback, useMemo } from "react";
 
 const RootLayout = () => {
-    const location = useLocation();
-    return (<>
-        <AnimatePresence mode={"popLayout"}>
-            <motion.div
-                key={location.pathname}
-                initial={{x: "100%", opacity: 0}}
-                animate={{x: 0, opacity: 1}}
-                transition={{duration: 0.3, ease: "easeInOut"}}
-            >
-            <Outlet/>
-            </motion.div>
-        </AnimatePresence>
-        <TanStackRouterDevtools/>
-    </>)
+    const routerState = useRouterState();
+    // const config = useMemo<SsgoiConfig>(
+    //     () => ({
+    //         transitions: [
+    //             {
+    //                 from: "/",
+    //                 to: "/sign-up",
+    //                 transition: drill({ direction: "enter" }),
+    //                 symmetric: true,
+    //             },
+    //             {
+    //                 from: "/sign-up",
+    //                 to: "/",
+    //                 transition: drill({ direction: "exit" }),
+    //                 symmetric: true,
+    //             },
+    //         ],
+    //         defaultTransition: slide(),
+    //     }),
+    //     [],
+    // );
 
-}
+    const config = useMemo<SsgoiConfig>(
+        () => ({
+            // 1. Chỉ cần khai báo 2 bộ quy tắc đại diện này thôi
+            transitions: [
+                {
+                    from: "root",
+                    to: "sub",
+                    transition: drill({ direction: "enter" }),
+                },
+                {
+                    from: "sub",
+                    to: "root",
+                    transition: drill({ direction: "exit" }),
+                },
+            ],
 
-export const Route = createRootRoute({component: RootLayout})
+            middleware: (from: string, to: string) => {
+                const normalize = (p: string) => {
+                    if (!p || p === "/" || p === "") return "/";
+                    return p.replace(/\/$/, ""); // Xóa dấu / ở cuối nếu có
+                };
+
+                const nFrom = normalize(from);
+                const nTo = normalize(to);
+
+                const getLevel = (path: string) => {
+                    if (path === "/") return 0;
+                    return path.split("/").filter(Boolean).length;
+                };
+
+                const fromLevel = getLevel(nFrom);
+                const toLevel = getLevel(nTo);
+                if (fromLevel > toLevel) {
+                    return { from: "sub", to: "root" };
+                } else if (fromLevel < toLevel) {
+                    return { from: "root", to: "sub" };
+                }
+
+                return { from: "root", to: "root" };
+            },
+            defaultTransition: slide(),
+        }),
+        [],
+    );
+
+    const getPathname = useCallback(() => {
+        return routerState.location.pathname;
+    }, [routerState.location.pathname]);
+    return (
+        <>
+            <Ssgoi config={config} usePathname={getPathname}>
+                <div style={{ position: "relative", minHeight: "100vh" }}>
+                    <Outlet />
+                </div>
+            </Ssgoi>
+            <TanStackRouterDevtools />
+        </>
+    );
+};
+
+export const Route = createRootRoute({ component: RootLayout });

@@ -1,10 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import SignIn from "../../pages/auth/sign-in.tsx";
+import { PageTransition } from "../../components/page-transition.tsx";
 
-export const Route = createFileRoute('/(auth)/sign-in')({
-  component: RouteComponent,
-})
+export const Route = createFileRoute("/(auth)/sign-in")({
+    component: RouteComponent,
+});
 
 function RouteComponent() {
-  return <SignIn/>
+    return (
+        <PageTransition id="sign-in">
+            <SignIn />
+        </PageTransition>
+    );
 }
