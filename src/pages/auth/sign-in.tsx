@@ -136,6 +136,7 @@ const SignIn = () => {
                         <Separator className={"w-full flex-1"}/>
                     </div>
                     <Button variant={"outline"}
+                            type={"button"}
                             className={"w-full"}>
                         <FcGoogle/>
                         Continue with Google

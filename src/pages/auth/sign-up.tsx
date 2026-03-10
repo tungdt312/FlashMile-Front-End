@@ -221,6 +221,13 @@ const VerifyPhoneSchema = VerifyCodeBody.extend({
 });
 const VerifyCodeForm = ({onSuccess}: { onSuccess: (t: string) => void }) => {
     const [counter, setCounter] = useState<number>(0)
+    const convertVnPhone = (phone: string): string => {
+        // Kiểm tra nếu chuỗi bắt đầu bằng số 0
+        if (phone.startsWith('0')) {
+            return `+84${phone.slice(1)}`;
+        }
+        return phone; // Trả về nguyên bản nếu không bắt đầu bằng 0
+    };
     const sendVerificationService = useSendVerification({
         mutation: {
             onSuccess: () => {
@@ -247,7 +254,7 @@ const VerifyCodeForm = ({onSuccess}: { onSuccess: (t: string) => void }) => {
         sendVerificationService.mutate({
             data: {
                 purpose: SendVerificationCodeQueryPurpose.PHONE_VERIFICATION,
-                recipient: phoneNumber,
+                recipient: convertVnPhone(phoneNumber),
             }
         });
     }
@@ -273,7 +280,8 @@ const VerifyCodeForm = ({onSuccess}: { onSuccess: (t: string) => void }) => {
         },
         onSubmit: (value) => {
             const data = {
-                ...value.value,
+                recipient: convertVnPhone(value.value.recipient),
+                code: value.value.code
             }
             verifyService.mutate({data: data})
         }
@@ -300,7 +308,7 @@ const VerifyCodeForm = ({onSuccess}: { onSuccess: (t: string) => void }) => {
                     return (
                         <Field>
                             <FieldLabel htmlFor={field.name}>Phone Number</FieldLabel>
-                            <Input id={field.name} autoComplete="off" placeholder="+84xxxxxxxxx"
+                            <Input id={field.name} type={"number"} autoComplete="off" placeholder=""
                                    onChange={(e) => field.handleChange(e.target.value)}/>
                             {field.state.meta.errors.length > 0 && (
                                 <FieldError>
