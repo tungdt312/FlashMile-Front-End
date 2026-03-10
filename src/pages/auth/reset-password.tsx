@@ -27,7 +27,7 @@ const ResetPassword = ({code}: { code: string }) => {
                     <FieldDescription className={"text-sm font-medium text-muted-foreground text-center w-full"}>
                         Please enter your new password.
                     </FieldDescription>
-                    <ResetForm token={code} onSuccess={() => {
+                    <ResetForm token={code} onSuccess={() => { router.navigate({to: "/sign-in"})
                     }}/>
                 </FieldSet>
                 <Button type={"button"} variant={"outline"} className={"w-full"}
@@ -52,6 +52,7 @@ const ResetForm = ({token, onSuccess}: { token: string, onSuccess: () => void })
     const resetService = useResetPassword({
         mutation: {
             onSuccess: () => {
+                toast.success("Reset password successfully.")
                 onSuccess()
             },
             onError: (err) => {
