@@ -280,6 +280,7 @@ const VerifyCodeForm = ({onSuccess}: { onSuccess: (t: string) => void }) => {
         },
         onSubmit: (value) => {
             const data = {
+                purpose: SendVerificationCodeQueryPurpose.PHONE_VERIFICATION,
                 recipient: convertVnPhone(value.value.recipient),
                 code: value.value.code
             }

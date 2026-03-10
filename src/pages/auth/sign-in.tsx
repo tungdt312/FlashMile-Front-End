@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {type ReactNode, useEffect, useState} from "react";
 import {Button} from "../../components/ui/button.tsx";
 import {LuArrowLeft, LuEye, LuEyeClosed, LuLoaderCircle} from "react-icons/lu";
 import {useRouter} from "@tanstack/react-router";
@@ -8,10 +8,12 @@ import {Separator} from "../../components/ui/separator.tsx";
 import {FcGoogle} from "react-icons/fc";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
 import {useForm} from "@tanstack/react-form";
-import {useLogin} from "../../services/authentication/authentication.ts";
+import {useLogin, useSendVerification} from "../../services/authentication/authentication.ts";
 import {toast} from "sonner";
 import z from "zod";
 import {useAuthStore} from "../../lib/global.ts";
+import {SendVerificationCodeQueryPurpose} from "../../types";
+import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from "../../components/ui/dialog.tsx";
 
 const LoginBody = z.object({
     "credentialId": z.string().min(1, "Credential ID is required."),
@@ -126,10 +128,11 @@ const SignIn = () => {
                             disabled={loginService.isPending}>
                         {loginService.isPending && <LuLoaderCircle className={"animate-spin"}/>}Sign in
                     </Button>
-                    <Button className={"w-full"} type={"button"} variant={"ghost"}
-                            onClick={() => router.navigate({to: "/reset-password"})}>
-                        Forgot password?
-                    </Button>
+                    <VerifyCodeForm>
+                        <Button className={"w-full"} type={"button"} variant={"ghost"}>
+                            Forgot password?
+                        </Button>
+                    </VerifyCodeForm>
                     <div className={"flex items-center w-full gap-1"}>
                         <Separator className={"w-full flex-1"}/>
                         <span className={"text-sm text-muted-foreground font-medium"}>or</span>
@@ -151,3 +154,63 @@ const SignIn = () => {
     )
 }
 export default SignIn
+
+
+const VerifyCodeForm = ({children}: { children: ReactNode }) => {
+    const [counter, setCounter] = useState<number>(0)
+    const [email, setEmail] = useState<string>("")
+    const sendVerificationService = useSendVerification({
+        mutation: {
+            onSuccess: () => {
+                setCounter(60)
+            },
+            onError: (err) => {
+                // err ở đây là LoginMutationError
+                toast.error(err.response?.data.message || "Send code failed!");
+            }
+        }
+    })
+    const sendCode = () => {
+        if (counter > 0) return;
+
+        // Lấy giá trị của field 'recipient' trực tiếp từ form instance
+
+        if (!email) {
+            toast.error("Please enter your email!");
+            return;
+        }
+
+        // Gọi service gửi mã
+        sendVerificationService.mutate({
+            data: {
+                purpose: SendVerificationCodeQueryPurpose.FORGOT_PASSWORD,
+                recipient: email,
+            }
+        });
+    }
+    useEffect(() => {
+        if (counter <= 0) return;
+        const timer = setInterval(() => {
+            setCounter(counter - 1);
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [counter]);
+    return (
+        <Dialog>
+            <DialogTrigger asChild>{children}</DialogTrigger>
+            <DialogContent className={"max-w-xs w-full"}>
+                <DialogTitle>Reset password</DialogTitle>
+                <DialogDescription>Please enter your email. We will send the 6-digits code to your email in order to know that it’s really you.</DialogDescription>
+                <Field className={"w-full"}>
+                    <FieldLabel htmlFor={"email"}>Email</FieldLabel>
+                    <Input id={"email"} type={"email"} autoComplete="off" placeholder=""
+                           onChange={(e) => setEmail(e.target.value)}/>
+                </Field>
+                <Button className={"w-full"} type={"submit"} form={"verify-form"}
+                        disabled={sendVerificationService.isPending || counter > 0} onClick={sendCode}>
+                    {sendVerificationService.isPending && <LuLoaderCircle className={"animate-spin"}/>}
+                    {(counter > 0) ? `${counter} s` : "Send code"}
+                </Button></DialogContent>
+        </Dialog>
+    )
+}
