@@ -13,7 +13,22 @@ import {toast} from "sonner";
 import z from "zod";
 import {useAuthStore} from "../../lib/global.ts";
 import {SendVerificationCodeQueryPurpose} from "../../types";
-import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from "../../components/ui/dialog.tsx";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "../../components/ui/dialog.tsx";
+import {
+    Drawer,
+    DrawerContent,
+    DrawerDescription,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger
+} from "../../components/ui/drawer.tsx";
 
 const LoginBody = z.object({
     "credentialId": z.string().min(1, "Credential ID is required."),
@@ -157,6 +172,7 @@ export default SignIn
 
 
 const VerifyCodeForm = ({children}: { children: ReactNode }) => {
+    const [open, setOpen] = useState(false)
     const [counter, setCounter] = useState<number>(0)
     const [email, setEmail] = useState<string>("")
     const sendVerificationService = useSendVerification({
@@ -196,21 +212,50 @@ const VerifyCodeForm = ({children}: { children: ReactNode }) => {
         return () => clearInterval(timer);
     }, [counter]);
     return (
-        <Dialog>
-            <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent className={"max-w-xs w-full"}>
-                <DialogTitle>Reset password</DialogTitle>
-                <DialogDescription>Please enter your email. We will send the 6-digits code to your email in order to know that it’s really you.</DialogDescription>
-                <Field className={"w-full"}>
-                    <FieldLabel htmlFor={"email"}>Email</FieldLabel>
-                    <Input id={"email"} type={"email"} autoComplete="off" placeholder=""
-                           onChange={(e) => setEmail(e.target.value)}/>
-                </Field>
-                <Button className={"w-full"} type={"submit"} form={"verify-form"}
-                        disabled={sendVerificationService.isPending || counter > 0} onClick={sendCode}>
-                    {sendVerificationService.isPending && <LuLoaderCircle className={"animate-spin"}/>}
-                    {(counter > 0) ? `${counter} s` : "Send code"}
-                </Button></DialogContent>
-        </Dialog>
+        <>
+            <Dialog>
+                <DialogTrigger className={"hidden md:block"} asChild>{children}</DialogTrigger>
+                <DialogContent className={"max-w-xs w-full"}>
+                    <DialogHeader>
+                        <DialogTitle>Reset password</DialogTitle>
+                        <DialogDescription>
+                            Please enter your email. We will send the 6-digits code to your email in order to know that
+                            it’s really you.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Field className={"w-full"}>
+                        <FieldLabel htmlFor={"email"}>Email</FieldLabel>
+                        <Input id={"email"} type={"email"} autoComplete="off" placeholder=""
+                               onChange={(e) => setEmail(e.target.value)}/>
+                    </Field>
+                    <Button className={"w-full"} type={"submit"} form={"verify-form"}
+                            disabled={sendVerificationService.isPending || counter > 0} onClick={sendCode}>
+                        {sendVerificationService.isPending && <LuLoaderCircle className={"animate-spin"}/>}
+                        {(counter > 0) ? `${counter} s` : "Send code"}
+                    </Button>
+                </DialogContent>
+            </Dialog>
+            <Drawer open={open} onOpenChange={setOpen}>
+                <DrawerTrigger className={"block md:hidden"} asChild>{children}</DrawerTrigger>
+                <DrawerContent className="pb-8 px-4 flex flex-col items-center justify-start gap-4 w-full">
+                    <DrawerHeader className="text-left">
+                        <DrawerTitle>Reset password</DrawerTitle>
+                        <DrawerDescription>Please enter your email. We will send the 6-digits code to your email in
+                            order to
+                            know that it’s really you.</DrawerDescription>
+                    </DrawerHeader>
+                    <Field className={"w-full"}>
+                        <FieldLabel htmlFor={"email"}>Email</FieldLabel>
+                        <Input id={"email"} type={"email"} autoComplete="off" placeholder=""
+                               onChange={(e) => setEmail(e.target.value)}/>
+                    </Field>
+                    <Button className={"w-full"} type={"submit"} form={"verify-form"}
+                            disabled={sendVerificationService.isPending || counter > 0} onClick={sendCode}>
+                        {sendVerificationService.isPending && <LuLoaderCircle className={"animate-spin"}/>}
+                        {(counter > 0) ? `${counter} s` : "Send code"}
+                    </Button>
+                </DrawerContent>
+            </Drawer>
+        </>
     )
 }
