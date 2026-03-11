@@ -56,7 +56,7 @@ const RootLayout = () => {
     return (
         <>
             <Ssgoi config={config} usePathname={getPathname}>
-                <div style={{ position: "relative", minHeight: "100vh" }}>
+                <div style={{ position: "relative", minHeight: "100vh" }} className={"overscroll-none"}>
                     <Outlet />
                 </div>
             </Ssgoi>
