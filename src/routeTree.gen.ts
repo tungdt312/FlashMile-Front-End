@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Oauth2CallbackRouteImport } from './routes/oauth2/callback'
 import { Route as AuthenticatedRouteMeRouteImport } from './routes/_authenticatedRoute/me'
 import { Route as AuthenticatedRouteDashboardRouteImport } from './routes/_authenticatedRoute/dashboard'
 import { Route as AuthenticatedRouteContactListRouteImport } from './routes/_authenticatedRoute/contact-list'
@@ -27,6 +28,11 @@ import { Route as AuthenticatedRouteRolesRoleIdRouteImport } from './routes/_aut
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Oauth2CallbackRoute = Oauth2CallbackRouteImport.update({
+  id: '/oauth2/callback',
+  path: '/oauth2/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteMeRoute = AuthenticatedRouteMeRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/contact-list': typeof AuthenticatedRouteContactListRoute
   '/dashboard': typeof AuthenticatedRouteDashboardRoute
   '/me': typeof AuthenticatedRouteMeRoute
+  '/oauth2/callback': typeof Oauth2CallbackRoute
   '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/roles/': typeof AuthenticatedRouteRolesIndexRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByTo {
   '/contact-list': typeof AuthenticatedRouteContactListRoute
   '/dashboard': typeof AuthenticatedRouteDashboardRoute
   '/me': typeof AuthenticatedRouteMeRoute
+  '/oauth2/callback': typeof Oauth2CallbackRoute
   '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/roles': typeof AuthenticatedRouteRolesIndexRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/_authenticatedRoute/contact-list': typeof AuthenticatedRouteContactListRoute
   '/_authenticatedRoute/dashboard': typeof AuthenticatedRouteDashboardRoute
   '/_authenticatedRoute/me': typeof AuthenticatedRouteMeRoute
+  '/oauth2/callback': typeof Oauth2CallbackRoute
   '/_authenticatedRoute/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/_authenticatedRoute/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/_authenticatedRoute/roles/': typeof AuthenticatedRouteRolesIndexRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/contact-list'
     | '/dashboard'
     | '/me'
+    | '/oauth2/callback'
     | '/roles/$roleId'
     | '/users/$userId'
     | '/roles/'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/contact-list'
     | '/dashboard'
     | '/me'
+    | '/oauth2/callback'
     | '/roles/$roleId'
     | '/users/$userId'
     | '/roles'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/_authenticatedRoute/contact-list'
     | '/_authenticatedRoute/dashboard'
     | '/_authenticatedRoute/me'
+    | '/oauth2/callback'
     | '/_authenticatedRoute/roles/$roleId'
     | '/_authenticatedRoute/users/$userId'
     | '/_authenticatedRoute/roles/'
@@ -212,6 +224,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteContactListRoute: typeof AuthenticatedRouteContactListRoute
   AuthenticatedRouteDashboardRoute: typeof AuthenticatedRouteDashboardRoute
   AuthenticatedRouteMeRoute: typeof AuthenticatedRouteMeRoute
+  Oauth2CallbackRoute: typeof Oauth2CallbackRoute
   AuthenticatedRouteRolesRoleIdRoute: typeof AuthenticatedRouteRolesRoleIdRoute
   AuthenticatedRouteUsersUserIdRoute: typeof AuthenticatedRouteUsersUserIdRoute
   AuthenticatedRouteRolesIndexRoute: typeof AuthenticatedRouteRolesIndexRoute
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oauth2/callback': {
+      id: '/oauth2/callback'
+      path: '/oauth2/callback'
+      fullPath: '/oauth2/callback'
+      preLoaderRoute: typeof Oauth2CallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticatedRoute/me': {
@@ -332,6 +352,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteContactListRoute: AuthenticatedRouteContactListRoute,
   AuthenticatedRouteDashboardRoute: AuthenticatedRouteDashboardRoute,
   AuthenticatedRouteMeRoute: AuthenticatedRouteMeRoute,
+  Oauth2CallbackRoute: Oauth2CallbackRoute,
   AuthenticatedRouteRolesRoleIdRoute: AuthenticatedRouteRolesRoleIdRoute,
   AuthenticatedRouteUsersUserIdRoute: AuthenticatedRouteUsersUserIdRoute,
   AuthenticatedRouteRolesIndexRoute: AuthenticatedRouteRolesIndexRoute,
