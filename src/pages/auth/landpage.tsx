@@ -39,13 +39,15 @@ const Landpage = () => {
                         Create new account
                     </Button>
 
-                    <Button variant={"outline"}
+                    <Button onClick={() => navigate({to: "/sign-up", search: {provider: "google"}})}
+                            variant={"outline"}
                             className={"font-bold rounded-full w-full text-primary-foreground bg-transparent cursor-pointer"}>
                         <FcGoogle/>
                         Continue with Google
                     </Button>
                     <span className={"text-primary-foreground text-sm"}>Have an account? <Link to={"/sign-in"}
-                                                                                               className={"text-primary font-semibold text-sm"}>Go to sign in</Link></span>
+                                                                                               className={"text-primary font-semibold text-sm"}>Go
+                        to sign in</Link></span>
                 </motion.div>
             </motion.div>
         </div>
