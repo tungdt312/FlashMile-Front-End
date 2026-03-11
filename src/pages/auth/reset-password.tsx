@@ -5,12 +5,7 @@ import {LuArrowLeft, LuLoaderCircle} from "react-icons/lu";
 import {Field, FieldDescription, FieldError, FieldLabel, FieldLegend, FieldSet} from "../../components/ui/field.tsx";
 import {Progress} from "../../components/ui/progress.tsx";
 import {z} from "zod";
-import {
-    useRegisterUser,
-    useResetPassword,
-    useSendVerification,
-    useVerifyCode
-} from "../../services/authentication/authentication.ts";
+import {useResetPassword, useSendVerification, useVerifyCode} from "../../services/authentication/authentication.ts";
 import {toast} from "sonner";
 import {SendVerificationCodeQueryPurpose} from "../../types";
 import {useForm} from "@tanstack/react-form";
