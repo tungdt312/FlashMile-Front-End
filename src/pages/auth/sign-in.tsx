@@ -29,6 +29,8 @@ import {
     DrawerTitle,
     DrawerTrigger
 } from "../../components/ui/drawer.tsx";
+import {type ApiResponseVoid, type LoginResult} from "../../types";
+import {BACKEND_URL, REFRESH_TOKEN_STORAGE_KEY} from "../../constants/securityConstant.ts";
 
 const LoginBody = z.object({
     "credentialId": z.string().min(1, "Credential ID is required."),
@@ -39,32 +41,29 @@ const SignIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
     const authStore = useAuthStore();
-    const loginService = useLogin(
-        {
-            mutation: {
-                onSuccess: (res) => {
-                    // res ở đây chính là LoginMutationResult
-                    if (!res.data?.accessToken) {
-                        toast.error("Login failed.");
-                        console.log("Access Token not found!");
-                        return;
-                    }
-                    authStore.setAccessToken(res.data.accessToken);
-                    // Lưu token (ví dụ dùng localStorage hoặc Zustand)
-                    // Chuyển hướng sang Dashboard
-                    router.navigate({to: '/dashboard'});
-                },
-                onError: (err) => {
-                    // err ở đây là LoginMutationError
-                    toast.error(err.response?.data.message || "Wrong credential id or password!");
+    const loginService = useLogin({
+        mutation: {
+            onSuccess: (res) => {
+                // res ở đây chính là LoginMutationResult
+                if (!res.data?.accessToken) {
+                    toast.error("Login failed.");
+                    console.log("Access Token not found!");
+                    return;
                 }
+                authStore.setAccessToken(res.data.accessToken);
+                // Lưu token (ví dụ dùng localStorage hoặc Zustand)
+                // Chuyển hướng sang Dashboard
+                router.navigate({to: '/dashboard'});
             },
-            request: {
-                withCredentials: true
+            onError: (err) => {
+                // err ở đây là LoginMutationError
+                toast.error(err.response?.data.message || "Wrong credential id or password!");
             }
+        },
+        request: {
+            withCredentials: true
         }
-    );
-
+    });
     const form = useForm({
         defaultValues: {
             credentialId: '',
@@ -77,6 +76,64 @@ const SignIn = () => {
             loginService.mutate({data: value});
         },
     });
+    const loginWithGoogle = () => {
+        const width = 600;
+        const height = 600;
+        const left = window.screen.width / 2 - width / 2;
+        const top = window.screen.height / 2 - height / 2;
+
+        const popup = window.open(
+            `${BACKEND_URL}oauth2/authorize/google`,
+            "Continue with Google",
+            `width=${width},height=${height},top=${top},left=${left}`,
+        );
+
+        if (!popup) {
+            toast.error("Can not open Google authentication window");
+            return;
+        }
+
+        let intervalId: number | null = null;
+
+        const messageListener = (event: MessageEvent) => {
+            if (event.origin !== BACKEND_URL) return;
+            const data: ApiResponseVoid = event.data;
+            console.log("Received message:", data);
+            if (data.status && data.status < 300) {
+                const parseData = data.data as LoginResult;
+                const refreshToken = parseData.refreshToken;
+                const accessToken = parseData.accessToken;
+                if (refreshToken && accessToken) {
+                    localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
+                    authStore.setAccessToken(accessToken);
+                    toast.success("Sign in successfully.");
+                    router.navigate({ to: "/" });
+                    return;
+                }
+            } else {
+                toast.error(
+                    "You haven't register with Google yet please try again.",
+                );
+            }
+
+            popup.close();
+
+            window.removeEventListener("message", messageListener);
+
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
+
+        intervalId = window.setInterval(() => {
+            if (popup.closed) {
+                clearInterval(intervalId!);
+                window.removeEventListener("message", messageListener);
+            }
+        }, 500);
+
+        window.addEventListener("message", messageListener);
+    };
     return (
         <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8 bg-background">
             <div className="flex items-center justify-start w-full">
@@ -155,7 +212,8 @@ const SignIn = () => {
                     </div>
                     <Button variant={"outline"}
                             type={"button"}
-                            className={"w-full"}>
+                            className={"w-full"}
+                    onClick={loginWithGoogle}>
                         <FcGoogle/>
                         Continue with Google
                     </Button>

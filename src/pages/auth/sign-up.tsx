@@ -6,17 +6,29 @@ import {useRouter} from "@tanstack/react-router";
 import {useRegisterUser, useSendVerification, useVerifyCode} from "../../services/authentication/authentication.ts";
 import {z} from "zod";
 import {useForm} from "@tanstack/react-form";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Progress} from "../../components/ui/progress.tsx";
 import {SendVerificationCodeQueryPurpose} from "../../types";
 import {toast} from "sonner";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
+import { BACKEND_URL } from "../../constants/securityConstant.ts";
 
 
-const SignUp = () => {
+const SignUp = ({provider}: { provider?: string }) => {
     const router = useRouter();
     const [step, setStep] = useState(1);
     const [token, setToken] = useState("")
+    const signupWithGoogle = useCallback((
+        verificationToken: string 
+    ) => {
+        if (verificationToken.length == 0) {
+            toast.error("You need to verify your phone first!");
+            return;
+        }
+        // Điều hướng trực tiếp về endpoint oauth2 của backend, kèm theo token nhận được sau khi verify phone
+        const googleOAuthUrl = `${BACKEND_URL}oauth2/authorize/google?verificationToken=${verificationToken}`;
+        window.location.href = googleOAuthUrl;
+    }, []);
 
     return (
         <div className="w-full h-dvh flex flex-col items-center p-8 bg-background">
@@ -38,8 +50,11 @@ const SignUp = () => {
                     </FieldDescription>
 
                     {step == 1 && <VerifyCodeForm onSuccess={(t) => {
-                        setStep(step + 1);
                         setToken(t);
+                        if (provider === "google") {
+                            signupWithGoogle(t);
+                        }
+                        else setStep(step + 1);
                     }}/>}
                     {step == 2 && <SignUpForm token={token} onSuccess={() => {
                     }}/>}
