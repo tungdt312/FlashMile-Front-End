@@ -1,11 +1,7 @@
-
-import axios, { AxiosError, type AxiosRequestConfig } from "axios";
-import {
-    ACCESS_TOKEN_STORAGE_KEY, BACKEND_URL,
-    PUBLIC_ENDPOINTS,
-    REFRESH_TOKEN_STORAGE_KEY
-} from "./src/constants/securityConstant.ts";
+import axios, {AxiosError, type AxiosRequestConfig} from "axios";
+import {BACKEND_URL, PUBLIC_ENDPOINTS} from "./src/constants/securityConstant.ts";
 import {rotateToken} from "./src/services/authentication/authentication.ts";
+import {useAuthStore} from "./src/lib/global.ts";
 
 
 const axiosInstance = axios.create({
@@ -14,7 +10,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+        const token = useAuthStore.getState().accessToken;
+        console.log(token);
         if (token && !PUBLIC_ENDPOINTS.includes(config.url || "")) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
@@ -36,28 +33,22 @@ axiosInstance.interceptors.response.use(
             !originalRequest._retry
         ) {
             originalRequest._retry = true;
-            const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE_KEY);
-            if (refreshToken) {
-                try {
-                    const data = await rotateToken({ refreshToken });
-                    console.log("Refresh token response data:", data);
-                    if (data?.data?.accessToken && data?.data?.refreshToken) {
-                        const { accessToken, refreshToken: newRefreshToken } = data.data;
-                        localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
-                        localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, newRefreshToken);
-
-                        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
-                        return axiosInstance(originalRequest);
-                    }
-                    localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-                    localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY);
-                    return Promise.reject(error);
-                } catch {
-                    localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-                    localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY);
-                    return Promise.reject(error);
+            try {
+                const data = await rotateToken({refreshToken: ""});
+                console.log("Refresh token response data:", data);
+                if (data?.data?.accessToken) {
+                    const {accessToken} = data.data;
+                    useAuthStore.setState({accessToken: accessToken});
+                    originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+                    return axiosInstance(originalRequest);
                 }
+                useAuthStore.getState().clearAccessToken()
+                return Promise.reject(error);
+            } catch {
+                useAuthStore.getState().clearAccessToken()
+                return Promise.reject(error);
             }
+
         }
         return Promise.reject(error);
     },
@@ -72,7 +63,7 @@ export const axiosInstanceFn = <T>(
         ...config,
         cancelToken: source.token,
         ...options,
-    }).then(({ data }) => data);
+    }).then(({data}) => data);
 
     // @ts-expect-error: Property 'cancel' does not exist on type 'Promise<T>'.
     promise.cancel = () => {

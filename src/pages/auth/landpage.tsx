@@ -1,11 +1,28 @@
 import {Button} from "../../components/ui/button.tsx";
 import {FcGoogle} from "react-icons/fc";
-import {Link, useNavigate} from "@tanstack/react-router";
+import {Link, useRouter} from "@tanstack/react-router";
 import {motion} from "motion/react"
 import {containerVariants, fadeIn} from "../../lib/motion.ts";
+import {useRotateToken} from "../../services/authentication/authentication.ts";
+import {useAuthStore} from "../../lib/global.ts";
+import {useEffect} from "react";
 
 const Landpage = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
+    const refreshService =  useRotateToken({
+        mutation:{
+            onSuccess: (data) => {
+                if (data?.data) {
+                    useAuthStore.setState({accessToken: data.data.accessToken});
+                    router.navigate({to: "/dashboard"});
+                }
+            },
+        }
+    })
+    useEffect(() => {
+        if (useAuthStore.getState().accessToken) return
+        refreshService.mutate({data: {refreshToken: ""}})
+    }, []);
     return (
         <div className="relative w-full h-dvh overflow-hidden flex flex-col items-center justify-center">
             <motion.div
@@ -34,12 +51,12 @@ const Landpage = () => {
                     variants={fadeIn("up")}
                     className={"gap-4 flex flex-col items-center justify-center w-full max-w-xs"}>
 
-                    <Button onClick={() => navigate({to: "/sign-up"})}
+                    <Button onClick={() => router.navigate({to: "/sign-up"})}
                             className={"font-bold rounded-full w-full text-primary-foreground bg-linear-to-r from-primary to-brand cursor-pointer"}>
                         Create new account
                     </Button>
 
-                    <Button onClick={() => navigate({to: "/sign-up", search: {provider: "google"}})}
+                    <Button onClick={() => router.navigate({to: "/sign-up", search: {provider: "google"}})}
                             variant={"outline"}
                             className={"font-bold rounded-full w-full text-primary-foreground bg-transparent cursor-pointer"}>
                         <FcGoogle/>

@@ -4,6 +4,7 @@ import {SsgoiTransition} from "@ssgoi/react";
 import z from "zod";
 const SignUpSearchSchema = z.object({
   provider: z.string().optional(),
+  step: z.number().optional(),
 })
 export const Route = createFileRoute('/(auth)/sign-up')({
   component: RouteComponent,
@@ -11,6 +12,6 @@ export const Route = createFileRoute('/(auth)/sign-up')({
 })
 
 function RouteComponent() {
-  const {provider} = Route.useSearch()
-  return <SsgoiTransition id={"/sign-up"}><SignUp provider={provider}/></SsgoiTransition>
+  const {provider, step} = Route.useSearch()
+  return <SsgoiTransition id={"/sign-up"}><SignUp provider={provider} step={step}/></SsgoiTransition>
 }

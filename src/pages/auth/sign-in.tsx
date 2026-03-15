@@ -24,6 +24,13 @@ const SignIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
     const authStore = useAuthStore();
+    const convertVnPhone = (phone: string): string => {
+        // Kiểm tra nếu chuỗi bắt đầu bằng số 0
+        if (phone.startsWith('0') && /^[0-9]+$/.test(phone)) {
+            return `+84${phone.slice(1)}`;
+        }
+        return phone; // Trả về nguyên bản nếu không bắt đầu bằng 0
+    };
     const loginService = useLogin({
         mutation: {
             onSuccess: (res) => {
@@ -33,7 +40,13 @@ const SignIn = () => {
                     console.log("Access Token not found!");
                     return;
                 }
+                // const {data, isError} = useGetMyProfile();
                 authStore.setAccessToken(res.data.accessToken);
+                // if (isError) {
+                //     toast.error("User not found!");
+                //     return;
+                // }
+                // authStore.setUser(data?.data)
                 // Lưu token (ví dụ dùng localStorage hoặc Zustand)
                 // Chuyển hướng sang Dashboard
                 router.navigate({to: '/dashboard'});
@@ -56,7 +69,11 @@ const SignIn = () => {
             onSubmit: LoginBody,
         },
         onSubmit: async ({value}) => {
-            loginService.mutate({data: value});
+
+            loginService.mutate({data: {
+                credentialId: convertVnPhone(value.credentialId),
+                    password: value.password,
+                }});
         },
     });
     const loginWithGoogle = () => {

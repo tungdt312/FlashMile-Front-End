@@ -49,6 +49,7 @@ const RootLayout = () => {
         }),
         [],
     );
+
     const routerState = useRouterState()
     const getPathname = useCallback(() => {
         return routerState.location.pathname;

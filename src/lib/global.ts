@@ -7,8 +7,8 @@ interface AuthState {
     accessToken: string;
     setAccessToken: (accessToken: string) => void;
     clearAccessToken: () => void;
-    user: UserProfileResult | null;
-    setUser: (user: UserProfileResult | null) => void;
+    user: UserProfileResult | undefined;
+    setUser: (user: UserProfileResult | undefined) => void;
     clearUser: () => void;
     permissionCodes: string[];
     setPermissionCodes: (codes: string[]) => void;
@@ -17,13 +17,13 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set)=> ({
     isAuthenticated: false,
     accessToken: "",
-    user: null,
+    user: undefined,
     permissionCodes: [],
     setAccessToken: (accessToken: string) => set(() =>({accessToken: accessToken})),
-    setUser: (user: UserProfileResult | null) => set(() =>({user: user, isAuthenticated: !!user})),
+    setUser: (user: UserProfileResult | undefined) => set(() =>({user: user, isAuthenticated: !!user})),
     setPermissionCodes: (codes: string[]) => set(()  => ({permissionCodes: codes})),
     clearUser: () => set(() => ({
-        user: null,
+        user: undefined,
         isAuthenticated: false,
     })),
     clearAccessToken: () => set(() => ({

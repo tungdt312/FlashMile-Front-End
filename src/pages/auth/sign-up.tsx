@@ -11,13 +11,19 @@ import {Progress} from "../../components/ui/progress.tsx";
 import {SendVerificationCodeQueryPurpose} from "../../types";
 import {toast} from "sonner";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
-import { BACKEND_URL } from "../../constants/securityConstant.ts";
+import {BACKEND_URL} from "../../constants/securityConstant.ts";
 
 
-const SignUp = ({provider}: { provider?: string }) => {
+const SignUp = ({provider, step}: { provider?: string, step?: number }) => {
     const router = useRouter();
-    const [step, setStep] = useState(1);
+
     const [token, setToken] = useState("")
+    const nextStep = () => {
+        router.navigate({
+            to: "/multi-factor-set",
+            search: (prev) => ({ ...prev, step: (Number(step) || 1) + 1 }),
+        })
+    }
     const signupWithGoogle = useCallback((
         verificationToken: string 
     ) => {
@@ -43,7 +49,7 @@ const SignUp = ({provider}: { provider?: string }) => {
                     <FieldLegend className={"text-xl font-bold text-center w-full"}>
                         Create new account
                     </FieldLegend>
-                    <Progress className={"w-full h-2"} value={step * 50}/>
+                    <Progress className={"w-full h-2"} value={(step || 1) * 50}/>
                     <FieldDescription className={"text-sm font-medium text-muted-foreground text-center w-full"}>
                         {step == 1 ? "Please enter your phone number. We will send the 6-digits code to your phone in order to verify for the next step." : undefined}
                         {step == 2 ? "Please enter your info, this will be the info of your account." : undefined}
@@ -54,7 +60,7 @@ const SignUp = ({provider}: { provider?: string }) => {
                         if (provider === "google") {
                             signupWithGoogle(t);
                         }
-                        else setStep(step + 1);
+                        else nextStep();
                     }}/>}
                     {step == 2 && <SignUpForm token={token} onSuccess={() => {
                     }}/>}
