@@ -19,9 +19,14 @@ import {toast} from "sonner";
 
 const Setting = () => {
     const router = useRouter();
-    const {user} = useAuthStore();
+    const {user, clearUser, clearAccessToken} = useAuthStore();
     const logOutService = useLogoutUser({
         mutation: {
+            onSuccess: ()=> {
+                router.navigate({to: "/"})
+                clearUser()
+                clearAccessToken()
+            },
             onError: (err) => {
                 console.log(err);
                 toast.error(err.response?.data.message || "Log out failed!");

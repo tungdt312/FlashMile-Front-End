@@ -51,11 +51,11 @@ const SignUp = ({provider, step}: { provider?: string, step?: number }) => {
                     </FieldLegend>
                     <Progress className={"w-full h-2"} value={(step || 1) * 50}/>
                     <FieldDescription className={"text-sm font-medium text-muted-foreground text-center w-full"}>
-                        {step == 1 ? "Please enter your phone number. We will send the 6-digits code to your phone in order to verify for the next step." : undefined}
+                        {step == 1 || !step ? "Please enter your phone number. We will send the 6-digits code to your phone in order to verify for the next step." : undefined}
                         {step == 2 ? "Please enter your info, this will be the info of your account." : undefined}
                     </FieldDescription>
 
-                    {step == 1 && <VerifyCodeForm onSuccess={(t) => {
+                    {(step == 1 || !step) && <VerifyCodeForm onSuccess={(t) => {
                         setToken(t);
                         if (provider === "google") {
                             signupWithGoogle(t);
