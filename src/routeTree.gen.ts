@@ -48,9 +48,9 @@ const AuthenticatedRouteDashboardRoute =
   } as any)
 const AuthenticatedRouteContactListRoute =
   AuthenticatedRouteContactListRouteImport.update({
-    id: '/_authenticatedRoute/contact-list',
+    id: '/contact-list',
     path: '/contact-list',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const authVerifyEmailRoute = authVerifyEmailRouteImport.update({
   id: '/(auth)/verify-email',
@@ -84,27 +84,27 @@ const authMultiFactorRoute = authMultiFactorRouteImport.update({
 } as any)
 const AuthenticatedRouteUsersIndexRoute =
   AuthenticatedRouteUsersIndexRouteImport.update({
-    id: '/_authenticatedRoute/users/',
+    id: '/users/',
     path: '/users/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedRouteRolesIndexRoute =
   AuthenticatedRouteRolesIndexRouteImport.update({
-    id: '/_authenticatedRoute/roles/',
+    id: '/roles/',
     path: '/roles/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedRouteUsersUserIdRoute =
   AuthenticatedRouteUsersUserIdRouteImport.update({
-    id: '/_authenticatedRoute/users/$userId',
+    id: '/users/$userId',
     path: '/users/$userId',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedRouteRolesRoleIdRoute =
   AuthenticatedRouteRolesRoleIdRouteImport.update({
-    id: '/_authenticatedRoute/roles/$roleId',
+    id: '/roles/$roleId',
     path: '/roles/$roleId',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -221,14 +221,9 @@ export interface RootRouteChildren {
   authSignInRoute: typeof authSignInRoute
   authSignUpRoute: typeof authSignUpRoute
   authVerifyEmailRoute: typeof authVerifyEmailRoute
-  AuthenticatedRouteContactListRoute: typeof AuthenticatedRouteContactListRoute
   AuthenticatedRouteDashboardRoute: typeof AuthenticatedRouteDashboardRoute
   AuthenticatedRouteMeRoute: typeof AuthenticatedRouteMeRoute
   Oauth2CallbackRoute: typeof Oauth2CallbackRoute
-  AuthenticatedRouteRolesRoleIdRoute: typeof AuthenticatedRouteRolesRoleIdRoute
-  AuthenticatedRouteUsersUserIdRoute: typeof AuthenticatedRouteUsersUserIdRoute
-  AuthenticatedRouteRolesIndexRoute: typeof AuthenticatedRouteRolesIndexRoute
-  AuthenticatedRouteUsersIndexRoute: typeof AuthenticatedRouteUsersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -266,7 +261,7 @@ declare module '@tanstack/react-router' {
       path: '/contact-list'
       fullPath: '/contact-list'
       preLoaderRoute: typeof AuthenticatedRouteContactListRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/(auth)/verify-email': {
       id: '/(auth)/verify-email'
@@ -315,28 +310,28 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users/'
       preLoaderRoute: typeof AuthenticatedRouteUsersIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticatedRoute/roles/': {
       id: '/_authenticatedRoute/roles/'
       path: '/roles'
       fullPath: '/roles/'
       preLoaderRoute: typeof AuthenticatedRouteRolesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticatedRoute/users/$userId': {
       id: '/_authenticatedRoute/users/$userId'
       path: '/users/$userId'
       fullPath: '/users/$userId'
       preLoaderRoute: typeof AuthenticatedRouteUsersUserIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticatedRoute/roles/$roleId': {
       id: '/_authenticatedRoute/roles/$roleId'
       path: '/roles/$roleId'
       fullPath: '/roles/$roleId'
       preLoaderRoute: typeof AuthenticatedRouteRolesRoleIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
@@ -349,14 +344,9 @@ const rootRouteChildren: RootRouteChildren = {
   authSignInRoute: authSignInRoute,
   authSignUpRoute: authSignUpRoute,
   authVerifyEmailRoute: authVerifyEmailRoute,
-  AuthenticatedRouteContactListRoute: AuthenticatedRouteContactListRoute,
   AuthenticatedRouteDashboardRoute: AuthenticatedRouteDashboardRoute,
   AuthenticatedRouteMeRoute: AuthenticatedRouteMeRoute,
   Oauth2CallbackRoute: Oauth2CallbackRoute,
-  AuthenticatedRouteRolesRoleIdRoute: AuthenticatedRouteRolesRoleIdRoute,
-  AuthenticatedRouteUsersUserIdRoute: AuthenticatedRouteUsersUserIdRoute,
-  AuthenticatedRouteRolesIndexRoute: AuthenticatedRouteRolesIndexRoute,
-  AuthenticatedRouteUsersIndexRoute: AuthenticatedRouteUsersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
