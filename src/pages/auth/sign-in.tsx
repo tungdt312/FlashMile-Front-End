@@ -206,7 +206,7 @@ const SignIn = () => {
                     </Button>
                     <div className={"flex items-center w-full gap-1"}>
                         <Separator className={"w-full flex-1"}/>
-                        <span className={"text-sm text-muted-foreground font-medium"}>or</span>
+                        <span className={"text-muted-foreground"}>or</span>
                         <Separator className={"w-full flex-1"}/>
                     </div>
                     <Button variant={"outline"}

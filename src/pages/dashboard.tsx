@@ -25,6 +25,7 @@ const Dashboard = () => {
     return (
         <div>
             <Link to={"/me"}>Me</Link>
+            <Link to={"/roles"}>Roles</Link>
         </div>
     )
 }

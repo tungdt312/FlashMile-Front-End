@@ -5,7 +5,6 @@
  * OpenAPI spec version: v0
  */
 
-export interface FieldError {
-  field?: string;
-  message?: string;
-}
+export type LookupContactParams = {
+phone: string;
+};

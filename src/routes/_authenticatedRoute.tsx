@@ -19,6 +19,9 @@ function RouteComponent() {
             onError: () => {
                 router.navigate({to: "/"});
             }
+        },
+        request: {
+            withCredentials: true
         }
     })
     useEffect(() => {

@@ -18,7 +18,7 @@ export const UpdateRoleBody = zod.object({
 })
 
 export const UpdateRoleResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({
@@ -37,7 +37,7 @@ export const DeleteRoleParams = zod.object({
 })
 
 export const DeleteRoleResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.unknown().optional()
@@ -51,15 +51,15 @@ export const GetAllRolesQueryParams = zod.object({
 })
 
 export const GetAllRolesResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({
   "content": zod.array(zod.object({
   "name": zod.string().optional(),
   "id": zod.string().optional(),
-  "systemRole": zod.boolean().optional(),
-  "getisDefault": zod.boolean().optional()
+  "getisDefault": zod.boolean().optional(),
+  "systemRole": zod.boolean().optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),
@@ -77,7 +77,7 @@ export const CreateRoleBody = zod.object({
 })
 
 export const CreateRoleResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({
@@ -89,5 +89,49 @@ export const CreateRoleResponse = zod.object({
   "isDefault": zod.boolean().optional(),
   "systemRole": zod.boolean().optional()
 }).optional()
+})
+
+export const GetRolePermissionsParams = zod.object({
+  "id": zod.string()
+})
+
+export const GetRolePermissionsQueryParams = zod.object({
+  "filter": zod.string().optional(),
+  "sorts": zod.array(zod.string()).optional(),
+  "page": zod.number().optional(),
+  "size": zod.number().optional()
+})
+
+export const GetRolePermissionsResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "content": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "code": zod.string().optional()
+})).optional(),
+  "page": zod.number().optional(),
+  "size": zod.number().optional(),
+  "totalElements": zod.number().optional(),
+  "totalPages": zod.number().optional(),
+  "last": zod.boolean().optional(),
+  "first": zod.boolean().optional()
+}).optional()
+})
+
+export const AssignPermissionsToRoleParams = zod.object({
+  "id": zod.string()
+})
+
+export const AssignPermissionsToRoleBody = zod.object({
+  "permissionIds": zod.array(zod.string()).optional()
+})
+
+export const AssignPermissionsToRoleResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.unknown().optional()
 })
 

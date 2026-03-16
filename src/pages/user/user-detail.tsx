@@ -1,8 +1,8 @@
 
 
-const UserDetail = () => {
+const UserDetail = ({id}:{id: string}) => {
     return (
-        <div>UserDetail</div>
+        <div>UserDetail {id}</div>
     )
 }
 export default UserDetail

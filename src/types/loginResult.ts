@@ -4,10 +4,14 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import type { MfaMethodProjection } from './mfaMethodProjection';
 
 export interface LoginResult {
   accessToken?: string;
   refreshToken?: string;
   expiresIn?: number;
   tokenType?: string;
+  mfaRequired?: boolean;
+  mfaMethods?: MfaMethodProjection[];
+  verificationToken?: string;
 }

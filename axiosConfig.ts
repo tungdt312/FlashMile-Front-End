@@ -29,12 +29,11 @@ axiosInstance.interceptors.response.use(
         console.log("Error response:", error.response);
         if (
             error.response?.status === 401 &&
-            error.response?.data?.code === 2005 &&
             !originalRequest._retry
         ) {
             originalRequest._retry = true;
             try {
-                const data = await rotateToken({refreshToken: ""});
+                const data = await rotateToken({refreshToken: ""})
                 console.log("Refresh token response data:", data);
                 if (data?.data?.accessToken) {
                     const {accessToken} = data.data;
@@ -46,6 +45,7 @@ axiosInstance.interceptors.response.use(
                 return Promise.reject(error);
             } catch {
                 useAuthStore.getState().clearAccessToken()
+                window.location.href = '/';
                 return Promise.reject(error);
             }
 

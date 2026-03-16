@@ -43,7 +43,7 @@ const Landpage = () => {
                 <div className={"gap-4 flex flex-col items-center justify-center w-full max-w-xs"}>
                     <motion.img variants={fadeIn("up")} src={'/full-logo.svg'} alt=""/>
                     <motion.div variants={fadeIn("up")}
-                                className={"text-3xl font-bold text-center w-full text-primary-foreground"}>With
+                                className={"display text-center w-full text-primary-foreground"}>With
                         FlashMile, Delivery in a flash.
                     </motion.div>
                 </div>
@@ -62,8 +62,8 @@ const Landpage = () => {
                         <FcGoogle/>
                         Continue with Google
                     </Button>
-                    <span className={"text-primary-foreground text-sm"}>Have an account? <Link to={"/sign-in"}
-                                                                                               className={"text-primary font-semibold text-sm"}>Go
+                    <span className={"text-primary-foreground"}>Have an account? <Link to={"/sign-in"}
+                                                                                               className={"text-primary link"}>Go
                         to sign in</Link></span>
                 </motion.div>
             </motion.div>

@@ -158,7 +158,23 @@
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
 }
-
+@layer utilities {
+  .display {
+    @apply text-3xl font-bold;
+  }
+  .heading {
+    @apply font-bold text-xl;
+  }
+  .base {
+    @apply font-medium text-base;
+  }
+  .link {
+    @apply font-semibold text-base;
+  }
+  .caption {
+    @apply font-medium text-sm;
+  }
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -24,12 +24,15 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ApiResponsePageResponsePermissionSummaryProjection,
   ApiResponsePageResponseRoleSummaryProjection,
   ApiResponseRoleResult,
   ApiResponseVoid,
+  AssignPermissionRequest,
   CreateRoleCommand,
   ErrorResponse,
   GetAllRolesParams,
+  GetRolePermissionsParams,
   UpdateRoleRequest
 } from '../../types';
 
@@ -295,5 +298,155 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getCreateRoleMutationOptions(options), queryClient);
+    }
+    export const getRolePermissions = (
+    id: string,
+    params?: GetRolePermissionsParams,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponsePageResponsePermissionSummaryProjection>(
+      {url: `/api/v1/roles/${id}/permissions`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetRolePermissionsQueryKey = (id: string,
+    params?: GetRolePermissionsParams,) => {
+    return [
+    `/api/v1/roles/${id}/permissions`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getGetRolePermissionsQueryOptions = <TData = Awaited<ReturnType<typeof getRolePermissions>>, TError = ErrorType<ErrorResponse>>(id: string,
+    params?: GetRolePermissionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolePermissions>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRolePermissionsQueryKey(id,params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRolePermissions>>> = ({ signal }) => getRolePermissions(id,params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRolePermissions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetRolePermissionsQueryResult = NonNullable<Awaited<ReturnType<typeof getRolePermissions>>>
+export type GetRolePermissionsQueryError = ErrorType<ErrorResponse>
+
+
+export function useGetRolePermissions<TData = Awaited<ReturnType<typeof getRolePermissions>>, TError = ErrorType<ErrorResponse>>(
+ id: string,
+    params: undefined |  GetRolePermissionsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolePermissions>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRolePermissions>>,
+          TError,
+          Awaited<ReturnType<typeof getRolePermissions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRolePermissions<TData = Awaited<ReturnType<typeof getRolePermissions>>, TError = ErrorType<ErrorResponse>>(
+ id: string,
+    params?: GetRolePermissionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolePermissions>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRolePermissions>>,
+          TError,
+          Awaited<ReturnType<typeof getRolePermissions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRolePermissions<TData = Awaited<ReturnType<typeof getRolePermissions>>, TError = ErrorType<ErrorResponse>>(
+ id: string,
+    params?: GetRolePermissionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolePermissions>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetRolePermissions<TData = Awaited<ReturnType<typeof getRolePermissions>>, TError = ErrorType<ErrorResponse>>(
+ id: string,
+    params?: GetRolePermissionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolePermissions>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetRolePermissionsQueryOptions(id,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+export const assignPermissionsToRole = (
+    id: string,
+    assignPermissionRequest: BodyType<AssignPermissionRequest>,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseVoid>(
+      {url: `/api/v1/roles/${id}/permissions`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: assignPermissionRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getAssignPermissionsToRoleMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignPermissionsToRole>>, TError,{id: string;data: BodyType<AssignPermissionRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+): UseMutationOptions<Awaited<ReturnType<typeof assignPermissionsToRole>>, TError,{id: string;data: BodyType<AssignPermissionRequest>}, TContext> => {
+
+const mutationKey = ['assignPermissionsToRole'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof assignPermissionsToRole>>, {id: string;data: BodyType<AssignPermissionRequest>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  assignPermissionsToRole(id,data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AssignPermissionsToRoleMutationResult = NonNullable<Awaited<ReturnType<typeof assignPermissionsToRole>>>
+    export type AssignPermissionsToRoleMutationBody = BodyType<AssignPermissionRequest>
+    export type AssignPermissionsToRoleMutationError = ErrorType<ErrorResponse>
+
+    export const useAssignPermissionsToRole = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignPermissionsToRole>>, TError,{id: string;data: BodyType<AssignPermissionRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof assignPermissionsToRole>>,
+        TError,
+        {id: string;data: BodyType<AssignPermissionRequest>},
+        TContext
+      > => {
+      return useMutation(getAssignPermissionsToRoleMutationOptions(options), queryClient);
     }
     

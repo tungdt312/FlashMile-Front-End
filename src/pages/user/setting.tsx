@@ -2,7 +2,12 @@ import {
     LuArrowLeft,
     LuBell,
     LuBookMarked,
-    LuChevronRight, LuCircleHelp, LuKey, LuLock, LuLogOut,
+    LuCheck,
+    LuChevronRight,
+    LuCircleHelp,
+    LuKey,
+    LuLock,
+    LuLogOut,
     LuMail,
     LuPencilLine,
     LuPhone,
@@ -15,14 +20,19 @@ import {Avatar, AvatarFallback, AvatarImage} from "../../components/ui/avatar.ts
 import {Switch} from "../../components/ui/switch.tsx";
 import {useLogoutUser} from "../../services/authentication/authentication.ts";
 import {toast} from "sonner";
+import {useState} from "react";
+import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
+import {useUpdateMyProfile} from "../../services/user-profile/user-profile.ts";
 
 
 const Setting = () => {
     const router = useRouter();
-    const {user, clearUser, clearAccessToken} = useAuthStore();
+    const [isEdit, setEdit] = useState<boolean>(false);
+    const {user, clearUser, clearAccessToken, setUser} = useAuthStore();
+    const [currentName, setCurrentName] = useState<string>(user?.fullName || "");
     const logOutService = useLogoutUser({
         mutation: {
-            onSuccess: ()=> {
+            onSuccess: () => {
                 router.navigate({to: "/"})
                 clearUser()
                 clearAccessToken()
@@ -31,12 +41,28 @@ const Setting = () => {
                 console.log(err);
                 toast.error(err.response?.data.message || "Log out failed!");
             }
+        },
+        request: {
+            withCredentials: true
+        }
+    })
+    const editMeService = useUpdateMyProfile({
+        mutation: {
+            onSuccess: (data) => {
+                toast.success("Changed name successfully!");
+                setUser(data.data)
+                setEdit(false);
+            },
+            onError: (err) => {
+                toast.error(err.response?.data.message || "Changed name failed!");
+            }
         }
     })
     return (
         <div className={"w-full h-dvh flex flex-col items-center bg-background"}>
             <div className={"w-full flex items-center justify-between px-4 pt-4"}>
-                <Button size={"icon-lg"} variant={"outline"} className={"ring-0 border-0 rounded-full text-primary!"}
+                <Button size={"icon-lg"} variant={"outline"}
+                        className={"size-10 ring-0 border-0 rounded-full text-primary!"}
                         onClick={() => {
                             router.history.back()
                         }}>
@@ -59,8 +85,8 @@ const Setting = () => {
 
                     {/* Info Container: Cần min-w-0 để các con bên trong truncate được */}
                     <div className="flex-1 min-w-0 flex flex-col items-start">
-                        <div className="w-full flex items-center justify-between gap-2">
-                            <p className="font-bold text-lg truncate">
+                        {!isEdit && <div className="w-full flex items-center justify-between gap-2">
+                            <p className="heading truncate">
                                 {user?.fullName || "Administrator"}
                             </p>
                             <Button
@@ -68,54 +94,70 @@ const Setting = () => {
                                 variant="ghost"
                                 className="size-8 flex-shrink-0 rounded-full text-muted-foreground"
                                 onClick={() => {
+                                    setEdit(true)
                                 }}
                             >
                                 <LuPencilLine size={18}/>
                             </Button>
-                        </div>
-
-                        <p className="w-full flex items-center gap-2 truncate font-medium text-xs text-muted-foreground">
+                        </div>}
+                        {isEdit && (
+                            <InputGroup>
+                                <InputGroupInput value={currentName}
+                                                 autoComplete="off"
+                                                 onChange={(e) => setCurrentName(e.target.value)}/>
+                                <InputGroupAddon className={"cursor-pointer"} align={"inline-end"}
+                                                 onClick={() => {
+                                                     if (currentName !== user?.fullName) {
+                                                         editMeService.mutate({data: {fullName: currentName}})
+                                                     } else setEdit(false);
+                                                 }}>
+                                    <LuCheck/>
+                                </InputGroupAddon>
+                            </InputGroup>
+                        )}
+                        <p className="w-full flex items-center gap-2 truncate caption text-muted-foreground">
                             <LuMail className="flex-shrink-0"/>
                             <span className="truncate">{user?.email}</span>
                         </p>
 
-                        <p className="w-full flex items-center gap-2 truncate font-medium text-xs text-muted-foreground">
+                        <p className="w-full flex items-center gap-2 truncate caption font-medium text-xs text-muted-foreground">
                             <LuPhone className="flex-shrink-0"/>
                             <span className="truncate">{user?.phoneNumber}</span>
                         </p>
                     </div>
                 </div>
                 <div className={"w-full flex flex-col gap-2"}>
-                    <p className={"text-sm font-semibold text-muted-foreground w-full px-4"}>General</p>
+                    <p className={"link text-muted-foreground w-full px-4"}>General</p>
                     <div
                         className="w-full flex flex-col items-center rounded-2xl ring-accent ring-1 shadow-sm overflow-hidden">
                         <div className="w-full flex items-center justify-between p-4 hover:bg-muted">
                             <LuWallet className="flex-shrink-0 text-primary w-5"/>
                             <div className="w-full  min-w-0 px-2">
-                                <p className="font-semibold text-sm truncate">E-wallet</p>
-                                <p className="text-xs text-primary truncate">999.999đ</p>
+                                <p className="truncate">E-wallet</p>
+                                <p className="caption text-primary truncate">999.999đ</p>
                             </div>
                             <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
                         </div>
                         <div className="w-full flex items-center justify-between p-4 hover:bg-muted">
                             <LuBookMarked className="flex-shrink-0 text-brand w-5"/>
                             <div className="w-full  min-w-0 px-2">
-                                <p className="font-semibold text-sm truncate">Contacts</p>
-                                <p className="text-xs text-muted-foreground truncate">99 contacts</p>
+                                <p className="truncate">Contacts</p>
+                                <p className="caption text-muted-foreground truncate">99 contacts</p>
                             </div>
                             <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
                         </div>
                     </div>
                 </div>
                 <div className={"w-full flex flex-col gap-2"}>
-                    <p className={"text-sm font-semibold text-muted-foreground w-full px-4"}>Notification</p>
+                    <p className={"link text-muted-foreground w-full px-4"}>Notification</p>
                     <div
                         className="w-full flex flex-col items-center rounded-2xl ring-accent ring-1 shadow-sm overflow-hidden">
                         <div className="w-full flex items-center justify-between p-4 hover:bg-muted">
                             <LuBell className="flex-shrink-0 text-primary w-5"/>
                             <div className="w-full  min-w-0 px-2">
-                                <p className="font-semibold text-sm truncate">Popup Notification</p>
-                                <p className="text-xs text-muted-foreground truncate">Notification will popup on your
+                                <p className="truncate">Popup Notification</p>
+                                <p className="caption text-muted-foreground break-after-all">Notification will popup on
+                                    your
                                     mobile device</p>
                             </div>
                             <Switch className="flex-shrink-0 text-muted-foreground w-5"/>
@@ -123,13 +165,13 @@ const Setting = () => {
                     </div>
                 </div>
                 <div className={"w-full flex flex-col gap-2"}>
-                    <p className={"text-sm font-semibold text-muted-foreground w-full px-4"}>Security</p>
+                    <p className={"link text-muted-foreground w-full px-4"}>Security</p>
                     <div
                         className="w-full flex flex-col items-center rounded-2xl ring-accent ring-1 shadow-sm overflow-hidden">
                         <div className="w-full flex items-center justify-between p-4 hover:bg-muted">
                             <LuKey className="flex-shrink-0 text-primary w-5"/>
                             <div className="w-full  min-w-0 px-2">
-                                <p className="font-semibold text-sm truncate">Change Password</p>
+                                <p className="truncate">Change Password</p>
                             </div>
                             <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
                         </div>
@@ -138,7 +180,7 @@ const Setting = () => {
                         }}>
                             <LuLock className="flex-shrink-0 text-primary w-5"/>
                             <div className="w-full  min-w-0 px-2">
-                                <p className="font-semibold text-sm truncate">Multi-factor Authentication</p>
+                                <p className="truncate">Multi-factor Authentication</p>
                             </div>
                             <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
                         </div>

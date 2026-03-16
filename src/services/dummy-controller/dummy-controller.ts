@@ -31,6 +31,90 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
+export const favicon = (
+    
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<void>(
+      {url: `/favicon.ico`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getFaviconQueryKey = () => {
+    return [
+    `/favicon.ico`
+    ] as const;
+    }
+
+    
+export const getFaviconQueryOptions = <TData = Awaited<ReturnType<typeof favicon>>, TError = ErrorType<ErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof favicon>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getFaviconQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof favicon>>> = ({ signal }) => favicon(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof favicon>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type FaviconQueryResult = NonNullable<Awaited<ReturnType<typeof favicon>>>
+export type FaviconQueryError = ErrorType<ErrorResponse>
+
+
+export function useFavicon<TData = Awaited<ReturnType<typeof favicon>>, TError = ErrorType<ErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof favicon>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof favicon>>,
+          TError,
+          Awaited<ReturnType<typeof favicon>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFavicon<TData = Awaited<ReturnType<typeof favicon>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof favicon>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof favicon>>,
+          TError,
+          Awaited<ReturnType<typeof favicon>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFavicon<TData = Awaited<ReturnType<typeof favicon>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof favicon>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useFavicon<TData = Awaited<ReturnType<typeof favicon>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof favicon>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getFaviconQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
 export const getDummy = (
     
  options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
