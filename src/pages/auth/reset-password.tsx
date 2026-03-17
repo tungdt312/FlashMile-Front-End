@@ -6,10 +6,12 @@ import {FieldSet} from "../../components/ui/field.tsx";
 import {Progress} from "../../components/ui/progress.tsx";
 import ResetForm from "../../components/forms/reset-form.tsx";
 import VerifyCodeForm from "../../components/forms/verify-code-form.tsx";
+import {toast} from "sonner";
 
-const ResetPassword = ({code}: { code: string }) => {
+const ResetPassword = () => {
     const router = useRouter();
-
+    const [step, setStep] = useState(0);
+    const [token, setToken] = useState("");
     return (
         <div className="w-full h-dvh flex flex-col items-center p-8 bg-background">
             <div className="flex items-center justify-start w-full">
@@ -34,6 +36,8 @@ const ResetPassword = ({code}: { code: string }) => {
                         setToken(t);
                     }}/>}
                     {step == 2 && <ResetForm token={token} onSuccess={() => {
+                        toast.success("Reset password successfully")
+                        router.navigate({to: "/sign-in"})
                     }}/>}
                 </FieldSet>
                 <Button type={"button"} variant={"outline"} className={"w-full"}
