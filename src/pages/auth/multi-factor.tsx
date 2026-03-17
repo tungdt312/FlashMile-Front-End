@@ -21,8 +21,7 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
                 if (method == CompleteSetupMfaCommandMethod.WEBAUTHN) {
                     try {
                         const json = JSON.parse(data?.data?.publicOptionsJson as string)
-                        const modifiedJson = {...json, challenge: json.challenge.value};
-                        const attResp = await startRegistration(modifiedJson);
+                        const attResp = await startRegistration(json);
                         console.log(attResp);
                         verifyService.mutate({
                             data: {
