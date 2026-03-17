@@ -20,12 +20,12 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
             onSuccess: async (data) => {
                 if (method == CompleteSetupMfaCommandMethod.WEBAUTHN) {
                     try {
-                        const json = JSON.parse(data?.data?.publicOptionsJson as string)
+                        const json = JSON.parse(data.data?.publicOptionsJson as string)
 
                         const modifiedJson = {...json, challenge: json.challenge.value};
 
                         const attResp = await startAuthentication(modifiedJson);
-
+                        console.log(data)
                         verifyService.mutate({
                             data: {
                                 challengeId: data?.data?.challengeId,
