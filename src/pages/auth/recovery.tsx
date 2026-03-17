@@ -4,11 +4,25 @@ import {LuArrowLeft, LuLoaderCircle} from "react-icons/lu";
 import {Field} from "../../components/ui/field.tsx";
 import {Input} from "../../components/ui/input.tsx";
 import {useState} from "react";
+import {useRecoverMfa} from "../../services/mfa/mfa.ts";
+import {toast} from "sonner";
+import {useAuthStore} from "../../lib/global.ts";
 
-const Recovery = () => {
+const Recovery = ({challengeId}:{challengeId?: string}) => {
     const router = useRouter();
     const [otp, setOtp] = useState<string>("")
-
+    const authStore = useAuthStore()
+    const recoveryService = useRecoverMfa({
+        mutation: {
+            onSuccess: (data) => {
+                authStore.setAccessToken(data?.data?.accessToken);
+                router.navigate({to: '/dashboard'});
+            },
+            onError: (err) => {
+                toast.error(err.response?.data.message || "Recoveried failed!");
+            }
+        }
+    })
     return (
         <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8 bg-background">
             <div className="flex items-center justify-start w-full">
@@ -28,7 +42,9 @@ const Recovery = () => {
                         <Input id={"otp"} autoComplete="off" placeholder="xxxxxx" value={otp}
                                onChange={(e) => setOtp(e.target.value)}/>
                     </Field>
-                    <Button className={"w-full"} type={"submit"} form={"sign-in-form"}>
+                    <Button className={"w-full"} onClick={()=> {
+                        recoveryService.mutate({data: {challengeId: challengeId, code: otp}})
+                    }}>
                         <LuLoaderCircle className={"animate-spin"}/> Use recovery code
                     </Button>
                 </div>

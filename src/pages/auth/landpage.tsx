@@ -21,7 +21,7 @@ const Landpage = () => {
     })
     useEffect(() => {
         if (useAuthStore.getState().accessToken) return
-        refreshService.mutate({data: {refreshToken: ""}})
+        else refreshService.mutate({data: {refreshToken: ""}})
     }, []);
     return (
         <div className="relative w-full h-dvh overflow-hidden flex flex-col items-center justify-center">

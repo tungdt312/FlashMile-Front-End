@@ -34,22 +34,32 @@ const SignIn = () => {
     const loginService = useLogin({
         mutation: {
             onSuccess: (res) => {
+                if (res?.data?.mfaRequired) {
+                    if (res?.data?.mfaMethods?.length == 1 && res?.data?.mfaMethods) router.navigate({
+                        to: '/multi-factor',
+                        search: {
+                            method: res?.data?.mfaMethods[0].method,
+                            t: res?.data?.verificationToken
+                        }
+                    });
+                    else router.navigate({
+                        to: '/multi-factor-0',
+                        search: {
+                            methods: res?.data?.mfaMethods?.map(item => item.method).join(","),
+                            t: res?.data?.verificationToken
+                        }
+                    });
+                }
                 // res ở đây chính là LoginMutationResult
-                if (!res.data?.accessToken) {
+                else if (res?.data?.accessToken) {
+
                     toast.error("Login failed.");
                     console.log("Access Token not found!");
                     return;
+                } else {
+                    authStore.setAccessToken(res?.data?.accessToken);
+                    router.navigate({to: '/dashboard'});
                 }
-                // const {data, isError} = useGetMyProfile();
-                authStore.setAccessToken(res.data.accessToken);
-                // if (isError) {
-                //     toast.error("User not found!");
-                //     return;
-                // }
-                // authStore.setUser(data?.data)
-                // Lưu token (ví dụ dùng localStorage hoặc Zustand)
-                // Chuyển hướng sang Dashboard
-                router.navigate({to: '/dashboard'});
             },
             onError: (err) => {
                 // err ở đây là LoginMutationError
@@ -70,10 +80,12 @@ const SignIn = () => {
         },
         onSubmit: async ({value}) => {
 
-            loginService.mutate({data: {
-                credentialId: convertVnPhone(value.credentialId),
+            loginService.mutate({
+                data: {
+                    credentialId: convertVnPhone(value.credentialId),
                     password: value.password,
-                }});
+                }
+            });
         },
     });
     const loginWithGoogle = () => {
@@ -107,7 +119,7 @@ const SignIn = () => {
                     localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
                     authStore.setAccessToken(accessToken);
                     toast.success("Sign in successfully.");
-                    router.navigate({ to: "/" });
+                    router.navigate({to: "/"});
                     return;
                 }
             } else {
@@ -212,7 +224,7 @@ const SignIn = () => {
                     <Button variant={"outline"}
                             type={"button"}
                             className={"w-full"}
-                    onClick={loginWithGoogle}>
+                            onClick={loginWithGoogle}>
                         <FcGoogle/>
                         Continue with Google
                     </Button>

@@ -21,6 +21,7 @@ import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
 import { Route as authRecoveryRouteImport } from './routes/(auth)/recovery'
+import { Route as authMultiFactor0RouteImport } from './routes/(auth)/multi-factor-0'
 import { Route as authMultiFactorRouteImport } from './routes/(auth)/multi-factor'
 import { Route as AuthenticatedRouteUsersIndexRouteImport } from './routes/_authenticatedRoute/users/index'
 import { Route as AuthenticatedRouteRolesIndexRouteImport } from './routes/_authenticatedRoute/roles/index'
@@ -89,6 +90,11 @@ const authRecoveryRoute = authRecoveryRouteImport.update({
   path: '/recovery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authMultiFactor0Route = authMultiFactor0RouteImport.update({
+  id: '/(auth)/multi-factor-0',
+  path: '/multi-factor-0',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authMultiFactorRoute = authMultiFactorRouteImport.update({
   id: '/(auth)/multi-factor',
   path: '/multi-factor',
@@ -122,6 +128,7 @@ const AuthenticatedRouteRolesRoleIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/multi-factor': typeof authMultiFactorRoute
+  '/multi-factor-0': typeof authMultiFactor0Route
   '/recovery': typeof authRecoveryRoute
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
@@ -140,6 +147,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/multi-factor': typeof authMultiFactorRoute
+  '/multi-factor-0': typeof authMultiFactor0Route
   '/recovery': typeof authRecoveryRoute
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticatedRoute': typeof AuthenticatedRouteRouteWithChildren
   '/(auth)/multi-factor': typeof authMultiFactorRoute
+  '/(auth)/multi-factor-0': typeof authMultiFactor0Route
   '/(auth)/recovery': typeof authRecoveryRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(auth)/sign-in': typeof authSignInRoute
@@ -180,6 +189,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/multi-factor'
+    | '/multi-factor-0'
     | '/recovery'
     | '/reset-password'
     | '/sign-in'
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/multi-factor'
+    | '/multi-factor-0'
     | '/recovery'
     | '/reset-password'
     | '/sign-in'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticatedRoute'
     | '/(auth)/multi-factor'
+    | '/(auth)/multi-factor-0'
     | '/(auth)/recovery'
     | '/(auth)/reset-password'
     | '/(auth)/sign-in'
@@ -237,6 +249,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   authMultiFactorRoute: typeof authMultiFactorRoute
+  authMultiFactor0Route: typeof authMultiFactor0Route
   authRecoveryRoute: typeof authRecoveryRoute
   authResetPasswordRoute: typeof authResetPasswordRoute
   authSignInRoute: typeof authSignInRoute
@@ -331,6 +344,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authRecoveryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(auth)/multi-factor-0': {
+      id: '/(auth)/multi-factor-0'
+      path: '/multi-factor-0'
+      fullPath: '/multi-factor-0'
+      preLoaderRoute: typeof authMultiFactor0RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(auth)/multi-factor': {
       id: '/(auth)/multi-factor'
       path: '/multi-factor'
@@ -398,6 +418,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   authMultiFactorRoute: authMultiFactorRoute,
+  authMultiFactor0Route: authMultiFactor0Route,
   authRecoveryRoute: authRecoveryRoute,
   authResetPasswordRoute: authResetPasswordRoute,
   authSignInRoute: authSignInRoute,
