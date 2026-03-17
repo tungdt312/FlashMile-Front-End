@@ -23,18 +23,22 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
     const initService = useInitiateMfaSetup({
         mutation: {
             onSuccess: async (data) => {
-                try {
-                    console.log(data);
-                    const json = JSON.parse(data?.data?.publicKeyCredentialCreationOptions as string)
-                    console.log(json)
-                    const modifiedJson = {...json, challenge: json.challenge.value};
-                    console.log(modifiedJson);
-                    const attResp= await startRegistration(modifiedJson);
-                    console.log(attResp);
-                    setWebAuthnJSON(attResp);
-                    console.log(webAuthnJSON);
-                } catch {
-                    toast.error("Error getting web authn");
+                if (option == CompleteSetupMfaCommandMethod.WEBAUTHN) {
+                    try {
+
+                        const json = JSON.parse(data?.data?.publicKeyCredentialCreationOptions as string)
+                        const modifiedJson = {...json, challenge: json.challenge.value};
+                        const attResp = await startRegistration(modifiedJson);
+                        console.log(attResp);
+                        completeService.mutate({
+                            data: {
+                                method: option as InitiateMfaSetupMethod,
+                                credential: JSON.stringify(attResp),
+                            }
+                        })
+                    } catch {
+                        toast.error("Error getting web authn");
+                    }
                 }
                 router.navigate({
                     to: "/multi-factor-set",
@@ -83,15 +87,6 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
             toast.success("Set up multi-factor authentication successfully!");
         }
     }
-    useEffect(() => {
-        if (option == CompleteSetupMfaCommandMethod.WEBAUTHN && Object.keys(webAuthnJSON).length > 0)
-        completeService.mutate({
-            data: {
-                method: option as InitiateMfaSetupMethod,
-                credential: JSON.stringify(webAuthnJSON),
-            }
-        })
-    }, [webAuthnJSON])
 
     return (
         <div className={"w-full h-dvh flex flex-col items-center bg-background"}>
