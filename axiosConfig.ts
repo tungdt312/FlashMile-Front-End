@@ -30,7 +30,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (config) => {
         const token = useAuthStore.getState().accessToken;
-        console.log(token);
         if (token && !PUBLIC_ENDPOINTS.includes(config.url || "")) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }

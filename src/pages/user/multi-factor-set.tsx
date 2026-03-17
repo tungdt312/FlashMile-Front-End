@@ -24,10 +24,15 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
         mutation: {
             onSuccess: (data) => {
                 try {
+                    console.log(data);
                     const json = JSON.parse(data?.data?.publicKeyCredentialCreationOptions as string)
+                    console.log(json)
                     const modifiedJson = {...json, challenge: json.challenge.value};
-                    setWebAuthnJSON(startRegistration(modifiedJson));
-                    console.log(`webauth: ${webAuthnJSON}`);
+                    console.log(modifiedJson);
+                    const attResp= startRegistration(modifiedJson);
+                    console.log(attResp);
+                    setWebAuthnJSON(attResp);
+                    console.log(webAuthnJSON);
                 } catch {
                     toast.error("Error getting web authn");
                 }
