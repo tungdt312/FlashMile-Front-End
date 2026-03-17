@@ -28,6 +28,12 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                     const modifiedJson = {...json, challenge: json.challenge.value};
                     setWebAuthnJSON(startRegistration(modifiedJson));
                     console.log(webAuthnJSON);
+                    completeService.mutate({
+                        data: {
+                            method: option as InitiateMfaSetupMethod,
+                            credential: JSON.stringify(webAuthnJSON)
+                        }
+                    })
                 } catch {
                     toast.error("Error getting web authn");
                 }
@@ -70,7 +76,7 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
             completeService.mutate({
                 data: {
                     method: option as InitiateMfaSetupMethod,
-                    credential: (option == CompleteSetupMfaCommandMethod.WEBAUTHN) ? JSON.stringify(webAuthnJSON) : otp,
+                    credential: otp,
                 }
             })
         } else if (step && step >= 3) {
@@ -166,8 +172,10 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                         <div className={"flex flex-col w-full items-center justify-center gap-2"}>
                             <LuLoaderCircle className={"animate-spin size-6"}/>
                             <p>Connecting to third party...</p>
-                        </div>}
-                </div>}
+                        </div>
+                    }
+                </div>
+                }
                 {step == 3 && <div className="w-full flex flex-1 flex-col items-center justify-center gap-4">
                     <p className={"heading w-full text-center"}>Recovery codes</p>
                     <p className={"caption w-full text-muted-foreground text-center"}>Keep these recovery codes safe!
@@ -224,7 +232,7 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                     <Progress className={"w-full h-2"} value={(step || 1) * 100 / 3}/>
                     <div className={"w-full flex items-center justify-between gap-4"}>
                         <p>Step {step || 1} of 3</p>
-                        <Button type={"button"} onClick={submit}>
+                        <Button type={"button"} onClick={submit} disabled={step == 2 && option == CompleteSetupMfaCommandMethod.WEBAUTHN}>
                             {((step || 1) < 3) ? "Next" : "Done"}
                         </Button>
                     </div>
