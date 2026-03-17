@@ -1,6 +1,6 @@
 import {useRouter} from "@tanstack/react-router";
 import {Button} from "../../components/ui/button.tsx";
-import {LuArrowLeft, LuBell, LuCopy, LuDownload} from "react-icons/lu";
+import {LuArrowLeft, LuBell, LuCopy, LuDownload, LuLoaderCircle, LuMonitor, LuSmartphone} from "react-icons/lu";
 import {Progress} from "../../components/ui/progress.tsx";
 import {RadioGroup, RadioGroupItem} from "../../components/ui/radio-group.tsx";
 import {Field, FieldContent, FieldDescription, FieldLabel, FieldTitle} from "../../components/ui/field.tsx";
@@ -8,19 +8,29 @@ import {CompleteSetupMfaCommandMethod, type InitiateMfaSetupMethod} from "../../
 import {Input} from "../../components/ui/input.tsx";
 import {useState} from "react";
 import {toast} from "sonner";
-import {useCompleteMfaSetup, useGetMfaMethods, useInitiateMfaSetup} from "../../services/mfa/mfa.ts";
+import {useCompleteMfaSetup, useGetMfaMethods, useInitiateMfaSetup} from "../../services/mfa/mfa";
 import {Badge} from "../../components/ui/badge.tsx";
+import {startRegistration} from "@simplewebauthn/browser";
 
 
 const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
     const router = useRouter()
     const [option, setOption] = useState<string | undefined>(method);
     const [otp, setOtp] = useState<string>("");
+    const [webAuthnJSON, setWebAuthnJSON] = useState({});
     const {data} = useGetMfaMethods()
-    const activatedMethods = data?.data?.map(item => item.method as string) ;
+    const activatedMethods = data?.data?.map(item => item.method as string);
     const initService = useInitiateMfaSetup({
         mutation: {
-            onSuccess: () => {
+            onSuccess: (data) => {
+                try {
+                    const json = JSON.parse(data?.data?.publicKeyCredentialCreationOptions as string)
+                    const modifiedJson = {...json, challenge: json.challenge.value};
+                    setWebAuthnJSON(startRegistration(modifiedJson));
+                    console.log(webAuthnJSON);
+                } catch {
+                    toast.error("Error getting web authn");
+                }
                 router.navigate({
                     to: "/multi-factor-set",
                     search: () => ({method: option, step: 2}),
@@ -60,7 +70,7 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
             completeService.mutate({
                 data: {
                     method: option as InitiateMfaSetupMethod,
-                    credential: otp,
+                    credential: (option == CompleteSetupMfaCommandMethod.WEBAUTHN) ? JSON.stringify(webAuthnJSON) : otp,
                 }
             })
         } else if (step && step >= 3) {
@@ -94,9 +104,10 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                         that it’s really you.</p>
                     <FieldLabel htmlFor={CompleteSetupMfaCommandMethod.TOTP}>
                         <Field orientation="horizontal">
+                            <LuSmartphone className={"text-primary size-6"}/>
                             <FieldContent>
                                 <FieldTitle className={"link flex items-center justify-between"}>
-                                    <p>Authentication app</p>
+                                    <p> Authentication app</p>
                                     {activatedMethods?.includes(CompleteSetupMfaCommandMethod.TOTP) &&
                                         <Badge>Configured</Badge>}
                                 </FieldTitle>
@@ -112,9 +123,10 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                     </FieldLabel>
                     <FieldLabel htmlFor={CompleteSetupMfaCommandMethod.WEBAUTHN}>
                         <Field orientation="horizontal">
+                            <LuMonitor className={"text-primary size-6"}/>
                             <FieldContent>
                                 <FieldTitle className={"link flex items-center justify-between"}>
-                                    <p>WebAuthn</p>
+                                    <p> WebAuthn</p>
                                     {activatedMethods?.includes(CompleteSetupMfaCommandMethod.WEBAUTHN) &&
                                         <Badge>Configured</Badge>}
                                 </FieldTitle>
@@ -126,22 +138,6 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                             <RadioGroupItem value={CompleteSetupMfaCommandMethod.WEBAUTHN}
                                             id={CompleteSetupMfaCommandMethod.WEBAUTHN}
                                             disabled={activatedMethods?.includes(CompleteSetupMfaCommandMethod.WEBAUTHN)}/>
-                        </Field>
-                    </FieldLabel>
-                    <FieldLabel htmlFor={CompleteSetupMfaCommandMethod.EMAIL}>
-                        <Field orientation="horizontal">
-                            <FieldContent>
-                                <FieldTitle className={"link flex items-center justify-between"}>
-                                    <p>Email</p>
-                                    {activatedMethods?.includes(CompleteSetupMfaCommandMethod.EMAIL) &&
-                                        <Badge>Configured</Badge>}
-                                </FieldTitle>
-                                <FieldDescription>We'll send a code to your email in order to
-                                    verify.</FieldDescription>
-                            </FieldContent>
-                            <RadioGroupItem value={CompleteSetupMfaCommandMethod.EMAIL}
-                                            id={CompleteSetupMfaCommandMethod.EMAIL}
-                                            disabled={activatedMethods?.includes(CompleteSetupMfaCommandMethod.EMAIL)}/>
                         </Field>
                     </FieldLabel>
                 </RadioGroup>}
@@ -158,13 +154,19 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                             <p className={"py-2 px-4 rounded-xl bg-muted text-muted-foreground flex items-center cursor-pointer hover:bg-muted-foreground hover:text-muted"}
                                onClick={() => {
                                }}>{initService.data?.data?.secret || ""}<LuCopy className="flex-shrink-0 w-5"/></p>
-                        </div>}
+                            <Field>
+                                <FieldLabel htmlFor={"otp"}>Enter your OTP to continue</FieldLabel>
+                                <Input id={"otp"} autoComplete="off" placeholder="xxxxxx" value={otp}
+                                       onChange={(e) => setOtp(e.target.value)}/>
+                            </Field>
+                        </div>
+                    }
 
-                    {method != CompleteSetupMfaCommandMethod.WEBAUTHN && <Field>
-                        <FieldLabel htmlFor={"otp"}>Enter your OTP to continue</FieldLabel>
-                        <Input id={"otp"} autoComplete="off" placeholder="xxxxxx" value={otp}
-                               onChange={(e) => setOtp(e.target.value)}/>
-                    </Field>}
+                    {method == CompleteSetupMfaCommandMethod.WEBAUTHN &&
+                        <div className={"flex flex-col w-full items-center justify-center gap-2"}>
+                            <LuLoaderCircle className={"animate-spin size-6"}/>
+                            <p>Connecting to third party...</p>
+                        </div>}
                 </div>}
                 {step == 3 && <div className="w-full flex flex-1 flex-col items-center justify-center gap-4">
                     <p className={"heading w-full text-center"}>Recovery codes</p>
@@ -203,7 +205,7 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                                     className="flex-1"
                                     onClick={() => {
                                         const content = completeService.data?.data?.backupCodes?.join('\n');
-                                        const blob = new Blob([content || ""], { type: 'text/plain' });
+                                        const blob = new Blob([content || ""], {type: 'text/plain'});
                                         const url = URL.createObjectURL(blob);
                                         const link = document.createElement('a');
                                         link.href = url;

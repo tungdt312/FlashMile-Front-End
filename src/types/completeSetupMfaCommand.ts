@@ -5,10 +5,8 @@
  * OpenAPI spec version: v0
  */
 import type { CompleteSetupMfaCommandMethod } from './completeSetupMfaCommandMethod';
-import type { CompleteSetupMfaCommandProperties } from './completeSetupMfaCommandProperties';
 
 export interface CompleteSetupMfaCommand {
   method?: CompleteSetupMfaCommandMethod;
   credential?: string;
-  properties?: CompleteSetupMfaCommandProperties;
 }

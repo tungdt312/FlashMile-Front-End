@@ -5,6 +5,7 @@ import {useRouter} from "@tanstack/react-router";
 
 const RoleDetail = ({id, search}:{id: string, search?: string}) => {
     const router = useRouter()
+    console.log(id, search)
     return (
         <div className={"w-full h-dvh flex flex-col items-center bg-background"}>
             <div className={"w-full flex items-center justify-between px-4 pt-4"}>

@@ -3,15 +3,27 @@ import {Button} from "../../components/ui/button.tsx";
 import {LuArrowLeft, LuLoaderCircle} from "react-icons/lu";
 import {Field} from "../../components/ui/field.tsx";
 import {Input} from "../../components/ui/input.tsx";
-import {useState} from "react";
-import {useRecoverMfa} from "../../services/mfa/mfa.ts";
+import {useEffect, useState} from "react";
+import {useChallengeMfa, useRecoverMfa} from "../../services/mfa/mfa";
 import {toast} from "sonner";
 import {useAuthStore} from "../../lib/global.ts";
+import type {MfaChallengeCommandMethod} from "../../types";
 
-const Recovery = ({challengeId}:{challengeId?: string}) => {
+const Recovery = ({method, token}: { method?: string, token?: string }) => {
     const router = useRouter();
     const [otp, setOtp] = useState<string>("")
     const authStore = useAuthStore()
+    const challengeService = useChallengeMfa({
+        mutation: {
+            onSuccess: (data) => {
+                console.log(data);
+            },
+            onError: (err) => {
+                toast.error(err.response?.data.message);
+                router.history.back()
+            }
+        }
+    })
     const recoveryService = useRecoverMfa({
         mutation: {
             onSuccess: (data) => {
@@ -23,6 +35,14 @@ const Recovery = ({challengeId}:{challengeId?: string}) => {
             }
         }
     })
+    useEffect(() => {
+        challengeService.mutate({
+            data: {
+                method: method as MfaChallengeCommandMethod,
+                verificationToken: token,
+            }
+        })
+    }, [])
     return (
         <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8 bg-background">
             <div className="flex items-center justify-start w-full">
@@ -43,7 +63,7 @@ const Recovery = ({challengeId}:{challengeId?: string}) => {
                                onChange={(e) => setOtp(e.target.value)}/>
                     </Field>
                     <Button className={"w-full"} onClick={()=> {
-                        recoveryService.mutate({data: {challengeId: challengeId, code: otp}})
+                        recoveryService.mutate({data: {challengeId: challengeService.data?.data?.challengeId, code: otp}})
                     }}>
                         <LuLoaderCircle className={"animate-spin"}/> Use recovery code
                     </Button>

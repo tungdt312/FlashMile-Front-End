@@ -1,14 +1,15 @@
 import {Button} from "../../components/ui/button.tsx";
 import {LuArrowLeft, LuBell} from "react-icons/lu";
 import {useRouter} from "@tanstack/react-router";
-import {useGetAllRoles} from "../../services/role/role.ts";
-import {useState} from "react";
+// import {useGetAllRoles} from "../../services/role/role.ts";
+// import {useState} from "react";
 
 
 const RolesList = ({search}: {search?: string}) => {
     const router = useRouter();
-    const [currentPage, setCurrentPage] = useState<number>(0);
-    const { data, isLoading, isError, error } = useGetAllRoles({page: currentPage, size: 10, filter: , sorts:});
+    console.log(search);
+    // const [currentPage, setCurrentPage] = useState<number>(0);
+    // const { data, isLoading, isError, error } = useGetAllRoles({page: currentPage, size: 10});
     return (
         <div className={"w-full h-dvh flex flex-col items-center bg-background"}>
             <div className={"w-full flex items-center justify-between px-4 pt-4"}>

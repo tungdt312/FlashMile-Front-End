@@ -5,7 +5,9 @@
  * OpenAPI spec version: v0
  */
 
-export interface VerifyMfaCommand {
-  challengeId?: string;
-  credential?: string;
-}
+export type GetAllDepotsParams = {
+filter?: string;
+sorts?: string[];
+page?: number;
+size?: number;
+};

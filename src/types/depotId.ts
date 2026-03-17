@@ -5,4 +5,6 @@
  * OpenAPI spec version: v0
  */
 
-export type CompleteSetupMfaCommandProperties = {[key: string]: string};
+export interface DepotId {
+  value?: string;
+}

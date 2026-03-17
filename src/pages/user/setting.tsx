@@ -20,9 +20,9 @@ import {Avatar, AvatarFallback, AvatarImage} from "../../components/ui/avatar.ts
 import {Switch} from "../../components/ui/switch.tsx";
 import {useLogoutUser} from "../../services/authentication/authentication.ts";
 import {toast} from "sonner";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
-import {useUpdateMyProfile} from "../../services/user-profile/user-profile.ts";
+import {useGetMyProfile, useUpdateMyProfile} from "../../services/user-profile/user-profile.ts";
 
 
 const Setting = () => {
@@ -58,6 +58,22 @@ const Setting = () => {
             }
         }
     })
+
+    const {data, isError} = useGetMyProfile();
+    const authStore = useAuthStore();
+    useEffect(() => {
+        if (isError) {
+            toast.error("User not found!");
+            router.navigate({ to: "/sign-in" });
+            return;
+        }
+        // 2. Xử lý khi đã có dữ liệu profile thành công
+        const newUser = data?.data;
+        if (newUser && newUser.id !== authStore.user?.id) {
+            authStore.setUser(newUser);
+        }
+
+    }, [data, isError, authStore, router]);
     return (
         <div className={"w-full h-dvh flex flex-col items-center bg-background"}>
             <div className={"w-full flex items-center justify-between px-4 pt-4"}>

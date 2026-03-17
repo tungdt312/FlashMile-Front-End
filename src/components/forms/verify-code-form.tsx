@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {useEffect, useState} from "react";
-import {useSendVerification, useVerifyCode} from "../../services/authentication/authentication.ts";
+import {useSendVerification, useVerifyCode} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import {SendVerificationCodeQueryPurpose} from "../../types";
 import {useForm} from "@tanstack/react-form";

@@ -3,8 +3,8 @@ import {SsgoiTransition} from "@ssgoi/react";
 import Recovery from "../../pages/auth/recovery.tsx";
 import z from "zod";
 const multifactorSearchSchema = z.object({
-  challengeId: z.string().optional(),
-
+  method: z.string().optional(),
+  t: z.string().optional(),
 })
 export const Route = createFileRoute('/(auth)/recovery')({
   component: RouteComponent,
@@ -12,6 +12,6 @@ export const Route = createFileRoute('/(auth)/recovery')({
 })
 
 function RouteComponent() {
-  const {challengeId} = Route.useSearch()
-  return <SsgoiTransition id={"recovery"}><Recovery challengeId={challengeId}/></SsgoiTransition>
+  const {method, t} = Route.useSearch()
+  return <SsgoiTransition id={"recovery"}><Recovery method={method} token={t}/></SsgoiTransition>
 }

@@ -1,5 +1,5 @@
 import {Link, useRouter} from "@tanstack/react-router";
-import {useGetMyProfile} from "../services/user-profile/user-profile.ts";
+import {useGetMyProfile} from "../services/user-profile/user-profile";
 import {useEffect} from "react";
 import {toast} from "sonner";
 import {useAuthStore} from "../lib/global.ts";

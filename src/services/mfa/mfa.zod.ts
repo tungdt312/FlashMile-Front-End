@@ -9,7 +9,7 @@ import * as zod from 'zod';
 
 export const VerifyMfaBody = zod.object({
   "challengeId": zod.string().optional(),
-  "code": zod.string().optional()
+  "credential": zod.string().optional()
 })
 
 export const VerifyMfaResponse = zod.object({
@@ -48,8 +48,7 @@ export const InitiateMfaSetupResponse = zod.object({
  */
 export const CompleteMfaSetupBody = zod.object({
   "method": zod.enum(['TOTP', 'EMAIL', 'WEBAUTHN']).optional(),
-  "credential": zod.string().optional(),
-  "properties": zod.record(zod.string(), zod.string()).optional()
+  "credential": zod.string().optional()
 })
 
 export const CompleteMfaSetupResponse = zod.object({

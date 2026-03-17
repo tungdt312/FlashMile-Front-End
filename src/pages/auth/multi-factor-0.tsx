@@ -1,7 +1,7 @@
 import {useRouter} from "@tanstack/react-router";
 import {Button} from "../../components/ui/button.tsx";
-import {LuArrowLeft} from "react-icons/lu";
-import {FieldContent, FieldLabel, FieldTitle} from "../../components/ui/field.tsx";
+import {LuArrowLeft, LuMonitor, LuRotateCcw, LuSmartphone} from "react-icons/lu";
+import {InitiateMfaSetupMethod} from "../../types";
 
 const MultiFactor0 = ({methods, token}: { methods?: string, token?: string }) => {
     const currentMethods = methods?.split(",") || [];
@@ -23,15 +23,34 @@ const MultiFactor0 = ({methods, token}: { methods?: string, token?: string }) =>
                         Select an authentication method to continue
                     </p>
                     <div className="w-full flex flex-1 flex-col items-center justify-start gap-4">
-                        {currentMethods.map((method) => (
-                            <FieldLabel id={method} onClick={() => router.navigate({to: "/multi-factor", search: { method: method, t: token } })}>
-                                <FieldContent>
-                                    <FieldTitle>
-                                        {method}
-                                    </FieldTitle>
-                                </FieldContent>
-                            </FieldLabel>
-                        ))}
+
+                        {currentMethods.includes(InitiateMfaSetupMethod.TOTP) && <Button
+                            variant={"outline"}
+                            className={"w-full"}
+                            onClick={() => router.navigate({
+                                to: "/multi-factor",
+                                search: {method: InitiateMfaSetupMethod.TOTP, t: token}
+                            })}>
+                            <LuSmartphone className={"text-primary size-6"}/> Authentication App
+                        </Button>}
+                        {currentMethods.includes(InitiateMfaSetupMethod.WEBAUTHN) && <Button
+                            variant={"outline"}
+                            className={"w-full"}
+                            onClick={() => router.navigate({
+                                to: "/multi-factor",
+                                search: {method: InitiateMfaSetupMethod.WEBAUTHN, t: token}
+                            })}>
+                            <LuMonitor className={"text-primary size-6"}/> WebAuthn
+                        </Button>}
+                        <Button
+                            variant={"outline"}
+                            className={"w-full"}
+                            onClick={() => router.navigate({
+                            to: "/recovery",
+                            search: {method: currentMethods[0], t: token}
+                        })}>
+                            <LuRotateCcw className={"text-primary size-6"}/>Recovery code
+                        </Button>
                     </div>
 
                 </div>

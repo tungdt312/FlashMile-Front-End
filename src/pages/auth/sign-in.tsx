@@ -8,7 +8,7 @@ import {Separator} from "../../components/ui/separator.tsx";
 import {FcGoogle} from "react-icons/fc";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
 import {useForm} from "@tanstack/react-form";
-import {useLogin} from "../../services/authentication/authentication.ts";
+import {useLogin} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import z from "zod";
 import {useAuthStore} from "../../lib/global.ts";
@@ -35,14 +35,7 @@ const SignIn = () => {
         mutation: {
             onSuccess: (res) => {
                 if (res?.data?.mfaRequired) {
-                    if (res?.data?.mfaMethods?.length == 1 && res?.data?.mfaMethods) router.navigate({
-                        to: '/multi-factor',
-                        search: {
-                            method: res?.data?.mfaMethods[0].method,
-                            t: res?.data?.verificationToken
-                        }
-                    });
-                    else router.navigate({
+                    router.navigate({
                         to: '/multi-factor-0',
                         search: {
                             methods: res?.data?.mfaMethods?.map(item => item.method).join(","),

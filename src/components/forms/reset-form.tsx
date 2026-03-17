@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {useResetPassword} from "../../services/authentication/authentication.ts";
+import {useResetPassword} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import {useForm} from "@tanstack/react-form";
 import {Field, FieldError, FieldLabel} from "../ui/field.tsx";

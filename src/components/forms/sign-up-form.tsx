@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {useRegisterUser, useSendVerification} from "../../services/authentication/authentication.ts";
+import {useRegisterUser, useSendVerification} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import {SendVerificationCodeQueryPurpose} from "../../types";
 import {useForm} from "@tanstack/react-form";

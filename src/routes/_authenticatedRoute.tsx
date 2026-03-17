@@ -1,5 +1,5 @@
 import {createFileRoute, Outlet, useRouter} from '@tanstack/react-router'
-import {useRotateToken} from "../services/authentication/authentication.ts";
+import {useRotateToken} from "../services/authentication/authentication";
 import {useAuthStore} from "../lib/global.ts";
 import {useEffect} from "react";
 
