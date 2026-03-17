@@ -6,7 +6,7 @@ import {RadioGroup, RadioGroupItem} from "../../components/ui/radio-group.tsx";
 import {Field, FieldContent, FieldDescription, FieldLabel, FieldTitle} from "../../components/ui/field.tsx";
 import {CompleteSetupMfaCommandMethod, type InitiateMfaSetupMethod} from "../../types";
 import {Input} from "../../components/ui/input.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {toast} from "sonner";
 import {useCompleteMfaSetup, useGetMfaMethods, useInitiateMfaSetup} from "../../services/mfa/mfa";
 import {Badge} from "../../components/ui/badge.tsx";
@@ -17,7 +17,6 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
     const router = useRouter()
     const [option, setOption] = useState<string | undefined>(method);
     const [otp, setOtp] = useState<string>("");
-    const [webAuthnJSON, setWebAuthnJSON] = useState({});
     const {data} = useGetMfaMethods()
     const activatedMethods = data?.data?.map(item => item.method as string);
     const initService = useInitiateMfaSetup({
