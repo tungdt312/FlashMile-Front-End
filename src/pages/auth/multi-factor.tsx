@@ -28,7 +28,7 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
 
                         verifyService.mutate({
                             data: {
-                                challengeId: challengeService?.data?.data?.challengeId,
+                                challengeId: data?.data?.challengeId,
                                 credential: JSON.stringify(attResp),
                             }
                         })
