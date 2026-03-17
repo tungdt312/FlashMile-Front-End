@@ -8,7 +8,7 @@ import {Separator} from "../../components/ui/separator.tsx";
 import {FcGoogle} from "react-icons/fc";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
 import {useForm} from "@tanstack/react-form";
-import {useLogin, useSendVerification} from "../../services/authentication/authentication.ts";
+import {useLogin} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import z from "zod";
 import {useAuthStore} from "../../lib/global.ts";
@@ -41,19 +41,35 @@ const SignIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
     const authStore = useAuthStore();
+    const convertVnPhone = (phone: string): string => {
+        // Kiểm tra nếu chuỗi bắt đầu bằng số 0
+        if (phone.startsWith('0') && /^[0-9]+$/.test(phone)) {
+            return `+84${phone.slice(1)}`;
+        }
+        return phone; // Trả về nguyên bản nếu không bắt đầu bằng 0
+    };
     const loginService = useLogin({
         mutation: {
             onSuccess: (res) => {
+                if (res?.data?.mfaRequired) {
+                    router.navigate({
+                        to: '/multi-factor-0',
+                        search: {
+                            methods: res?.data?.mfaMethods?.map(item => item.method).join(","),
+                            t: res?.data?.verificationToken
+                        }
+                    });
+                }
                 // res ở đây chính là LoginMutationResult
-                if (!res.data?.accessToken) {
+                else if (res?.data?.accessToken) {
+
                     toast.error("Login failed.");
                     console.log("Access Token not found!");
                     return;
+                } else {
+                    authStore.setAccessToken(res?.data?.accessToken);
+                    router.navigate({to: '/dashboard'});
                 }
-                authStore.setAccessToken(res.data.accessToken);
-                // Lưu token (ví dụ dùng localStorage hoặc Zustand)
-                // Chuyển hướng sang Dashboard
-                router.navigate({to: '/dashboard'});
             },
             onError: (err) => {
                 // err ở đây là LoginMutationError
@@ -73,7 +89,13 @@ const SignIn = () => {
             onSubmit: LoginBody,
         },
         onSubmit: async ({value}) => {
-            loginService.mutate({data: value});
+
+            loginService.mutate({
+                data: {
+                    credentialId: convertVnPhone(value.credentialId),
+                    password: value.password,
+                }
+            });
         },
     });
     const loginWithGoogle = () => {
@@ -107,7 +129,7 @@ const SignIn = () => {
                     localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
                     authStore.setAccessToken(accessToken);
                     toast.success("Sign in successfully.");
-                    router.navigate({ to: "/" });
+                    router.navigate({to: "/"});
                     return;
                 }
             } else {
@@ -207,13 +229,13 @@ const SignIn = () => {
                     </VerifyCodeForm>
                     <div className={"flex items-center w-full gap-1"}>
                         <Separator className={"w-full flex-1"}/>
-                        <span className={"text-sm text-muted-foreground font-medium"}>or</span>
+                        <span className={"text-muted-foreground"}>or</span>
                         <Separator className={"w-full flex-1"}/>
                     </div>
                     <Button variant={"outline"}
                             type={"button"}
                             className={"w-full"}
-                    onClick={loginWithGoogle}>
+                            onClick={loginWithGoogle}>
                         <FcGoogle/>
                         Continue with Google
                     </Button>

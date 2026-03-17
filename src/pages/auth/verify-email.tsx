@@ -1,6 +1,6 @@
 import {Button} from "../../components/ui/button.tsx";
 import {LuArrowLeft, LuCircleCheck, LuCircleDashed, LuCircleX} from "react-icons/lu";
-import {Field, FieldDescription, FieldLabel, FieldLegend} from "../../components/ui/field.tsx";
+import {Field, FieldLabel} from "../../components/ui/field.tsx";
 import {useRouter} from "@tanstack/react-router";
 import {useEffect, useState} from "react";
 import {useSendVerification, useVerifyCode} from "../../services/authentication/authentication.ts";
@@ -73,16 +73,16 @@ const VerifyEmail = ({code}: { code: string }) => {
                     {state == "Pending" && <LuCircleDashed className={"size-12 animate-spin"}/>}
                     {state == "Success" && <LuCircleCheck className={"size-12 text-primary"}/>}
                     {state == "Failed" && <LuCircleX className={"size-12 text-destructive"}/>}
-                    <FieldLegend className={"text-xl font-bold text-center w-full"}>
+                    <p className={"heading text-center w-full"}>
                         {state == "Pending" ? "Verifying your email" : undefined}
                         {state == "Success" ? "Your email is verified successfully" : undefined}
                         {state == "Failed" ? "Failed to verify your email" : undefined}
-                    </FieldLegend>
-                    <FieldDescription className={"text-sm font-medium text-muted-foreground text-center w-full"}>
+                    </p>
+                    <p className={"caption text-muted-foreground text-center w-full"}>
                         {state == "Pending" ? "We have sent an email to your mail. Please check it to complete process." : undefined}
                         {state == "Success" ? "We have verified your email. Now, you can continue to sign in." : undefined}
                         {state == "Failed" ? "We have failed to verify your email. Please try again." : undefined}
-                    </FieldDescription>
+                    </p>
                 </div>
                 {state == "Success" && <Button type={"button"} className={"w-full"}
                                                onClick={() => router.navigate({to: "/sign-in"})}>

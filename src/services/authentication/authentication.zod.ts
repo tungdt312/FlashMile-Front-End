@@ -17,7 +17,7 @@ export const VerifyCodeBody = zod.object({
 })
 
 export const VerifyCodeResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({
@@ -36,7 +36,7 @@ export const SendVerificationBody = zod.object({
 })
 
 export const SendVerificationResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.unknown().optional()
@@ -53,14 +53,19 @@ export const RotateTokenBody = zod.object({
 })
 
 export const RotateTokenResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({
   "accessToken": zod.string().optional(),
   "refreshToken": zod.string().optional(),
   "expiresIn": zod.number().optional(),
-  "tokenType": zod.string().optional()
+  "tokenType": zod.string().optional(),
+  "mfaRequired": zod.boolean().optional(),
+  "mfaMethods": zod.array(zod.object({
+  "method": zod.string().optional()
+})).optional(),
+  "verificationToken": zod.string().optional()
 }).optional()
 })
 
@@ -73,7 +78,7 @@ export const ResetPasswordBody = zod.object({
 })
 
 export const ResetPasswordResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.unknown().optional()
@@ -90,7 +95,7 @@ export const RegisterUserBody = zod.object({
 })
 
 export const RegisterUserResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({
@@ -114,7 +119,7 @@ export const LogoutUserBody = zod.object({
 })
 
 export const LogoutUserResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.unknown().optional()
@@ -129,14 +134,19 @@ export const LoginBody = zod.object({
 })
 
 export const LoginResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({
   "accessToken": zod.string().optional(),
   "refreshToken": zod.string().optional(),
   "expiresIn": zod.number().optional(),
-  "tokenType": zod.string().optional()
+  "tokenType": zod.string().optional(),
+  "mfaRequired": zod.boolean().optional(),
+  "mfaMethods": zod.array(zod.object({
+  "method": zod.string().optional()
+})).optional(),
+  "verificationToken": zod.string().optional()
 }).optional()
 })
 

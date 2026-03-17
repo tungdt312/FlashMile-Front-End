@@ -11,7 +11,7 @@ import * as zod from 'zod';
  * @summary Get My Profile
  */
 export const GetMyProfileResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({
@@ -29,12 +29,11 @@ export const GetMyProfileResponse = zod.object({
  * @summary Update My Profile
  */
 export const UpdateMyProfileBody = zod.object({
-  "fullName": zod.string().optional(),
-  "email": zod.string().optional()
+  "fullName": zod.string().optional()
 })
 
 export const UpdateMyProfileResponse = zod.object({
-  "timestamp": zod.string().datetime({}).optional(),
+  "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
   "data": zod.object({

@@ -4,13 +4,13 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import type { FieldError } from './fieldError';
+import type { ErrorResponseErrors } from './errorResponseErrors';
 
 export interface ErrorResponse {
   timestamp?: string;
   path?: string;
   status?: number;
   message?: string;
-  fieldErrors?: FieldError[];
+  errors?: ErrorResponseErrors;
   errorCode?: string;
 }

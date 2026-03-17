@@ -1,8 +1,8 @@
 
 
-const UserList = () => {
+const UserList = ({search}: {search?: string}) => {
     return (
-        <div>UserList</div>
+        <div>UserList {search}</div>
     )
 }
 export default UserList
