@@ -8,7 +8,7 @@ import {Separator} from "../../components/ui/separator.tsx";
 import {FcGoogle} from "react-icons/fc";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
 import {useForm} from "@tanstack/react-form";
-import {useLogin} from "../../services/authentication/authentication";
+import {useLogin, useSendVerification} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import z from "zod";
 import {useAuthStore} from "../../lib/global.ts";
