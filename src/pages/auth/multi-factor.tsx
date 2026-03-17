@@ -55,6 +55,15 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
             }
         })
     }, [])
+    useEffect(() => {
+        if (method == CompleteSetupMfaCommandMethod.WEBAUTHN && webAuthnJSON)
+            verifyService.mutate({
+                data: {
+                    challengeId: challengeService?.data?.data?.challengeId,
+                    credential: JSON.stringify(webAuthnJSON),
+                }
+            })
+    }, [webAuthnJSON])
     return (
         <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8 bg-background">
             <div className="flex items-center justify-start w-full">
@@ -84,7 +93,7 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
                             verifyService.mutate({
                                 data: {
                                     challengeId: challengeService?.data?.data?.challengeId,
-                                    credential: (method == CompleteSetupMfaCommandMethod.WEBAUTHN) ? JSON.stringify(webAuthnJSON) : otp,
+                                    credential: otp,
                                 }
                             })
                         }}>

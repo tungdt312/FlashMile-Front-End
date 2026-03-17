@@ -6,7 +6,7 @@ import {RadioGroup, RadioGroupItem} from "../../components/ui/radio-group.tsx";
 import {Field, FieldContent, FieldDescription, FieldLabel, FieldTitle} from "../../components/ui/field.tsx";
 import {CompleteSetupMfaCommandMethod, type InitiateMfaSetupMethod} from "../../types";
 import {Input} from "../../components/ui/input.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {toast} from "sonner";
 import {useCompleteMfaSetup, useGetMfaMethods, useInitiateMfaSetup} from "../../services/mfa/mfa";
 import {Badge} from "../../components/ui/badge.tsx";
@@ -28,12 +28,6 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                     const modifiedJson = {...json, challenge: json.challenge.value};
                     setWebAuthnJSON(startRegistration(modifiedJson));
                     console.log(webAuthnJSON);
-                    completeService.mutate({
-                        data: {
-                            method: option as InitiateMfaSetupMethod,
-                            credential: JSON.stringify(webAuthnJSON)
-                        }
-                    })
                 } catch {
                     toast.error("Error getting web authn");
                 }
@@ -84,6 +78,15 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
             toast.success("Set up multi-factor authentication successfully!");
         }
     }
+    useEffect(() => {
+        if (option == CompleteSetupMfaCommandMethod.WEBAUTHN && webAuthnJSON)
+        completeService.mutate({
+            data: {
+                method: option as InitiateMfaSetupMethod,
+                credential: JSON.stringify(webAuthnJSON),
+            }
+        })
+    }, [webAuthnJSON])
 
     return (
         <div className={"w-full h-dvh flex flex-col items-center bg-background"}>
