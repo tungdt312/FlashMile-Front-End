@@ -22,7 +22,7 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
     const [counter, setCounter] = useState<number>(0)
     const convertVnPhone = (phone: string): string => {
         // Kiểm tra nếu chuỗi bắt đầu bằng số 0
-        if (phone.startsWith('0')) {
+        if (phone.startsWith('0') && /^\d+$/.test(phone)) {
             return `+84${phone.slice(1)}`;
         }
         return phone; // Trả về nguyên bản nếu không bắt đầu bằng 0

@@ -19,13 +19,15 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
     const challengeService = useChallengeMfa({
         mutation: {
             onSuccess: (data) => {
-                try {
-                    const json = JSON.parse(data?.data?.publicOptionsJson as string)
-                    const modifiedJson = {...json, challenge: json.challenge.value};
-                    setWebAuthnJSON(startAuthentication(modifiedJson));
-                    console.log(webAuthnJSON);
-                } catch {
-                    toast.error("Error getting web authn");
+                if (method == CompleteSetupMfaCommandMethod.WEBAUTHN) {
+                    try {
+                        const json = JSON.parse(data?.data?.publicOptionsJson as string)
+                        const modifiedJson = {...json, challenge: json.challenge.value};
+                        setWebAuthnJSON(startAuthentication(modifiedJson));
+                        console.log(webAuthnJSON);
+                    } catch {
+                        toast.error("Error getting web authn");
+                    }
                 }
             },
             onError: (err) => {
@@ -79,10 +81,12 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
                                    onChange={(e) => setOtp(e.target.value)}/>
                         </Field>
                         <Button className={"w-full"} onClick={() => {
-                            verifyService.mutate({data: {
-                                challengeId: challengeService?.data?.data?.challengeId,
-                                credential: (method == CompleteSetupMfaCommandMethod.WEBAUTHN) ? JSON.stringify(webAuthnJSON) : otp,
-                                }})
+                            verifyService.mutate({
+                                data: {
+                                    challengeId: challengeService?.data?.data?.challengeId,
+                                    credential: (method == CompleteSetupMfaCommandMethod.WEBAUTHN) ? JSON.stringify(webAuthnJSON) : otp,
+                                }
+                            })
                         }}>
                             {verifyService.isPending && <LuLoaderCircle className={"animate-spin"}/>} Verify
                         </Button>
