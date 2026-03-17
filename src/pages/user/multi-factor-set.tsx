@@ -24,7 +24,6 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
             onSuccess: async (data) => {
                 if (option == CompleteSetupMfaCommandMethod.WEBAUTHN) {
                     try {
-
                         const json = JSON.parse(data?.data?.publicKeyCredentialCreationOptions as string)
                         const modifiedJson = {...json, challenge: json.challenge.value};
                         const attResp = await startRegistration(modifiedJson);
@@ -52,10 +51,12 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
     const completeService = useCompleteMfaSetup({
         mutation: {
             onSuccess: (data) => {
-                if (data?.data?.backupCodes) router.navigate({
-                    to: "/multi-factor-set",
-                    search: () => ({method: option, step: 3}),
-                })
+                if ((data?.data?.backupCodes || []).length > 0) {
+                    router.navigate({
+                        to: "/multi-factor-set",
+                        search: () => ({method: option, step: 3}),
+                    })
+                }
                 else {
                     router.navigate({to: "/me"})
                     toast.success("Set up multi-factor authentication successfully!");

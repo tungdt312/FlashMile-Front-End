@@ -9,22 +9,27 @@ import {useChallengeMfa, useVerifyMfa} from "../../services/mfa/mfa";
 import {useAuthStore} from "../../lib/global.ts";
 import {toast} from "sonner";
 import {CompleteSetupMfaCommandMethod, type MfaChallengeCommandMethod} from "../../types";
-import {startAuthentication} from "@simplewebauthn/browser";
+import {startRegistration} from "@simplewebauthn/browser";
 
 const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
     const router = useRouter();
     const [otp, setOtp] = useState<string>("")
-    const [webAuthnJSON, setWebAuthnJSON] = useState({});
     const authStore = useAuthStore();
     const challengeService = useChallengeMfa({
         mutation: {
-            onSuccess: (data) => {
+            onSuccess: async (data) => {
                 if (method == CompleteSetupMfaCommandMethod.WEBAUTHN) {
                     try {
                         const json = JSON.parse(data?.data?.publicOptionsJson as string)
                         const modifiedJson = {...json, challenge: json.challenge.value};
-                        setWebAuthnJSON(startAuthentication(modifiedJson));
-                        console.log(`webauth: ${webAuthnJSON}`);
+                        const attResp = await startRegistration(modifiedJson);
+                        console.log(attResp);
+                        verifyService.mutate({
+                            data: {
+                                challengeId: challengeService?.data?.data?.challengeId,
+                                credential: JSON.stringify(attResp),
+                            }
+                        })
                     } catch {
                         toast.error("Error getting web authn");
                     }
@@ -55,15 +60,7 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
             }
         })
     }, [])
-    useEffect(() => {
-        if (method == CompleteSetupMfaCommandMethod.WEBAUTHN && webAuthnJSON)
-            verifyService.mutate({
-                data: {
-                    challengeId: challengeService?.data?.data?.challengeId,
-                    credential: JSON.stringify(webAuthnJSON),
-                }
-            })
-    }, [webAuthnJSON])
+
     return (
         <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8 bg-background">
             <div className="flex items-center justify-start w-full">
