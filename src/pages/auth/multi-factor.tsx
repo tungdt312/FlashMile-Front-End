@@ -25,7 +25,7 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
                         const modifiedJson = {...json, challenge: json.challenge.value};
 
                         const attResp = await startAuthentication(modifiedJson);
-                        console.log(data)
+                        
                         verifyService.mutate({
                             data: {
                                 challengeId: data?.data?.challengeId,
