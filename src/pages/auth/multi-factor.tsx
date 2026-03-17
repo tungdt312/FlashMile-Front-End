@@ -24,7 +24,7 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
                         const json = JSON.parse(data?.data?.publicOptionsJson as string)
                         const modifiedJson = {...json, challenge: json.challenge.value};
                         setWebAuthnJSON(startAuthentication(modifiedJson));
-                        console.log(webAuthnJSON);
+                        console.log(`webauth: ${webAuthnJSON}`);
                     } catch {
                         toast.error("Error getting web authn");
                     }
