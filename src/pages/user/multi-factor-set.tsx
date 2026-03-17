@@ -22,14 +22,14 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
     const activatedMethods = data?.data?.map(item => item.method as string);
     const initService = useInitiateMfaSetup({
         mutation: {
-            onSuccess: (data) => {
+            onSuccess: async (data) => {
                 try {
                     console.log(data);
                     const json = JSON.parse(data?.data?.publicKeyCredentialCreationOptions as string)
                     console.log(json)
                     const modifiedJson = {...json, challenge: json.challenge.value};
                     console.log(modifiedJson);
-                    const attResp= startRegistration(modifiedJson);
+                    const attResp= await startRegistration(modifiedJson);
                     console.log(attResp);
                     setWebAuthnJSON(attResp);
                     console.log(webAuthnJSON);
@@ -84,7 +84,7 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
         }
     }
     useEffect(() => {
-        if (option == CompleteSetupMfaCommandMethod.WEBAUTHN && webAuthnJSON)
+        if (option == CompleteSetupMfaCommandMethod.WEBAUTHN && Object.keys(webAuthnJSON).length > 0)
         completeService.mutate({
             data: {
                 method: option as InitiateMfaSetupMethod,
