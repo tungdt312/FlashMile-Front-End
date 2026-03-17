@@ -9,7 +9,7 @@ import {useChallengeMfa, useVerifyMfa} from "../../services/mfa/mfa";
 import {useAuthStore} from "../../lib/global.ts";
 import {toast} from "sonner";
 import {CompleteSetupMfaCommandMethod, type MfaChallengeCommandMethod} from "../../types";
-import {startRegistration} from "@simplewebauthn/browser";
+import {startAuthentication} from "@simplewebauthn/browser";
 
 const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
     const router = useRouter();
@@ -21,8 +21,13 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
                 if (method == CompleteSetupMfaCommandMethod.WEBAUTHN) {
                     try {
                         const json = JSON.parse(data?.data?.publicOptionsJson as string)
-                        const modifiedJson = {challenge: json.challenge.value,...json};
-                        const attResp = await startRegistration(modifiedJson);
+                        console.log("json");
+                        console.log(json);
+                        const modifiedJson = {...json, challenge: json.challenge.value};
+                        console.log("modifiedJson");
+                        console.log(modifiedJson);
+                        const attResp = startAuthentication(modifiedJson);
+                        console.log("attResp");
                         console.log(attResp);
                         verifyService.mutate({
                             data: {
@@ -59,7 +64,7 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
                 verificationToken: token,
             }
         })
-    }, [])
+    }, [token])
 
     return (
         <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8 bg-background">
