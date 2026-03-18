@@ -16,7 +16,7 @@ const SignUp = ({provider, step}: { provider?: string, step?: number }) => {
     const [token, setToken] = useState("")
     const nextStep = () => {
         router.navigate({
-            to: "/multi-factor-set",
+            to: "/sign-up",
             search: (prev) => ({ ...prev, step: (Number(step) || 1) + 1 }),
         })
     }

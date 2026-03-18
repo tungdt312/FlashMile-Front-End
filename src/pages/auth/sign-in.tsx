@@ -29,8 +29,7 @@ import {
     DrawerTitle,
     DrawerTrigger
 } from "../../components/ui/drawer.tsx";
-import {type ApiResponseVoid, type LoginResult} from "../../types";
-import {BACKEND_URL, REFRESH_TOKEN_STORAGE_KEY} from "../../constants/securityConstant.ts";
+import {BACKEND_URL} from "../../constants/securityConstant.ts";
 
 const LoginBody = z.object({
     "credentialId": z.string().min(1, "Credential ID is required."),
