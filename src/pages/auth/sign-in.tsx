@@ -61,8 +61,7 @@ const SignIn = () => {
                     });
                 }
                 // res ở đây chính là LoginMutationResult
-                else if (res?.data?.accessToken) {
-
+                else if (!res?.data?.accessToken) {
                     toast.error("Login failed.");
                     console.log("Access Token not found!");
                     return;
