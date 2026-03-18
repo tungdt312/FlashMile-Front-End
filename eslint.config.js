@@ -19,5 +19,10 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      'react-hooks/set-state-in-effect': 'off',
+      ...reactHooks.configs.recommended.rules, // Giữ các rules mặc định khác
+      ...reactRefresh.configs.vite.rules,
+    },
   },
 ])

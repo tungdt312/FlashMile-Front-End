@@ -92,7 +92,7 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
         <div className={"w-full h-dvh flex flex-col items-center bg-background"}>
             <div className={"w-full flex items-center justify-between px-4 pt-4"}>
                 <Button size={"icon-lg"} variant={"outline"}
-                        className={"size-10 ring-0 border-0 rounded-full text-primary!"}
+                        className={"size-10 ring-0 rounded-full text-primary!"}
                         onClick={() => {
                             router.history.back()
                         }}>
@@ -100,7 +100,7 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                 </Button>
                 <p className={"heading text-center w-full"}>Multi-factor Authentication</p>
                 <Button size={"icon-lg"} variant={"outline"}
-                        className={"size-10 ring-0 border-0 rounded-full text-foreground"} onClick={() => {
+                        className={"size-10 ring-0 rounded-full text-foreground"} onClick={() => {
                 }}>
                     <LuBell size={20}/>
                 </Button>

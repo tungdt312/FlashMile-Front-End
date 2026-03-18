@@ -44,11 +44,13 @@ const VerifyEmail = ({code}: { code: string }) => {
         sendVerificationService.mutate({data: data})
     }
     useEffect(() => {
-        const data: ProcessVerificationQuery = {
-            purpose: "EMAIL_VERIFICATION",
-            code: code,
+        if(!code){
+            const data: ProcessVerificationQuery = {
+                purpose: "EMAIL_VERIFICATION",
+                code: code,
+            }
+            verifyService.mutate({data: data})
         }
-        verifyService.mutate({data: data})
     }, [code])
     useEffect(() => {
         if (counter <= 0) return;
@@ -63,7 +65,7 @@ const VerifyEmail = ({code}: { code: string }) => {
     return (
         <div className="w-full h-dvh flex flex-col items-center overflow-hidden p-8 bg-background">
             <div className="flex items-center justify-start w-full">
-                <Button variant={"outline"} className={"size-10"} onClick={() => router.history.back()}>
+                <Button variant={"outline"} className={"size-10"} onClick={() => router.navigate({to:"/"})}>
                     <LuArrowLeft/>
                 </Button>
             </div>
