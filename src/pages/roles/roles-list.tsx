@@ -8,7 +8,8 @@ import {Badge} from "../../components/ui/badge.tsx";
 import {Skeleton} from "../../components/ui/skeleton.tsx";
 import {useInView} from "react-intersection-observer";
 import type {RoleSummaryProjection} from "../../types";
-
+import RoleForm from "../../components/forms/add-role-form.tsx";
+import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
 
 const RolesList = ({search}: { search?: string }) => {
     const router = useRouter();
@@ -16,7 +17,7 @@ const RolesList = ({search}: { search?: string }) => {
     const {ref, inView} = useInView()
     const [content, setContent] = useState<RoleSummaryProjection[]>([]);
     const [inputValue, setInputValue] = useState(search || "");
-    const {data, isLoading, isError, isFetching} = useGetAllRoles({
+    const {data, isLoading, isError, isFetching, refetch} = useGetAllRoles({
         page: currentPage,
         size: 10,
         filter: search ? `name==^*${search}*` : undefined
@@ -25,12 +26,12 @@ const RolesList = ({search}: { search?: string }) => {
         const handler = setTimeout(() => {
             router.navigate({
                 to: "/roles",
-                search: {search: inputValue || undefined },
+                search: {search: inputValue || undefined},
                 replace: true // Replaces history entry so "Back" button isn't clogged with search steps
             });
         }, 500);
 
-        return () => clearTimeout(handler); // Cleanup if user types again before 500ms
+        return () => clearTimeout(handler);
     }, [inputValue, router]);
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -78,7 +79,15 @@ const RolesList = ({search}: { search?: string }) => {
                     // Update URL params via your router to trigger the 'search' prop update
                     setInputValue(e.target.value);
                 }}/>
-                <Button className={"w-full"}><LuPlus className={"size-6"}/> Create new role</Button>
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button className={"w-full"}><LuPlus className={"size-6"}/> Create new role</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <RoleForm onSuccess={() => refetch()}/>
+                    </DialogContent>
+                </Dialog>
+
                 <div className={"w-full flex-1 flex flex-col items-center justify-start gap-4"}>
                     {content.map((item, i) => <RoleCard key={i} role={item}/>)}
                     {(isLoading || isFetching) &&
@@ -92,7 +101,7 @@ const RolesList = ({search}: { search?: string }) => {
                             <Skeleton className="h-4 w-1/2"/>
                         </div>
                     }
-                    <div ref={ref} className="h-10 w-full" />
+                    <div ref={ref} className="h-10 w-full"/>
                     {isError &&
                         <p className={"w-full text-muted-foreground caption text-center"}>
                             Cannot get roles list from server
@@ -104,12 +113,19 @@ const RolesList = ({search}: { search?: string }) => {
     )
 }
 export default RolesList
-const RoleCard = ({ role }: { role: RoleSummaryProjection }) => (
-    <div className="w-full flex flex-col p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md">
-        <div className="flex items-center justify-between">
-            <p className="font-bold">{role.name}</p>
-            <Badge className={"bg-primary-300 text-primary"}>33 perms</Badge>
+const RoleCard = ({role}: { role: RoleSummaryProjection }) => {
+    const router = useRouter();
+    return (
+        <div className="w-full flex flex-col p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md"
+             onClick={() => router.navigate({to: `/roles/${role.id}/`})}>
+            <div className="flex items-center justify-between">
+                <p className="font-bold"> {role.name}</p>
+                <div className={"flex gap-2"}>
+                    {role.getisDefault && <Badge className={"bg-primary-300 text-primary"}>Default role</Badge>}
+                    {role.systemRole && <Badge variant={"secondary"}>System role</Badge>}
+                </div>
+            </div>
+            <p className="caption text-muted-foreground w-full"> {"No description provided"}</p>
         </div>
-        <p className="text-xs text-muted-foreground truncate">No description provided</p>
-    </div>
-);
+    )
+};

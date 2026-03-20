@@ -1,6 +1,15 @@
 import {useRouter} from "@tanstack/react-router";
 import {Button} from "../../components/ui/button.tsx";
-import {LuArrowLeft, LuBell, LuCopy, LuDownload, LuLoaderCircle, LuMonitor, LuSmartphone} from "react-icons/lu";
+import {
+    LuArrowLeft,
+    LuBell,
+    LuCopy,
+    LuDownload,
+    LuLoaderCircle,
+    LuMonitor,
+    LuSmartphone,
+    LuTrash
+} from "react-icons/lu";
 import {Progress} from "../../components/ui/progress.tsx";
 import {RadioGroup, RadioGroupItem} from "../../components/ui/radio-group.tsx";
 import {Field, FieldContent, FieldDescription, FieldLabel, FieldTitle} from "../../components/ui/field.tsx";
@@ -8,7 +17,7 @@ import {CompleteSetupMfaCommandMethod, type InitiateMfaSetupMethod} from "../../
 import {Input} from "../../components/ui/input.tsx";
 import {useState} from "react";
 import {toast} from "sonner";
-import {useCompleteMfaSetup, useGetMfaMethods, useInitiateMfaSetup} from "../../services/mfa/mfa";
+import {useCompleteMfaSetup, useGetMfaMethods, useInitiateMfaSetup, useRemoveMfaMethod} from "../../services/mfa/mfa";
 import {Badge} from "../../components/ui/badge.tsx";
 import {startRegistration} from "@simplewebauthn/browser";
 
@@ -56,8 +65,7 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                         to: "/multi-factor-set",
                         search: () => ({method: option, step: 3}),
                     })
-                }
-                else {
+                } else {
                     router.navigate({to: "/me"})
                     toast.success("Set up multi-factor authentication successfully!");
                 }
@@ -66,6 +74,16 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                 toast.error(error.response?.data.message || "Failed to complete service!");
             }
 
+        }
+    })
+    const removeService = useRemoveMfaMethod({
+        mutation: {
+            onSuccess: () => {
+                toast.success("Remove multi-factor authentication method successfully!");
+            },
+            onError: (error) => {
+                toast.error(error.response?.data.message || "Failed to remove service!");
+            }
         }
     })
     const submit = () => {
@@ -125,9 +143,15 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                                     generate a code you'll enter when you log in.
                                 </FieldDescription>
                             </FieldContent>
-                            <RadioGroupItem value={CompleteSetupMfaCommandMethod.TOTP}
-                                            id={CompleteSetupMfaCommandMethod.TOTP}
-                                            disabled={activatedMethods?.includes(CompleteSetupMfaCommandMethod.TOTP)}/>
+                            {!activatedMethods?.includes(CompleteSetupMfaCommandMethod.TOTP) &&
+                                <RadioGroupItem value={CompleteSetupMfaCommandMethod.TOTP}
+                                                id={CompleteSetupMfaCommandMethod.TOTP}
+                                                disabled={activatedMethods?.includes(CompleteSetupMfaCommandMethod.TOTP)}/>}
+                            {activatedMethods?.includes(CompleteSetupMfaCommandMethod.TOTP) &&
+                                <Button size={"icon-sm"} variant={"destructive"}
+                                        onClick={() => removeService.mutate({method: CompleteSetupMfaCommandMethod.TOTP})}><LuTrash
+                                    className={"size-5"}/></Button>
+                            }
                         </Field>
                     </FieldLabel>
                     <FieldLabel htmlFor={CompleteSetupMfaCommandMethod.WEBAUTHN}>
@@ -144,98 +168,111 @@ const MultiFactorSet = ({step, method}: { step?: number, method?: string }) => {
                                     It's the most secure way to sign in.
                                 </FieldDescription>
                             </FieldContent>
-                            <RadioGroupItem value={CompleteSetupMfaCommandMethod.WEBAUTHN}
-                                            id={CompleteSetupMfaCommandMethod.WEBAUTHN}
-                                            disabled={activatedMethods?.includes(CompleteSetupMfaCommandMethod.WEBAUTHN)}/>
+                            {!activatedMethods?.includes(CompleteSetupMfaCommandMethod.WEBAUTHN) &&
+                                <RadioGroupItem value={CompleteSetupMfaCommandMethod.WEBAUTHN}
+                                                id={CompleteSetupMfaCommandMethod.WEBAUTHN}
+                                                disabled={activatedMethods?.includes(CompleteSetupMfaCommandMethod.WEBAUTHN)}/>}
+                            {activatedMethods?.includes(CompleteSetupMfaCommandMethod.WEBAUTHN) &&
+                                <Button size={"icon-sm"} variant={"destructive"}
+                                        onClick={() => removeService.mutate({method: CompleteSetupMfaCommandMethod.WEBAUTHN})}><LuTrash
+                                    className={"size-5"}/></Button>}
                         </Field>
                     </FieldLabel>
                 </RadioGroup>}
-                {step == 2 && <div className="w-full flex flex-1 flex-col items-center justify-center gap-4">
-                    {method == CompleteSetupMfaCommandMethod.TOTP &&
-                        <div className="w-full flex flex-1 flex-col items-center justify-center gap-4">
-                            <p className={"caption w-full text-muted-foreground text-center"}>Scan this QR code with
-                                Google
-                                Authenticator (or similar) app.</p>
-                            <img src={initService.data?.data?.qrCodeUrl || ""} alt={"QR"}
-                                 className={"w-1/2 rounded-xl p-2 border-1 aspect-square"}/>
-                            <p className={"caption w-full text-muted-foreground text-center"}>Cann’t scan? Here is the
-                                alternative code.</p>
-                            <p className={"py-2 px-4 rounded-xl bg-muted text-muted-foreground flex items-center cursor-pointer hover:bg-muted-foreground hover:text-muted"}
-                               onClick={() => {
-                               }}>{initService.data?.data?.secret || ""}<LuCopy className="flex-shrink-0 w-5"/></p>
-                            <Field>
-                                <FieldLabel htmlFor={"otp"}>Enter your OTP to continue</FieldLabel>
-                                <Input id={"otp"} autoComplete="off" placeholder="xxxxxx" value={otp}
-                                       onChange={(e) => setOtp(e.target.value)}/>
-                            </Field>
-                        </div>
-                    }
-
-                    {method == CompleteSetupMfaCommandMethod.WEBAUTHN &&
-                        <div className={"flex flex-col w-full items-center justify-center gap-2"}>
-                            <LuLoaderCircle className={"animate-spin size-6"}/>
-                            <p>Connecting to third party...</p>
-                        </div>
-                    }
-                </div>
-                }
-                {step == 3 && <div className="w-full flex flex-1 flex-col items-center justify-center gap-4">
-                    <p className={"heading w-full text-center"}>Recovery codes</p>
-                    <p className={"caption w-full text-muted-foreground text-center"}>Keep these recovery codes safe!
-                        If you lose access to your authenticator app and don’t have these codes, you’ll lose access to
-                        your account.</p>
-                    <div
-                        className={"w-full flex items-center justify-center gap-4 rounded-2xl p-4 border-1 border-primary"}>
-                        <div className="w-full space-y-6">
-                            {/* The Grid Container */}
-                            <div className="grid grid-cols-2 gap-3">
-                                {completeService.data?.data?.backupCodes?.map((code, index) => (
-                                    <p
-                                        key={index}
-                                        className="font-mono text-sm py-2 px-3 border rounded-md bg-muted/50 text-center"
-                                    >
-                                        {code}
-                                    </p>
-                                ))}
+                {step == 2 &&
+                    <div className="w-full flex flex-1 flex-col items-center justify-center gap-4">
+                        {method == CompleteSetupMfaCommandMethod.TOTP &&
+                            <div className="w-full flex flex-1 flex-col items-center justify-center gap-4">
+                                <p className={"caption w-full text-muted-foreground text-center"}>Scan this
+                                    QR code with
+                                    Google
+                                    Authenticator (or similar) app.</p>
+                                <img src={initService.data?.data?.qrCodeUrl || ""} alt={"QR"}
+                                     className={"w-1/2 rounded-xl p-2 border-1 aspect-square"}/>
+                                <p className={"caption w-full text-muted-foreground text-center"}>Cann’t
+                                    scan? Here is the
+                                    alternative code.</p>
+                                <p className={"py-2 px-4 rounded-xl bg-muted text-muted-foreground flex items-center cursor-pointer hover:bg-muted-foreground hover:text-muted"}
+                                   onClick={() => {
+                                   }}>{initService.data?.data?.secret || ""}<LuCopy
+                                    className="flex-shrink-0 w-5"/></p>
+                                <Field>
+                                    <FieldLabel htmlFor={"otp"}>Enter your OTP to continue</FieldLabel>
+                                    <Input id={"otp"} autoComplete="off" placeholder="xxxxxx" value={otp}
+                                           onChange={(e) => setOtp(e.target.value)}/>
+                                </Field>
                             </div>
+                        }
 
-                            {/* Action Buttons */}
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <Button
-                                    variant="outline"
-                                    className="flex-1"
-                                    onClick={() => {
-                                        const allCodes = completeService.data?.data?.backupCodes?.join('\n');
-                                        if (allCodes) navigator.clipboard.writeText(allCodes);
-                                    }}
-                                >
-                                    <LuCopy className="mr-2 h-4 w-4"/> Copy All
-                                </Button>
-
-                                <Button
-                                    className="flex-1"
-                                    onClick={() => {
-                                        const content = completeService.data?.data?.backupCodes?.join('\n');
-                                        const blob = new Blob([content || ""], {type: 'text/plain'});
-                                        const url = URL.createObjectURL(blob);
-                                        const link = document.createElement('a');
-                                        link.href = url;
-                                        link.download = 'backup-codes.txt';
-                                        link.click();
-                                        URL.revokeObjectURL(url);
-                                    }}
-                                >
-                                    <LuDownload className="mr-2 h-4 w-4"/> Download
-                                </Button>
+                        {method == CompleteSetupMfaCommandMethod.WEBAUTHN &&
+                            <div className={"flex flex-col w-full items-center justify-center gap-2"}>
+                                <LuLoaderCircle className={"animate-spin size-6"}/>
+                                <p>Connecting to third party...</p>
                             </div>
-                        </div>
+                        }
                     </div>
-                </div>}
+                }
+                {step == 3 &&
+                    <div className="w-full flex flex-1 flex-col items-center justify-center gap-4">
+                        <p className={"heading w-full text-center"}>Recovery codes</p>
+                        <p className={"caption w-full text-muted-foreground text-center"}>Keep these
+                            recovery codes safe!
+                            If you lose access to your authenticator app and don’t have these codes, you’ll
+                            lose access to
+                            your account.</p>
+                        <div
+                            className={"w-full flex items-center justify-center gap-4 rounded-2xl p-4 border-1 border-primary"}>
+                            <div className="w-full space-y-6">
+                                {/* The Grid Container */}
+                                <div className="grid grid-cols-2 gap-3">
+                                    {completeService.data?.data?.backupCodes?.map((code, index) => (
+                                        <p
+                                            key={index}
+                                            className="font-mono text-sm py-2 px-3 border rounded-md bg-muted/50 text-center"
+                                        >
+                                            {code}
+                                        </p>
+                                    ))}
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <Button
+                                        variant="outline"
+                                        className="flex-1"
+                                        onClick={() => {
+                                            const allCodes = completeService.data?.data?.backupCodes?.join('\n');
+                                            if (allCodes) navigator.clipboard.writeText(allCodes);
+                                        }}
+                                    >
+                                        <LuCopy className="mr-2 h-4 w-4"/> Copy All
+                                    </Button>
+
+                                    <Button
+                                        className="flex-1"
+                                        onClick={() => {
+                                            const content = completeService.data?.data?.backupCodes?.join('\n');
+                                            const blob = new Blob([content || ""], {type: 'text/plain'});
+                                            const url = URL.createObjectURL(blob);
+                                            const link = document.createElement('a');
+                                            link.href = url;
+                                            link.download = 'backup-codes.txt';
+                                            link.click();
+                                            URL.revokeObjectURL(url);
+                                        }}
+                                    >
+                                        <LuDownload className="mr-2 h-4 w-4"/> Download
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
                 <div className={"flex flex-col items-center justify-center gap-2 w-full"}>
                     <Progress className={"w-full h-2"} value={(step || 1) * 100 / 3}/>
                     <div className={"w-full flex items-center justify-between gap-4"}>
                         <p>Step {step || 1} of 3</p>
-                        <Button type={"button"} onClick={submit} disabled={step == 2 && option == CompleteSetupMfaCommandMethod.WEBAUTHN}>
+                        <Button type={"button"} onClick={submit}
+                                disabled={step == 2 && option == CompleteSetupMfaCommandMethod.WEBAUTHN}>
                             {((step || 1) < 3) ? "Next" : "Done"}
                         </Button>
                     </div>

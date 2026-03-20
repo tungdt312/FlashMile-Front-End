@@ -8,6 +8,4 @@
 export type GetAllPermissionsParams = {
 filter?: string;
 sorts?: string[];
-page?: number;
-size?: number;
 };

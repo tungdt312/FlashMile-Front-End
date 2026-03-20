@@ -97,6 +97,44 @@
       }
     },
     "/api/v1/roles/{id}": {
+      "get": {
+        "tags": [
+          "Role"
+        ],
+        "operationId": "getRoleById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseRoleResult"
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "tags": [
           "Role"
@@ -805,24 +843,6 @@
                 "type": "string"
               }
             }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
           }
         ],
         "responses": {
@@ -841,7 +861,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponsePageResponsePermissionSummaryProjection"
+                  "$ref": "#/components/schemas/ApiResponseMapStringListPermissionSummaryProjection"
                 }
               }
             }
@@ -2099,24 +2119,6 @@
                 "type": "string"
               }
             }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
           }
         ],
         "responses": {
@@ -2135,7 +2137,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponsePageResponsePermissionSummaryProjection"
+                  "$ref": "#/components/schemas/ApiResponseMapStringListPermissionSummaryProjection"
                 }
               }
             }
@@ -3418,7 +3420,7 @@
           }
         }
       },
-      "ApiResponsePageResponsePermissionSummaryProjection": {
+      "ApiResponseMapStringListPermissionSummaryProjection": {
         "type": "object",
         "properties": {
           "timestamp": {
@@ -3433,50 +3435,32 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/PageResponsePermissionSummaryProjection"
-          }
-        }
-      },
-      "PageResponsePermissionSummaryProjection": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PermissionSummaryProjection"
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PermissionSummaryProjection"
+              }
             }
-          },
-          "page": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalElements": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "first": {
-            "type": "boolean"
           }
         }
       },
       "PermissionSummaryProjection": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string"
+          },
+          "resource": {
+            "type": "string"
+          },
           "id": {
             "type": "string"
           },
-          "code": {
+          "description": {
+            "type": "string"
+          },
+          "action": {
             "type": "string"
           }
         }

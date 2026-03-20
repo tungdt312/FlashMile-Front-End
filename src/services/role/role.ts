@@ -24,7 +24,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  ApiResponsePageResponsePermissionSummaryProjection,
+  ApiResponseMapStringListPermissionSummaryProjection,
   ApiResponsePageResponseRoleSummaryProjection,
   ApiResponseRoleResult,
   ApiResponseVoid,
@@ -41,6 +41,90 @@ import type { ErrorType , BodyType } from '../../../axiosConfig';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+
+export const getRoleById = (
+    id: string,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseRoleResult>(
+      {url: `/api/v1/roles/${id}`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetRoleByIdQueryKey = (id: string,) => {
+    return [
+    `/api/v1/roles/${id}`
+    ] as const;
+    }
+
+    
+export const getGetRoleByIdQueryOptions = <TData = Awaited<ReturnType<typeof getRoleById>>, TError = ErrorType<ErrorResponse>>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoleById>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRoleByIdQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoleById>>> = ({ signal }) => getRoleById(id, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoleById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetRoleByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getRoleById>>>
+export type GetRoleByIdQueryError = ErrorType<ErrorResponse>
+
+
+export function useGetRoleById<TData = Awaited<ReturnType<typeof getRoleById>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoleById>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRoleById>>,
+          TError,
+          Awaited<ReturnType<typeof getRoleById>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRoleById<TData = Awaited<ReturnType<typeof getRoleById>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoleById>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRoleById>>,
+          TError,
+          Awaited<ReturnType<typeof getRoleById>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRoleById<TData = Awaited<ReturnType<typeof getRoleById>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoleById>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetRoleById<TData = Awaited<ReturnType<typeof getRoleById>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoleById>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetRoleByIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
 
 
 
@@ -306,7 +390,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return axiosInstanceFn<ApiResponsePageResponsePermissionSummaryProjection>(
+      return axiosInstanceFn<ApiResponseMapStringListPermissionSummaryProjection>(
       {url: `/api/v1/roles/${id}/permissions`, method: 'GET',
         params, signal
     },

@@ -6,6 +6,9 @@
  */
 
 export interface PermissionSummaryProjection {
+  name?: string;
+  resource?: string;
   id?: string;
-  code?: string;
+  description?: string;
+  action?: string;
 }

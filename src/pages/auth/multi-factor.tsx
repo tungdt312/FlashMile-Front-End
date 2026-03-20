@@ -72,7 +72,7 @@ const MultiFactor = ({method, token}: { method?: string, token?: string }) => {
             </div>
             <div className="flex flex-col items-center justify-between w-full max-w-xs flex-1">
                 <img src={'/logo.svg'} alt="" className="w-1/4 max-w-[96px]"/>
-                {(challengeService.isPending)
+                {(challengeService.isPending || method == CompleteSetupMfaCommandMethod.WEBAUTHN)
                     ? <div className={"flex flex-col w-full items-center justify-center gap-2"}>
                         <LuLoaderCircle className={"animate-spin size-6"}/>
                         <p>Connecting to third party...</p>

@@ -18,11 +18,11 @@ import {useRouter} from "@tanstack/react-router";
 import {useAuthStore} from "../../lib/global.ts";
 import {Avatar, AvatarFallback, AvatarImage} from "../../components/ui/avatar.tsx";
 import {Switch} from "../../components/ui/switch.tsx";
-import {useLogoutUser} from "../../services/authentication/authentication.ts";
+import {useLogoutUser} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import {useEffect, useState} from "react";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
-import {useGetMyProfile, useUpdateMyProfile} from "../../services/user-profile/user-profile.ts";
+import {useGetMyProfile, useUpdateMyProfile} from "../../services/user-profile/user-profile";
 
 
 const Setting = () => {

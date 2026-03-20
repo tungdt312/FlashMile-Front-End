@@ -20,7 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  ApiResponsePageResponsePermissionSummaryProjection,
+  ApiResponseMapStringListPermissionSummaryProjection,
   ErrorResponse,
   GetAllPermissionsParams
 } from '../../types';
@@ -39,7 +39,7 @@ export const getAllPermissions = (
 ) => {
       
       
-      return axiosInstanceFn<ApiResponsePageResponsePermissionSummaryProjection>(
+      return axiosInstanceFn<ApiResponseMapStringListPermissionSummaryProjection>(
       {url: `/api/v1/permissions`, method: 'GET',
         params, signal
     },

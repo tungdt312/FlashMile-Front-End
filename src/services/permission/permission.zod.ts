@@ -9,26 +9,19 @@ import * as zod from 'zod';
 
 export const GetAllPermissionsQueryParams = zod.object({
   "filter": zod.string().optional(),
-  "sorts": zod.array(zod.string()).optional(),
-  "page": zod.number().optional(),
-  "size": zod.number().optional()
+  "sorts": zod.array(zod.string()).optional()
 })
 
 export const GetAllPermissionsResponse = zod.object({
   "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
-  "data": zod.object({
-  "content": zod.array(zod.object({
+  "data": zod.record(zod.string(), zod.array(zod.object({
+  "name": zod.string().optional(),
+  "resource": zod.string().optional(),
   "id": zod.string().optional(),
-  "code": zod.string().optional()
-})).optional(),
-  "page": zod.number().optional(),
-  "size": zod.number().optional(),
-  "totalElements": zod.number().optional(),
-  "totalPages": zod.number().optional(),
-  "last": zod.boolean().optional(),
-  "first": zod.boolean().optional()
-}).optional()
+  "description": zod.string().optional(),
+  "action": zod.string().optional()
+}))).optional()
 })
 

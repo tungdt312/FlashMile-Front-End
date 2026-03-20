@@ -1,7 +1,8 @@
 import axios, {AxiosError, type AxiosRequestConfig} from "axios";
 import {BACKEND_URL, PUBLIC_ENDPOINTS} from "./src/constants/securityConstant.ts";
-import {rotateToken} from "./src/services/authentication/authentication.ts";
+
 import {useAuthStore} from "./src/lib/global.ts";
+import {rotateToken} from "./src/services/authentication/authentication.ts";
 
 interface FailedRequest {
     resolve: (token: string) => void;

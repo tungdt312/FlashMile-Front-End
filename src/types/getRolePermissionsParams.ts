@@ -8,6 +8,4 @@
 export type GetRolePermissionsParams = {
 filter?: string;
 sorts?: string[];
-page?: number;
-size?: number;
 };

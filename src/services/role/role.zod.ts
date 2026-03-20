@@ -7,6 +7,25 @@
 import * as zod from 'zod';
 
 
+export const GetRoleByIdParams = zod.object({
+  "id": zod.string()
+})
+
+export const GetRoleByIdResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.object({
+  "value": zod.string().optional()
+}).optional(),
+  "name": zod.string().optional(),
+  "description": zod.string().optional(),
+  "isDefault": zod.boolean().optional(),
+  "systemRole": zod.boolean().optional()
+}).optional()
+})
+
 export const UpdateRoleParams = zod.object({
   "id": zod.string()
 })
@@ -97,27 +116,20 @@ export const GetRolePermissionsParams = zod.object({
 
 export const GetRolePermissionsQueryParams = zod.object({
   "filter": zod.string().optional(),
-  "sorts": zod.array(zod.string()).optional(),
-  "page": zod.number().optional(),
-  "size": zod.number().optional()
+  "sorts": zod.array(zod.string()).optional()
 })
 
 export const GetRolePermissionsResponse = zod.object({
   "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
-  "data": zod.object({
-  "content": zod.array(zod.object({
+  "data": zod.record(zod.string(), zod.array(zod.object({
+  "name": zod.string().optional(),
+  "resource": zod.string().optional(),
   "id": zod.string().optional(),
-  "code": zod.string().optional()
-})).optional(),
-  "page": zod.number().optional(),
-  "size": zod.number().optional(),
-  "totalElements": zod.number().optional(),
-  "totalPages": zod.number().optional(),
-  "last": zod.boolean().optional(),
-  "first": zod.boolean().optional()
-}).optional()
+  "description": zod.string().optional(),
+  "action": zod.string().optional()
+}))).optional()
 })
 
 export const AssignPermissionsToRoleParams = zod.object({
