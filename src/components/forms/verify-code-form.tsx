@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 // import {useSendVerification, useVerifyCode} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import {SendVerificationCodeQueryPurpose} from "../../types";
@@ -103,9 +103,10 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
     // Phần bổ sung cho firebase
     const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
     const [isVerifying, setIsVerifying] = useState(false);
+    const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
     const setupRecaptcha = (id: string) => {
-        if (!window.recaptchaVerifier) {
-            window.recaptchaVerifier = new RecaptchaVerifier(
+        if (!recaptchaRef.current) {
+            recaptchaRef.current = new RecaptchaVerifier(
                 firebaseAuth,
                 id,
                 {
@@ -117,7 +118,8 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
                 }
             );
         }
-    }
+        return recaptchaRef.current;
+    };
 
     const sendCode = async () => {
         if (counter > 0) return;
@@ -132,10 +134,9 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
 
         try {
             setupRecaptcha('recaptcha-container');
-            const appVerifier = window.recaptchaVerifier;
             const formatPhone = convertVnPhone(phoneNumber);
 
-            const result = await signInWithPhoneNumber(firebaseAuth, formatPhone, appVerifier);
+            const result = await signInWithPhoneNumber(firebaseAuth, formatPhone);
             setConfirmationResult(result);
             console.log("SMS sent successfully!", result);
         } catch (error) {
