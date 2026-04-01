@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {useEffect, useState} from "react";
-import {useSendVerification, useVerifyCode} from "../../services/authentication/authentication";
+// import {useSendVerification, useVerifyCode} from "../../services/authentication/authentication";
 import {toast} from "sonner";
 import {SendVerificationCodeQueryPurpose} from "../../types";
 import {useForm} from "@tanstack/react-form";
@@ -9,6 +9,8 @@ import {Input} from "../ui/input.tsx";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../ui/input-group.tsx";
 import {Button} from "../ui/button.tsx";
 import {LuLoaderCircle} from "react-icons/lu";
+import { firebaseAuth} from "../../lib/firebase-config.ts";
+import { RecaptchaVerifier, signInWithPhoneNumber, type ConfirmationResult } from "firebase/auth";
 
 const VerifyCodeBody = z.object({
     "purpose": z.enum(['PHONE_VERIFICATION', 'EMAIL_VERIFICATION', 'FORGOT_PASSWORD']).optional(),
@@ -27,47 +29,47 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
         }
         return phone; // Trả về nguyên bản nếu không bắt đầu bằng 0
     };
-    const sendVerificationService = useSendVerification({
-        mutation: {
-            onSuccess: () => {
-                setCounter(60)
-            },
-            onError: (err) => {
-                // err ở đây là LoginMutationError
-                toast.error(err.response?.data.message || "Send code failed!");
-            }
-        }
-    })
-    const sendCode = () => {
-        if (counter > 0) return;
-
-        // Lấy giá trị của field 'recipient' trực tiếp từ form instance
-        const phoneNumber = verifyForm.getFieldValue("recipient");
-
-        if (!phoneNumber) {
-            toast.error((type == "PHONE_VERIFICATION") ? "Please enter a phone number!" : "Please enter a email!");
-            return;
-        }
-
-        // Gọi service gửi mã
-        sendVerificationService.mutate({
-            data: {
-                purpose: type,
-                recipient: convertVnPhone(phoneNumber),
-            }
-        });
-    }
-    const verifyService = useVerifyCode({
-        mutation: {
-            onSuccess: (value) => {
-                onSuccess(value.data?.token || "")
-            },
-            onError: (err) => {
-                // err ở đây là LoginMutationError
-                toast.error(err.response?.data.message || "Verify failed!");
-            }
-        }
-    })
+    // const sendVerificationService = useSendVerification({
+    //     mutation: {
+    //         onSuccess: () => {
+    //             setCounter(60)
+    //         },
+    //         onError: (err) => {
+    //             // err ở đây là LoginMutationError
+    //             toast.error(err.response?.data.message || "Send code failed!");
+    //         }
+    //     }
+    // })
+    // const sendCode = () => {
+    //     if (counter > 0) return;
+    //
+    //     // Lấy giá trị của field 'recipient' trực tiếp từ form instance
+    //     const phoneNumber = verifyForm.getFieldValue("recipient");
+    //
+    //     if (!phoneNumber) {
+    //         toast.error((type == "PHONE_VERIFICATION") ? "Please enter a phone number!" : "Please enter a email!");
+    //         return;
+    //     }
+    //
+    //     // Gọi service gửi mã
+    //     sendVerificationService.mutate({
+    //         data: {
+    //             purpose: type,
+    //             recipient: convertVnPhone(phoneNumber),
+    //         }
+    //     });
+    // }
+    // const verifyService = useVerifyCode({
+    //     mutation: {
+    //         onSuccess: (value) => {
+    //             onSuccess(value.data?.token || "")
+    //         },
+    //         onError: (err) => {
+    //             // err ở đây là LoginMutationError
+    //             toast.error(err.response?.data.message || "Verify failed!");
+    //         }
+    //     }
+    // })
     const verifyForm = useForm({
         defaultValues: {
             purpose: type,
@@ -78,12 +80,13 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
             onSubmit: VerifySchema
         },
         onSubmit: (value) => {
-            const data = {
-                purpose: type,
-                recipient: convertVnPhone(value.value.recipient),
-                code: value.value.code
-            }
-            verifyService.mutate({data: data})
+            // const data = {
+            //     purpose: type,
+            //     recipient: convertVnPhone(value.value.recipient),
+            //     code: value.value.code
+            // }
+            // verifyService.mutate({data: data})
+            onOtpVerify(value.value.code);
         }
     })
     useEffect(() => {
@@ -96,6 +99,68 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
         // hoặc chạy nhiều timer cùng lúc khi component re-render
         return () => clearInterval(timer);
     }, [counter]);
+
+    // Phần bổ sung cho firebase
+    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
+    const [isVerifying, setIsVerifying] = useState(false);
+    const setupRecaptcha = (id: string) => {
+        if (!window.recaptchaVerifier) {
+            window.recaptchaVerifier = new RecaptchaVerifier(
+                firebaseAuth,
+                id,
+                {
+                    'size': 'invisible',
+                    'callback': () => {
+                        // reCAPTCHA solved
+                        console.log("reCAPTCHA solved!");
+                    }
+                }
+            );
+        }
+    }
+
+    const sendCode = async () => {
+        if (counter > 0) return;
+
+        // Lấy giá trị của field 'recipient' trực tiếp từ form instance
+        const phoneNumber = verifyForm.getFieldValue("recipient");
+
+        if (!phoneNumber) {
+            toast.error((type == "PHONE_VERIFICATION") ? "Please enter a phone number!" : "Please enter a email!");
+            return;
+        }
+
+        try {
+            setupRecaptcha('recaptcha-container');
+            const appVerifier = window.recaptchaVerifier;
+            const formatPhone = convertVnPhone(phoneNumber);
+
+            const result = await signInWithPhoneNumber(firebaseAuth, formatPhone, appVerifier);
+            setConfirmationResult(result);
+            console.log("SMS sent successfully!", result);
+        } catch (error) {
+          console.error(error);
+        }
+    };
+
+    const onOtpVerify = async (value: string) => {
+        try {
+            if (!confirmationResult) {
+                toast.error("Please request a verification code first!");
+                return;
+            }
+            setIsVerifying(true);
+            const res = await confirmationResult.confirm(value);
+            const idToken = await res.user.getIdToken();
+            onSuccess(idToken);
+        } catch {
+            toast.error("Invalid code. Please try again.");
+        }
+        finally {
+            setIsVerifying(false);
+        }
+    };
+
     return (<form id={"verify-form"}
                   onSubmit={(e) => {
                       e.preventDefault();
@@ -151,10 +216,13 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
                 }/>
 
             <Button className={"w-full"} type={"submit"} form={"verify-form"}
-                    disabled={verifyService.isPending}>
-                {verifyService.isPending && <LuLoaderCircle className={"animate-spin"}/>} Verify
+                    // disabled={verifyService.isPending}>
+                     disabled={isVerifying}>
+                {/* {verifyService.isPending && <LuLoaderCircle className={"animate-spin"}/>} Verify */}
+                {isVerifying && <LuLoaderCircle className={"animate-spin"}/>} Verify
             </Button>
 
+            <div id="recaptcha-container"></div>
         </form>
     )
 }
