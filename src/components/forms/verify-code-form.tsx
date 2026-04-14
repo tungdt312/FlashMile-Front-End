@@ -133,10 +133,10 @@ const VerifyCodeForm = ({onSuccess, type}: { onSuccess: (t: string) => void, typ
         }
 
         try {
-            setupRecaptcha('recaptcha-container');
+            const captcha = setupRecaptcha('recaptcha-container');
             const formatPhone = convertVnPhone(phoneNumber);
 
-            const result = await signInWithPhoneNumber(firebaseAuth, formatPhone);
+            const result = await signInWithPhoneNumber(firebaseAuth, formatPhone, captcha);
             setConfirmationResult(result);
             console.log("SMS sent successfully!", result);
         } catch (error) {
