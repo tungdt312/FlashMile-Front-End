@@ -12,5 +12,5 @@ export interface DepotSummaryProjection {
   type?: DepotSummaryProjectionType;
   lat?: number;
   lng?: number;
-  startNode?: boolean;
+  isStartNode?: boolean;
 }

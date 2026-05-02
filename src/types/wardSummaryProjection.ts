@@ -4,6 +4,7 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import type { ProvinceId } from './provinceId';
 import type { WardSummaryProjectionType } from './wardSummaryProjectionType';
 
 export interface WardSummaryProjection {
@@ -11,4 +12,6 @@ export interface WardSummaryProjection {
   id?: string;
   type?: WardSummaryProjectionType;
   code?: string;
+  provinceId?: ProvinceId;
+  provinceName?: string;
 }

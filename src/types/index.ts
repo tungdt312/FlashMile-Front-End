@@ -31,6 +31,7 @@ export * from './apiResponseVerificationResult';
 export * from './apiResponseVoid';
 export * from './apiResponseWardResult';
 export * from './assignPermissionRequest';
+export * from './changePasswordCommand';
 export * from './completeSetupMfaCommand';
 export * from './completeSetupMfaCommandMethod';
 export * from './completeSetupMfaResult';

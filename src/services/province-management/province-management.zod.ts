@@ -8,6 +8,28 @@ import * as zod from 'zod';
 
 
 /**
+ * Lấy thông tin chi tiết của một tỉnh/thành phố theo ID
+ * @summary Get a Province by ID
+ */
+export const GetProvinceByIdParams = zod.object({
+  "id": zod.string()
+})
+
+export const GetProvinceByIdResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.object({
+  "value": zod.string().optional()
+}).optional(),
+  "code": zod.string().optional(),
+  "name": zod.string().optional(),
+  "type": zod.enum(['CITY', 'PROVINCE']).optional()
+}).optional()
+})
+
+/**
  * @summary Update an existing Province (Cấp Tỉnh)
  */
 export const UpdateProvinceParams = zod.object({

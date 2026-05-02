@@ -77,7 +77,8 @@ export const GetAllRolesResponse = zod.object({
   "content": zod.array(zod.object({
   "name": zod.string().optional(),
   "id": zod.string().optional(),
-  "getisDefault": zod.boolean().optional(),
+  "description": zod.string().optional(),
+  "isDefault": zod.boolean().optional(),
   "systemRole": zod.boolean().optional()
 })).optional(),
   "page": zod.number().optional(),
@@ -141,6 +142,18 @@ export const AssignPermissionsToRoleBody = zod.object({
 })
 
 export const AssignPermissionsToRoleResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.unknown().optional()
+})
+
+export const AssignRoleToUserParams = zod.object({
+  "id": zod.string(),
+  "userId": zod.string()
+})
+
+export const AssignRoleToUserResponse = zod.object({
   "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),

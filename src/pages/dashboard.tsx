@@ -26,6 +26,8 @@ const Dashboard = () => {
         <div>
             <Link to={"/me"}>Me</Link>
             <Link to={"/roles"}>Roles</Link>
+            <Link to={"/area"}>Area</Link>
+            <Link to={"/depot"}>Depot</Link>
         </div>
     )
 }

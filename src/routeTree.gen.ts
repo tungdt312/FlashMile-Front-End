@@ -25,8 +25,12 @@ import { Route as authMultiFactor0RouteImport } from './routes/(auth)/multi-fact
 import { Route as authMultiFactorRouteImport } from './routes/(auth)/multi-factor'
 import { Route as AuthenticatedRouteUsersIndexRouteImport } from './routes/_authenticatedRoute/users/index'
 import { Route as AuthenticatedRouteRolesIndexRouteImport } from './routes/_authenticatedRoute/roles/index'
+import { Route as AuthenticatedRouteDepotIndexRouteImport } from './routes/_authenticatedRoute/depot/index'
+import { Route as AuthenticatedRouteAreaIndexRouteImport } from './routes/_authenticatedRoute/area/index'
 import { Route as AuthenticatedRouteUsersUserIdRouteImport } from './routes/_authenticatedRoute/users/$userId'
 import { Route as AuthenticatedRouteRolesRoleIdRouteImport } from './routes/_authenticatedRoute/roles/$roleId'
+import { Route as AuthenticatedRouteDepotDepotIdRouteImport } from './routes/_authenticatedRoute/depot/$depotId'
+import { Route as AuthenticatedRouteAreaProvinceIdRouteImport } from './routes/_authenticatedRoute/area/$provinceId'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticatedRoute',
@@ -112,6 +116,18 @@ const AuthenticatedRouteRolesIndexRoute =
     path: '/roles/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedRouteDepotIndexRoute =
+  AuthenticatedRouteDepotIndexRouteImport.update({
+    id: '/depot/',
+    path: '/depot/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRouteAreaIndexRoute =
+  AuthenticatedRouteAreaIndexRouteImport.update({
+    id: '/area/',
+    path: '/area/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRouteUsersUserIdRoute =
   AuthenticatedRouteUsersUserIdRouteImport.update({
     id: '/users/$userId',
@@ -122,6 +138,18 @@ const AuthenticatedRouteRolesRoleIdRoute =
   AuthenticatedRouteRolesRoleIdRouteImport.update({
     id: '/roles/$roleId',
     path: '/roles/$roleId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRouteDepotDepotIdRoute =
+  AuthenticatedRouteDepotDepotIdRouteImport.update({
+    id: '/depot/$depotId',
+    path: '/depot/$depotId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRouteAreaProvinceIdRoute =
+  AuthenticatedRouteAreaProvinceIdRouteImport.update({
+    id: '/area/$provinceId',
+    path: '/area/$provinceId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -139,8 +167,12 @@ export interface FileRoutesByFullPath {
   '/me': typeof AuthenticatedRouteMeRoute
   '/multi-factor-set': typeof AuthenticatedRouteMultiFactorSetRoute
   '/oauth2/callback': typeof Oauth2CallbackRoute
+  '/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
+  '/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
   '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
+  '/area/': typeof AuthenticatedRouteAreaIndexRoute
+  '/depot/': typeof AuthenticatedRouteDepotIndexRoute
   '/roles/': typeof AuthenticatedRouteRolesIndexRoute
   '/users/': typeof AuthenticatedRouteUsersIndexRoute
 }
@@ -158,8 +190,12 @@ export interface FileRoutesByTo {
   '/me': typeof AuthenticatedRouteMeRoute
   '/multi-factor-set': typeof AuthenticatedRouteMultiFactorSetRoute
   '/oauth2/callback': typeof Oauth2CallbackRoute
+  '/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
+  '/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
   '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
+  '/area': typeof AuthenticatedRouteAreaIndexRoute
+  '/depot': typeof AuthenticatedRouteDepotIndexRoute
   '/roles': typeof AuthenticatedRouteRolesIndexRoute
   '/users': typeof AuthenticatedRouteUsersIndexRoute
 }
@@ -179,8 +215,12 @@ export interface FileRoutesById {
   '/_authenticatedRoute/me': typeof AuthenticatedRouteMeRoute
   '/_authenticatedRoute/multi-factor-set': typeof AuthenticatedRouteMultiFactorSetRoute
   '/oauth2/callback': typeof Oauth2CallbackRoute
+  '/_authenticatedRoute/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
+  '/_authenticatedRoute/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
   '/_authenticatedRoute/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/_authenticatedRoute/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
+  '/_authenticatedRoute/area/': typeof AuthenticatedRouteAreaIndexRoute
+  '/_authenticatedRoute/depot/': typeof AuthenticatedRouteDepotIndexRoute
   '/_authenticatedRoute/roles/': typeof AuthenticatedRouteRolesIndexRoute
   '/_authenticatedRoute/users/': typeof AuthenticatedRouteUsersIndexRoute
 }
@@ -200,8 +240,12 @@ export interface FileRouteTypes {
     | '/me'
     | '/multi-factor-set'
     | '/oauth2/callback'
+    | '/area/$provinceId'
+    | '/depot/$depotId'
     | '/roles/$roleId'
     | '/users/$userId'
+    | '/area/'
+    | '/depot/'
     | '/roles/'
     | '/users/'
   fileRoutesByTo: FileRoutesByTo
@@ -219,8 +263,12 @@ export interface FileRouteTypes {
     | '/me'
     | '/multi-factor-set'
     | '/oauth2/callback'
+    | '/area/$provinceId'
+    | '/depot/$depotId'
     | '/roles/$roleId'
     | '/users/$userId'
+    | '/area'
+    | '/depot'
     | '/roles'
     | '/users'
   id:
@@ -239,8 +287,12 @@ export interface FileRouteTypes {
     | '/_authenticatedRoute/me'
     | '/_authenticatedRoute/multi-factor-set'
     | '/oauth2/callback'
+    | '/_authenticatedRoute/area/$provinceId'
+    | '/_authenticatedRoute/depot/$depotId'
     | '/_authenticatedRoute/roles/$roleId'
     | '/_authenticatedRoute/users/$userId'
+    | '/_authenticatedRoute/area/'
+    | '/_authenticatedRoute/depot/'
     | '/_authenticatedRoute/roles/'
     | '/_authenticatedRoute/users/'
   fileRoutesById: FileRoutesById
@@ -372,6 +424,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRolesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticatedRoute/depot/': {
+      id: '/_authenticatedRoute/depot/'
+      path: '/depot'
+      fullPath: '/depot/'
+      preLoaderRoute: typeof AuthenticatedRouteDepotIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticatedRoute/area/': {
+      id: '/_authenticatedRoute/area/'
+      path: '/area'
+      fullPath: '/area/'
+      preLoaderRoute: typeof AuthenticatedRouteAreaIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticatedRoute/users/$userId': {
       id: '/_authenticatedRoute/users/$userId'
       path: '/users/$userId'
@@ -386,6 +452,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRolesRoleIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticatedRoute/depot/$depotId': {
+      id: '/_authenticatedRoute/depot/$depotId'
+      path: '/depot/$depotId'
+      fullPath: '/depot/$depotId'
+      preLoaderRoute: typeof AuthenticatedRouteDepotDepotIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticatedRoute/area/$provinceId': {
+      id: '/_authenticatedRoute/area/$provinceId'
+      path: '/area/$provinceId'
+      fullPath: '/area/$provinceId'
+      preLoaderRoute: typeof AuthenticatedRouteAreaProvinceIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -394,8 +474,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRouteDashboardRoute: typeof AuthenticatedRouteDashboardRoute
   AuthenticatedRouteMeRoute: typeof AuthenticatedRouteMeRoute
   AuthenticatedRouteMultiFactorSetRoute: typeof AuthenticatedRouteMultiFactorSetRoute
+  AuthenticatedRouteAreaProvinceIdRoute: typeof AuthenticatedRouteAreaProvinceIdRoute
+  AuthenticatedRouteDepotDepotIdRoute: typeof AuthenticatedRouteDepotDepotIdRoute
   AuthenticatedRouteRolesRoleIdRoute: typeof AuthenticatedRouteRolesRoleIdRoute
   AuthenticatedRouteUsersUserIdRoute: typeof AuthenticatedRouteUsersUserIdRoute
+  AuthenticatedRouteAreaIndexRoute: typeof AuthenticatedRouteAreaIndexRoute
+  AuthenticatedRouteDepotIndexRoute: typeof AuthenticatedRouteDepotIndexRoute
   AuthenticatedRouteRolesIndexRoute: typeof AuthenticatedRouteRolesIndexRoute
   AuthenticatedRouteUsersIndexRoute: typeof AuthenticatedRouteUsersIndexRoute
 }
@@ -405,8 +489,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRouteDashboardRoute: AuthenticatedRouteDashboardRoute,
   AuthenticatedRouteMeRoute: AuthenticatedRouteMeRoute,
   AuthenticatedRouteMultiFactorSetRoute: AuthenticatedRouteMultiFactorSetRoute,
+  AuthenticatedRouteAreaProvinceIdRoute: AuthenticatedRouteAreaProvinceIdRoute,
+  AuthenticatedRouteDepotDepotIdRoute: AuthenticatedRouteDepotDepotIdRoute,
   AuthenticatedRouteRolesRoleIdRoute: AuthenticatedRouteRolesRoleIdRoute,
   AuthenticatedRouteUsersUserIdRoute: AuthenticatedRouteUsersUserIdRoute,
+  AuthenticatedRouteAreaIndexRoute: AuthenticatedRouteAreaIndexRoute,
+  AuthenticatedRouteDepotIndexRoute: AuthenticatedRouteDepotIndexRoute,
   AuthenticatedRouteRolesIndexRoute: AuthenticatedRouteRolesIndexRoute,
   AuthenticatedRouteUsersIndexRoute: AuthenticatedRouteUsersIndexRoute,
 }

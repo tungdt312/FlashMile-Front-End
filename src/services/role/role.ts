@@ -533,4 +533,60 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getAssignPermissionsToRoleMutationOptions(options), queryClient);
     }
+    export const assignRoleToUser = (
+    id: string,
+    userId: string,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseVoid>(
+      {url: `/api/v1/roles/${id}/assign/${userId}`, method: 'POST', signal
+    },
+      options);
+    }
+  
+
+
+export const getAssignRoleToUserMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignRoleToUser>>, TError,{id: string;userId: string}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+): UseMutationOptions<Awaited<ReturnType<typeof assignRoleToUser>>, TError,{id: string;userId: string}, TContext> => {
+
+const mutationKey = ['assignRoleToUser'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof assignRoleToUser>>, {id: string;userId: string}> = (props) => {
+          const {id,userId} = props ?? {};
+
+          return  assignRoleToUser(id,userId,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AssignRoleToUserMutationResult = NonNullable<Awaited<ReturnType<typeof assignRoleToUser>>>
+    
+    export type AssignRoleToUserMutationError = ErrorType<ErrorResponse>
+
+    export const useAssignRoleToUser = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignRoleToUser>>, TError,{id: string;userId: string}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof assignRoleToUser>>,
+        TError,
+        {id: string;userId: string},
+        TContext
+      > => {
+      return useMutation(getAssignRoleToUserMutationOptions(options), queryClient);
+    }
     

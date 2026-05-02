@@ -42,6 +42,97 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 /**
+ * Lấy thông tin chi tiết của một tỉnh/thành phố theo ID
+ * @summary Get a Province by ID
+ */
+export const getProvinceById = (
+    id: string,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseProvinceResult>(
+      {url: `/api/v1/admin/provinces/${id}`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetProvinceByIdQueryKey = (id: string,) => {
+    return [
+    `/api/v1/admin/provinces/${id}`
+    ] as const;
+    }
+
+    
+export const getGetProvinceByIdQueryOptions = <TData = Awaited<ReturnType<typeof getProvinceById>>, TError = ErrorType<ErrorResponse>>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProvinceById>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProvinceByIdQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProvinceById>>> = ({ signal }) => getProvinceById(id, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProvinceById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetProvinceByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getProvinceById>>>
+export type GetProvinceByIdQueryError = ErrorType<ErrorResponse>
+
+
+export function useGetProvinceById<TData = Awaited<ReturnType<typeof getProvinceById>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProvinceById>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProvinceById>>,
+          TError,
+          Awaited<ReturnType<typeof getProvinceById>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProvinceById<TData = Awaited<ReturnType<typeof getProvinceById>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProvinceById>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProvinceById>>,
+          TError,
+          Awaited<ReturnType<typeof getProvinceById>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProvinceById<TData = Awaited<ReturnType<typeof getProvinceById>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProvinceById>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get a Province by ID
+ */
+
+export function useGetProvinceById<TData = Awaited<ReturnType<typeof getProvinceById>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProvinceById>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetProvinceByIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+/**
  * @summary Update an existing Province (Cấp Tỉnh)
  */
 export const updateProvince = (

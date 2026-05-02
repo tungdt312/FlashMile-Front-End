@@ -313,6 +313,45 @@
       }
     },
     "/api/v1/admin/wards/{id}": {
+      "get": {
+        "tags": [
+          "Ward Management"
+        ],
+        "summary": "Get Ward by ID (Cấp Xã)",
+        "operationId": "getWardById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseWardResult"
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "tags": [
           "Ward Management"
@@ -403,6 +442,46 @@
       }
     },
     "/api/v1/admin/provinces/{id}": {
+      "get": {
+        "tags": [
+          "Province Management"
+        ],
+        "summary": "Get a Province by ID",
+        "description": "Lấy thông tin chi tiết của một tỉnh/thành phố theo ID",
+        "operationId": "getProvinceById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseProvinceResult"
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "tags": [
           "Province Management"
@@ -893,6 +972,54 @@
           },
           "required": true
         },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/roles/{id}/assign/{userId}": {
+      "post": {
+        "tags": [
+          "Role"
+        ],
+        "operationId": "assignRoleToUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -1572,6 +1699,47 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiResponseLoginResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/change-password": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Change Password",
+        "operationId": "changePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
                 }
               }
             }
@@ -3264,6 +3432,17 @@
           }
         }
       },
+      "ChangePasswordCommand": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
       "CreateWardCommand": {
         "type": "object",
         "properties": {
@@ -3412,7 +3591,10 @@
           "id": {
             "type": "string"
           },
-          "getisDefault": {
+          "description": {
+            "type": "string"
+          },
+          "isDefault": {
             "type": "boolean"
           },
           "systemRole": {
@@ -3638,6 +3820,12 @@
           },
           "code": {
             "type": "string"
+          },
+          "provinceId": {
+            "$ref": "#/components/schemas/ProvinceId"
+          },
+          "provinceName": {
+            "type": "string"
           }
         }
       },
@@ -3753,7 +3941,7 @@
             "type": "number",
             "format": "double"
           },
-          "startNode": {
+          "isStartNode": {
             "type": "boolean"
           }
         }

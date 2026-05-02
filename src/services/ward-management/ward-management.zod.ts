@@ -8,6 +8,36 @@ import * as zod from 'zod';
 
 
 /**
+ * @summary Get Ward by ID (Cấp Xã)
+ */
+export const GetWardByIdParams = zod.object({
+  "id": zod.string()
+})
+
+export const GetWardByIdResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.object({
+  "value": zod.string().optional()
+}).optional(),
+  "code": zod.string().optional(),
+  "name": zod.string().optional(),
+  "provinceId": zod.object({
+  "value": zod.string().optional()
+}).optional(),
+  "type": zod.enum(['WARD', 'COMMUNE', 'TOWNSHIP', 'TOWN']).optional(),
+  "polygon": zod.object({
+  "coordinates": zod.array(zod.object({
+  "latitude": zod.number().optional(),
+  "longitude": zod.number().optional()
+})).optional()
+}).optional()
+}).optional()
+})
+
+/**
  * @summary Update an existing Ward (Cấp Xã)
  */
 export const UpdateWardParams = zod.object({
@@ -84,7 +114,11 @@ export const GetAllWardsResponse = zod.object({
   "name": zod.string().optional(),
   "id": zod.string().optional(),
   "type": zod.enum(['WARD', 'COMMUNE', 'TOWNSHIP', 'TOWN']).optional(),
-  "code": zod.string().optional()
+  "code": zod.string().optional(),
+  "provinceId": zod.object({
+  "value": zod.string().optional()
+}).optional(),
+  "provinceName": zod.string().optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),

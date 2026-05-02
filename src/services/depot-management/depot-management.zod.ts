@@ -95,7 +95,7 @@ export const GetAllDepotsResponse = zod.object({
   "type": zod.enum(['BGD', 'SOC']).optional(),
   "lat": zod.number().optional(),
   "lng": zod.number().optional(),
-  "startNode": zod.boolean().optional()
+  "isStartNode": zod.boolean().optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),

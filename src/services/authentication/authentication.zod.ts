@@ -150,3 +150,18 @@ export const LoginResponse = zod.object({
 }).optional()
 })
 
+/**
+ * @summary Change Password
+ */
+export const ChangePasswordBody = zod.object({
+  "oldPassword": zod.string().optional(),
+  "newPassword": zod.string().optional()
+})
+
+export const ChangePasswordResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.unknown().optional()
+})
+

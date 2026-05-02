@@ -8,6 +8,7 @@
 export interface RoleSummaryProjection {
   name?: string;
   id?: string;
-  getisDefault?: boolean;
+  description?: string;
+  isDefault?: boolean;
   systemRole?: boolean;
 }
