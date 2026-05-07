@@ -11,7 +11,7 @@ const Payment = () => {
                 <Button size={"icon-lg"} variant={"outline"}
                         className={"size-10 ring-0 rounded-full text-primary!"}
                         onClick={() => {
-                            router.history.back()
+                            router.navigate({to: "/me"})
                         }}>
                     <LuArrowLeft size={20}/>
                 </Button>

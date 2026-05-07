@@ -215,11 +215,11 @@ export const WalletDashboard = ({ className = '' }: WalletDashboardProps) => {
             </div>
 
             {/* Additional Info */}
-            {!isLoading && wallet?.walletId && (
-                <div className="mt-4 text-center text-xs text-muted-foreground">
-                    Wallet ID: <span className="font-mono">{wallet.walletId}</span>
-                </div>
-            )}
+            {/*{!isLoading && wallet?.walletId && (*/}
+            {/*    <div className="mt-4 text-center text-xs text-muted-foreground">*/}
+            {/*        Wallet ID: <span className="font-mono">{wallet.walletId}</span>*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </div>
     );
 };

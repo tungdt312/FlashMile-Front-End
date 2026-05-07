@@ -24,6 +24,8 @@ import {useEffect, useState} from "react";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
 import {useGetMyProfile, useUpdateMyProfile} from "../../services/user-profile/user-profile";
 import {useGetMyWallet} from "../../services/wallet/wallet.ts";
+import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
+import ChangePasswordForm from "../../components/forms/change-password-form.tsx";
 
 
 const Setting = () => {
@@ -81,7 +83,7 @@ const Setting = () => {
                 <Button size={"icon-lg"} variant={"outline"}
                         className={"size-10 ring-0 rounded-full text-primary!"}
                         onClick={() => {
-                            router.history.back()
+                            router.navigate({to: "/dashboard"})
                         }}>
                     <LuArrowLeft size={20}/>
                 </Button>
@@ -185,13 +187,21 @@ const Setting = () => {
                     <p className={"link text-muted-foreground w-full px-4"}>Security</p>
                     <div
                         className="w-full flex flex-col items-center rounded-2xl ring-accent ring-1 shadow-md overflow-hidden">
-                        <div className="w-full flex items-center justify-between p-4 hover:bg-muted">
-                            <LuKey className="flex-shrink-0 text-primary w-5"/>
-                            <div className="w-full  min-w-0 px-2">
-                                <p className="truncate">Change Password</p>
-                            </div>
-                            <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
-                        </div>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <div className="w-full flex items-center justify-between p-4 hover:bg-muted">
+                                    <LuKey className="flex-shrink-0 text-primary w-5"/>
+                                    <div className="w-full  min-w-0 px-2">
+                                        <p className="truncate">Change Password</p>
+                                    </div>
+                                    <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
+                                </div>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <ChangePasswordForm/>
+                            </DialogContent>
+                        </Dialog>
+
                         <div className="w-full flex items-center justify-between p-4 hover:bg-muted" onClick={() => {
                             router.navigate({to: "/multi-factor-set"})
                         }}>
