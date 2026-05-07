@@ -23,6 +23,7 @@ import {toast} from "sonner";
 import {useEffect, useState} from "react";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group.tsx";
 import {useGetMyProfile, useUpdateMyProfile} from "../../services/user-profile/user-profile";
+import {useGetMyWallet} from "../../services/wallet/wallet.ts";
 
 
 const Setting = () => {
@@ -58,6 +59,7 @@ const Setting = () => {
             }
         }
     })
+    const wallet = useGetMyWallet();
     const {data, isError} = useGetMyProfile();
     const authStore = useAuthStore();
     useEffect(() => {
@@ -145,11 +147,11 @@ const Setting = () => {
                     <p className={"link text-muted-foreground w-full px-4"}>General</p>
                     <div
                         className="w-full flex flex-col items-center rounded-2xl ring-accent ring-1 shadow-md overflow-hidden">
-                        <div className="w-full flex items-center justify-between p-4 hover:bg-muted">
+                        <div className="w-full flex items-center justify-between p-4 hover:bg-muted" onClick={() => router.navigate({to: "/payment"})}>
                             <LuWallet className="flex-shrink-0 text-primary w-5"/>
                             <div className="w-full  min-w-0 px-2">
                                 <p className="truncate">E-wallet</p>
-                                <p className="caption text-primary truncate">999.999đ</p>
+                                <p className="caption text-primary truncate">{wallet.data?.data?.balance} {wallet.data?.data?.currency}</p>
                             </div>
                             <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
                         </div>

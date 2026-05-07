@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticatedRoute'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as Oauth2CallbackRouteImport } from './routes/oauth2/callback'
+import { Route as AuthenticatedRoutePaymentResultRouteImport } from './routes/_authenticatedRoute/payment-result'
+import { Route as AuthenticatedRoutePaymentRouteImport } from './routes/_authenticatedRoute/payment'
 import { Route as AuthenticatedRouteMultiFactorSetRouteImport } from './routes/_authenticatedRoute/multi-factor-set'
 import { Route as AuthenticatedRouteMeRouteImport } from './routes/_authenticatedRoute/me'
 import { Route as AuthenticatedRouteDashboardRouteImport } from './routes/_authenticatedRoute/dashboard'
@@ -46,6 +48,18 @@ const Oauth2CallbackRoute = Oauth2CallbackRouteImport.update({
   path: '/oauth2/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoutePaymentResultRoute =
+  AuthenticatedRoutePaymentResultRouteImport.update({
+    id: '/payment-result',
+    path: '/payment-result',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRoutePaymentRoute =
+  AuthenticatedRoutePaymentRouteImport.update({
+    id: '/payment',
+    path: '/payment',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRouteMultiFactorSetRoute =
   AuthenticatedRouteMultiFactorSetRouteImport.update({
     id: '/multi-factor-set',
@@ -166,6 +180,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedRouteDashboardRoute
   '/me': typeof AuthenticatedRouteMeRoute
   '/multi-factor-set': typeof AuthenticatedRouteMultiFactorSetRoute
+  '/payment': typeof AuthenticatedRoutePaymentRoute
+  '/payment-result': typeof AuthenticatedRoutePaymentResultRoute
   '/oauth2/callback': typeof Oauth2CallbackRoute
   '/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
   '/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
@@ -189,6 +205,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedRouteDashboardRoute
   '/me': typeof AuthenticatedRouteMeRoute
   '/multi-factor-set': typeof AuthenticatedRouteMultiFactorSetRoute
+  '/payment': typeof AuthenticatedRoutePaymentRoute
+  '/payment-result': typeof AuthenticatedRoutePaymentResultRoute
   '/oauth2/callback': typeof Oauth2CallbackRoute
   '/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
   '/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
@@ -214,6 +232,8 @@ export interface FileRoutesById {
   '/_authenticatedRoute/dashboard': typeof AuthenticatedRouteDashboardRoute
   '/_authenticatedRoute/me': typeof AuthenticatedRouteMeRoute
   '/_authenticatedRoute/multi-factor-set': typeof AuthenticatedRouteMultiFactorSetRoute
+  '/_authenticatedRoute/payment': typeof AuthenticatedRoutePaymentRoute
+  '/_authenticatedRoute/payment-result': typeof AuthenticatedRoutePaymentResultRoute
   '/oauth2/callback': typeof Oauth2CallbackRoute
   '/_authenticatedRoute/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
   '/_authenticatedRoute/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
@@ -239,6 +259,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/me'
     | '/multi-factor-set'
+    | '/payment'
+    | '/payment-result'
     | '/oauth2/callback'
     | '/area/$provinceId'
     | '/depot/$depotId'
@@ -262,6 +284,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/me'
     | '/multi-factor-set'
+    | '/payment'
+    | '/payment-result'
     | '/oauth2/callback'
     | '/area/$provinceId'
     | '/depot/$depotId'
@@ -286,6 +310,8 @@ export interface FileRouteTypes {
     | '/_authenticatedRoute/dashboard'
     | '/_authenticatedRoute/me'
     | '/_authenticatedRoute/multi-factor-set'
+    | '/_authenticatedRoute/payment'
+    | '/_authenticatedRoute/payment-result'
     | '/oauth2/callback'
     | '/_authenticatedRoute/area/$provinceId'
     | '/_authenticatedRoute/depot/$depotId'
@@ -332,6 +358,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/oauth2/callback'
       preLoaderRoute: typeof Oauth2CallbackRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticatedRoute/payment-result': {
+      id: '/_authenticatedRoute/payment-result'
+      path: '/payment-result'
+      fullPath: '/payment-result'
+      preLoaderRoute: typeof AuthenticatedRoutePaymentResultRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticatedRoute/payment': {
+      id: '/_authenticatedRoute/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof AuthenticatedRoutePaymentRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticatedRoute/multi-factor-set': {
       id: '/_authenticatedRoute/multi-factor-set'
@@ -474,6 +514,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRouteDashboardRoute: typeof AuthenticatedRouteDashboardRoute
   AuthenticatedRouteMeRoute: typeof AuthenticatedRouteMeRoute
   AuthenticatedRouteMultiFactorSetRoute: typeof AuthenticatedRouteMultiFactorSetRoute
+  AuthenticatedRoutePaymentRoute: typeof AuthenticatedRoutePaymentRoute
+  AuthenticatedRoutePaymentResultRoute: typeof AuthenticatedRoutePaymentResultRoute
   AuthenticatedRouteAreaProvinceIdRoute: typeof AuthenticatedRouteAreaProvinceIdRoute
   AuthenticatedRouteDepotDepotIdRoute: typeof AuthenticatedRouteDepotDepotIdRoute
   AuthenticatedRouteRolesRoleIdRoute: typeof AuthenticatedRouteRolesRoleIdRoute
@@ -489,6 +531,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRouteDashboardRoute: AuthenticatedRouteDashboardRoute,
   AuthenticatedRouteMeRoute: AuthenticatedRouteMeRoute,
   AuthenticatedRouteMultiFactorSetRoute: AuthenticatedRouteMultiFactorSetRoute,
+  AuthenticatedRoutePaymentRoute: AuthenticatedRoutePaymentRoute,
+  AuthenticatedRoutePaymentResultRoute: AuthenticatedRoutePaymentResultRoute,
   AuthenticatedRouteAreaProvinceIdRoute: AuthenticatedRouteAreaProvinceIdRoute,
   AuthenticatedRouteDepotDepotIdRoute: AuthenticatedRouteDepotDepotIdRoute,
   AuthenticatedRouteRolesRoleIdRoute: AuthenticatedRouteRolesRoleIdRoute,

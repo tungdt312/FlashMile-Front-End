@@ -700,6 +700,83 @@
         }
       }
     },
+    "/api/v1/wallet/webhook/momo": {
+      "post": {
+        "tags": [
+          "Wallet Webhook"
+        ],
+        "operationId": "handleMomoWebhook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/top-up": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "Top Up Wallet",
+        "operationId": "topUp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TopUpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/upload/presigned-url": {
       "post": {
         "tags": [
@@ -2262,6 +2339,37 @@
         }
       }
     },
+    "/api/v1/wallet/me": {
+      "get": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "Get My Wallet",
+        "operationId": "getMyWallet",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseWalletResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/permissions": {
       "get": {
         "tags": [
@@ -2929,6 +3037,47 @@
           }
         }
       },
+      "TopUpRequest": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "minimum": 10000
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "SYSTEM",
+              "VNPAY",
+              "MOMO",
+              "BANK"
+            ]
+          }
+        },
+        "required": [
+          "amount",
+          "provider"
+        ]
+      },
+      "ApiResponseString": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        }
+      },
       "UploadPresignedUrlCommand": {
         "type": "object",
         "properties": {
@@ -3530,6 +3679,50 @@
           }
         }
       },
+      "ApiResponseWalletResult": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/WalletResult"
+          }
+        }
+      },
+      "WalletResult": {
+        "type": "object",
+        "properties": {
+          "walletId": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formattedBalance": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "LOCKED",
+              "FROZEN"
+            ]
+          }
+        }
+      },
       "ApiResponsePageResponseRoleSummaryProjection": {
         "type": "object",
         "properties": {
@@ -3585,6 +3778,12 @@
       "RoleSummaryProjection": {
         "type": "object",
         "properties": {
+          "isDefault": {
+            "type": "boolean"
+          },
+          "systemRole": {
+            "type": "boolean"
+          },
           "name": {
             "type": "string"
           },
@@ -3593,12 +3792,6 @@
           },
           "description": {
             "type": "string"
-          },
-          "isDefault": {
-            "type": "boolean"
-          },
-          "systemRole": {
-            "type": "boolean"
           }
         }
       },
@@ -3803,6 +3996,9 @@
       "WardSummaryProjection": {
         "type": "object",
         "properties": {
+          "provinceName": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -3823,9 +4019,6 @@
           },
           "provinceId": {
             "$ref": "#/components/schemas/ProvinceId"
-          },
-          "provinceName": {
-            "type": "string"
           }
         }
       },
@@ -3920,6 +4113,9 @@
       "DepotSummaryProjection": {
         "type": "object",
         "properties": {
+          "isStartNode": {
+            "type": "boolean"
+          },
           "name": {
             "type": "string"
           },
@@ -3940,9 +4136,6 @@
           "lng": {
             "type": "number",
             "format": "double"
-          },
-          "isStartNode": {
-            "type": "boolean"
           }
         }
       },

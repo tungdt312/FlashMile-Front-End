@@ -111,14 +111,14 @@ export const GetAllWardsResponse = zod.object({
   "message": zod.string().optional(),
   "data": zod.object({
   "content": zod.array(zod.object({
+  "provinceName": zod.string().optional(),
   "name": zod.string().optional(),
   "id": zod.string().optional(),
   "type": zod.enum(['WARD', 'COMMUNE', 'TOWNSHIP', 'TOWN']).optional(),
   "code": zod.string().optional(),
   "provinceId": zod.object({
   "value": zod.string().optional()
-}).optional(),
-  "provinceName": zod.string().optional()
+}).optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),
