@@ -8,10 +8,10 @@ import type { ProvinceId } from './provinceId';
 import type { WardSummaryProjectionType } from './wardSummaryProjectionType';
 
 export interface WardSummaryProjection {
-  provinceName?: string;
   name?: string;
   id?: string;
   type?: WardSummaryProjectionType;
   code?: string;
   provinceId?: ProvinceId;
+  provinceName?: string;
 }

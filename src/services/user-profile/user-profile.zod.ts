@@ -8,6 +8,32 @@ import * as zod from 'zod';
 
 
 /**
+ * @summary Update User Role
+ */
+export const UpdateUserRoleParams = zod.object({
+  "userId": zod.string()
+})
+
+export const UpdateUserRoleBody = zod.object({
+  "roleId": zod.string().optional()
+})
+
+export const UpdateUserRoleResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "fullName": zod.string().optional(),
+  "email": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "status": zod.string().optional(),
+  "phoneVerified": zod.boolean().optional(),
+  "emailVerified": zod.boolean().optional()
+}).optional()
+})
+
+/**
  * @summary Get My Profile
  */
 export const GetMyProfileResponse = zod.object({
@@ -44,6 +70,181 @@ export const UpdateMyProfileResponse = zod.object({
   "status": zod.string().optional(),
   "phoneVerified": zod.boolean().optional(),
   "emailVerified": zod.boolean().optional()
+}).optional()
+})
+
+/**
+ * @summary Update User Status
+ */
+export const UpdateUserStatusParams = zod.object({
+  "userId": zod.string()
+})
+
+export const UpdateUserStatusBody = zod.object({
+  "status": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional()
+})
+
+export const UpdateUserStatusResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "fullName": zod.string().optional(),
+  "email": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "status": zod.string().optional(),
+  "phoneVerified": zod.boolean().optional(),
+  "emailVerified": zod.boolean().optional()
+}).optional()
+})
+
+export const GetUserProfileParams = zod.object({
+  "userId": zod.string()
+})
+
+export const GetUserProfileResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "fullName": zod.string().optional(),
+  "email": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "status": zod.string().optional(),
+  "phoneVerified": zod.boolean().optional(),
+  "emailVerified": zod.boolean().optional()
+}).optional()
+})
+
+/**
+ * @summary Delete User
+ */
+export const DeleteUserParams = zod.object({
+  "userId": zod.string()
+})
+
+export const DeleteUserResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.unknown().optional()
+})
+
+/**
+ * @summary Get Users by Status with Pagination
+ */
+export const GetUsersByStatusQueryParams = zod.object({
+  "status": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']),
+  "pageable": zod.object({
+  "filter": zod.string().optional(),
+  "sorts": zod.array(zod.string()).optional(),
+  "page": zod.number().optional(),
+  "size": zod.number().optional()
+})
+})
+
+export const GetUsersByStatusResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "content": zod.array(zod.object({
+  "fullname": zod.string().optional(),
+  "userStatus": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional(),
+  "id": zod.number().optional(),
+  "email": zod.object({
+  "value": zod.string().optional()
+}).optional(),
+  "phoneNumber": zod.object({
+  "value": zod.string().optional()
+}).optional()
+})).optional(),
+  "page": zod.number().optional(),
+  "size": zod.number().optional(),
+  "totalElements": zod.number().optional(),
+  "totalPages": zod.number().optional(),
+  "last": zod.boolean().optional(),
+  "first": zod.boolean().optional()
+}).optional()
+})
+
+/**
+ * @summary Find User by Phone
+ */
+export const FindUserByPhoneQueryParams = zod.object({
+  "phoneNumber": zod.string()
+})
+
+export const FindUserByPhoneResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "fullName": zod.string().optional(),
+  "email": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "status": zod.string().optional(),
+  "phoneVerified": zod.boolean().optional(),
+  "emailVerified": zod.boolean().optional()
+}).optional()
+})
+
+/**
+ * @summary Find User by Email
+ */
+export const FindUserByEmailQueryParams = zod.object({
+  "email": zod.string()
+})
+
+export const FindUserByEmailResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "fullName": zod.string().optional(),
+  "email": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "status": zod.string().optional(),
+  "phoneVerified": zod.boolean().optional(),
+  "emailVerified": zod.boolean().optional()
+}).optional()
+})
+
+export const GetAllUserProfilesQueryParams = zod.object({
+  "pageable": zod.object({
+  "filter": zod.string().optional(),
+  "sorts": zod.array(zod.string()).optional(),
+  "page": zod.number().optional(),
+  "size": zod.number().optional()
+})
+})
+
+export const GetAllUserProfilesResponse = zod.object({
+  "timestamp": zod.iso.datetime({}).optional(),
+  "status": zod.number().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "content": zod.array(zod.object({
+  "fullname": zod.string().optional(),
+  "userStatus": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional(),
+  "id": zod.number().optional(),
+  "email": zod.object({
+  "value": zod.string().optional()
+}).optional(),
+  "phoneNumber": zod.object({
+  "value": zod.string().optional()
+}).optional()
+})).optional(),
+  "page": zod.number().optional(),
+  "size": zod.number().optional(),
+  "totalElements": zod.number().optional(),
+  "totalPages": zod.number().optional(),
+  "last": zod.boolean().optional(),
+  "first": zod.boolean().optional()
 }).optional()
 })
 

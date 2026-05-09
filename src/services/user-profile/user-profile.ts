@@ -24,9 +24,17 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ApiResponsePageResponseUserSummaryProjection,
   ApiResponseUserProfileResult,
+  ApiResponseVoid,
   ErrorResponse,
-  UpdateProfileRequest
+  FindUserByEmailParams,
+  FindUserByPhoneParams,
+  GetAllUserProfilesParams,
+  GetUsersByStatusParams,
+  UpdateProfileRequest,
+  UpdateUserRoleRequest,
+  UpdateUserStatusRequest
 } from '../../types';
 
 import { axiosInstanceFn } from '../../../axiosConfig';
@@ -38,6 +46,70 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 /**
+ * @summary Update User Role
+ */
+export const updateUserRole = (
+    userId: string,
+    updateUserRoleRequest: BodyType<UpdateUserRoleRequest>,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseUserProfileResult>(
+      {url: `/api/v1/users/${userId}/role`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateUserRoleRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getUpdateUserRoleMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserRole>>, TError,{userId: string;data: BodyType<UpdateUserRoleRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateUserRole>>, TError,{userId: string;data: BodyType<UpdateUserRoleRequest>}, TContext> => {
+
+const mutationKey = ['updateUserRole'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateUserRole>>, {userId: string;data: BodyType<UpdateUserRoleRequest>}> = (props) => {
+          const {userId,data} = props ?? {};
+
+          return  updateUserRole(userId,data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateUserRoleMutationResult = NonNullable<Awaited<ReturnType<typeof updateUserRole>>>
+    export type UpdateUserRoleMutationBody = BodyType<UpdateUserRoleRequest>
+    export type UpdateUserRoleMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Update User Role
+ */
+export const useUpdateUserRole = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserRole>>, TError,{userId: string;data: BodyType<UpdateUserRoleRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateUserRole>>,
+        TError,
+        {userId: string;data: BodyType<UpdateUserRoleRequest>},
+        TContext
+      > => {
+      return useMutation(getUpdateUserRoleMutationOptions(options), queryClient);
+    }
+    /**
  * @summary Get My Profile
  */
 export const getMyProfile = (
@@ -190,4 +262,570 @@ export const useUpdateMyProfile = <TError = ErrorType<ErrorResponse>,
       > => {
       return useMutation(getUpdateMyProfileMutationOptions(options), queryClient);
     }
+    /**
+ * @summary Update User Status
+ */
+export const updateUserStatus = (
+    userId: string,
+    updateUserStatusRequest: BodyType<UpdateUserStatusRequest>,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseUserProfileResult>(
+      {url: `/api/v1/users/${userId}/status`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: updateUserStatusRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getUpdateUserStatusMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserStatus>>, TError,{userId: string;data: BodyType<UpdateUserStatusRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateUserStatus>>, TError,{userId: string;data: BodyType<UpdateUserStatusRequest>}, TContext> => {
+
+const mutationKey = ['updateUserStatus'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateUserStatus>>, {userId: string;data: BodyType<UpdateUserStatusRequest>}> = (props) => {
+          const {userId,data} = props ?? {};
+
+          return  updateUserStatus(userId,data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateUserStatusMutationResult = NonNullable<Awaited<ReturnType<typeof updateUserStatus>>>
+    export type UpdateUserStatusMutationBody = BodyType<UpdateUserStatusRequest>
+    export type UpdateUserStatusMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Update User Status
+ */
+export const useUpdateUserStatus = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserStatus>>, TError,{userId: string;data: BodyType<UpdateUserStatusRequest>}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateUserStatus>>,
+        TError,
+        {userId: string;data: BodyType<UpdateUserStatusRequest>},
+        TContext
+      > => {
+      return useMutation(getUpdateUserStatusMutationOptions(options), queryClient);
+    }
+    export const getUserProfile = (
+    userId: string,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseUserProfileResult>(
+      {url: `/api/v1/users/${userId}`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetUserProfileQueryKey = (userId: string,) => {
+    return [
+    `/api/v1/users/${userId}`
+    ] as const;
+    }
+
     
+export const getGetUserProfileQueryOptions = <TData = Awaited<ReturnType<typeof getUserProfile>>, TError = ErrorType<ErrorResponse>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetUserProfileQueryKey(userId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserProfile>>> = ({ signal }) => getUserProfile(userId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetUserProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getUserProfile>>>
+export type GetUserProfileQueryError = ErrorType<ErrorResponse>
+
+
+export function useGetUserProfile<TData = Awaited<ReturnType<typeof getUserProfile>>, TError = ErrorType<ErrorResponse>>(
+ userId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getUserProfile>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUserProfile<TData = Awaited<ReturnType<typeof getUserProfile>>, TError = ErrorType<ErrorResponse>>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getUserProfile>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUserProfile<TData = Awaited<ReturnType<typeof getUserProfile>>, TError = ErrorType<ErrorResponse>>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetUserProfile<TData = Awaited<ReturnType<typeof getUserProfile>>, TError = ErrorType<ErrorResponse>>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetUserProfileQueryOptions(userId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+/**
+ * @summary Delete User
+ */
+export const deleteUser = (
+    userId: string,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseVoid>(
+      {url: `/api/v1/users/${userId}`, method: 'DELETE', signal
+    },
+      options);
+    }
+  
+
+
+export const getDeleteUserMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext> => {
+
+const mutationKey = ['deleteUser'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, {userId: string}> = (props) => {
+          const {userId} = props ?? {};
+
+          return  deleteUser(userId,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteUserMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>
+    
+    export type DeleteUserMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Delete User
+ */
+export const useDeleteUser = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteUser>>,
+        TError,
+        {userId: string},
+        TContext
+      > => {
+      return useMutation(getDeleteUserMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Get Users by Status with Pagination
+ */
+export const getUsersByStatus = (
+    params: GetUsersByStatusParams,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponsePageResponseUserSummaryProjection>(
+      {url: `/api/v1/users/status`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetUsersByStatusQueryKey = (params?: GetUsersByStatusParams,) => {
+    return [
+    `/api/v1/users/status`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getGetUsersByStatusQueryOptions = <TData = Awaited<ReturnType<typeof getUsersByStatus>>, TError = ErrorType<ErrorResponse>>(params: GetUsersByStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersByStatus>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetUsersByStatusQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersByStatus>>> = ({ signal }) => getUsersByStatus(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsersByStatus>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetUsersByStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getUsersByStatus>>>
+export type GetUsersByStatusQueryError = ErrorType<ErrorResponse>
+
+
+export function useGetUsersByStatus<TData = Awaited<ReturnType<typeof getUsersByStatus>>, TError = ErrorType<ErrorResponse>>(
+ params: GetUsersByStatusParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersByStatus>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsersByStatus>>,
+          TError,
+          Awaited<ReturnType<typeof getUsersByStatus>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsersByStatus<TData = Awaited<ReturnType<typeof getUsersByStatus>>, TError = ErrorType<ErrorResponse>>(
+ params: GetUsersByStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersByStatus>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsersByStatus>>,
+          TError,
+          Awaited<ReturnType<typeof getUsersByStatus>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsersByStatus<TData = Awaited<ReturnType<typeof getUsersByStatus>>, TError = ErrorType<ErrorResponse>>(
+ params: GetUsersByStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersByStatus>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get Users by Status with Pagination
+ */
+
+export function useGetUsersByStatus<TData = Awaited<ReturnType<typeof getUsersByStatus>>, TError = ErrorType<ErrorResponse>>(
+ params: GetUsersByStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersByStatus>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetUsersByStatusQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+/**
+ * @summary Find User by Phone
+ */
+export const findUserByPhone = (
+    params: FindUserByPhoneParams,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseUserProfileResult>(
+      {url: `/api/v1/users/search/phone`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getFindUserByPhoneQueryKey = (params?: FindUserByPhoneParams,) => {
+    return [
+    `/api/v1/users/search/phone`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getFindUserByPhoneQueryOptions = <TData = Awaited<ReturnType<typeof findUserByPhone>>, TError = ErrorType<ErrorResponse>>(params: FindUserByPhoneParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByPhone>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getFindUserByPhoneQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof findUserByPhone>>> = ({ signal }) => findUserByPhone(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findUserByPhone>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type FindUserByPhoneQueryResult = NonNullable<Awaited<ReturnType<typeof findUserByPhone>>>
+export type FindUserByPhoneQueryError = ErrorType<ErrorResponse>
+
+
+export function useFindUserByPhone<TData = Awaited<ReturnType<typeof findUserByPhone>>, TError = ErrorType<ErrorResponse>>(
+ params: FindUserByPhoneParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByPhone>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findUserByPhone>>,
+          TError,
+          Awaited<ReturnType<typeof findUserByPhone>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindUserByPhone<TData = Awaited<ReturnType<typeof findUserByPhone>>, TError = ErrorType<ErrorResponse>>(
+ params: FindUserByPhoneParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByPhone>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findUserByPhone>>,
+          TError,
+          Awaited<ReturnType<typeof findUserByPhone>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindUserByPhone<TData = Awaited<ReturnType<typeof findUserByPhone>>, TError = ErrorType<ErrorResponse>>(
+ params: FindUserByPhoneParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByPhone>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Find User by Phone
+ */
+
+export function useFindUserByPhone<TData = Awaited<ReturnType<typeof findUserByPhone>>, TError = ErrorType<ErrorResponse>>(
+ params: FindUserByPhoneParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByPhone>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getFindUserByPhoneQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+/**
+ * @summary Find User by Email
+ */
+export const findUserByEmail = (
+    params: FindUserByEmailParams,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponseUserProfileResult>(
+      {url: `/api/v1/users/search/email`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getFindUserByEmailQueryKey = (params?: FindUserByEmailParams,) => {
+    return [
+    `/api/v1/users/search/email`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getFindUserByEmailQueryOptions = <TData = Awaited<ReturnType<typeof findUserByEmail>>, TError = ErrorType<ErrorResponse>>(params: FindUserByEmailParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByEmail>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getFindUserByEmailQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof findUserByEmail>>> = ({ signal }) => findUserByEmail(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findUserByEmail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type FindUserByEmailQueryResult = NonNullable<Awaited<ReturnType<typeof findUserByEmail>>>
+export type FindUserByEmailQueryError = ErrorType<ErrorResponse>
+
+
+export function useFindUserByEmail<TData = Awaited<ReturnType<typeof findUserByEmail>>, TError = ErrorType<ErrorResponse>>(
+ params: FindUserByEmailParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByEmail>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findUserByEmail>>,
+          TError,
+          Awaited<ReturnType<typeof findUserByEmail>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindUserByEmail<TData = Awaited<ReturnType<typeof findUserByEmail>>, TError = ErrorType<ErrorResponse>>(
+ params: FindUserByEmailParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByEmail>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findUserByEmail>>,
+          TError,
+          Awaited<ReturnType<typeof findUserByEmail>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindUserByEmail<TData = Awaited<ReturnType<typeof findUserByEmail>>, TError = ErrorType<ErrorResponse>>(
+ params: FindUserByEmailParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByEmail>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Find User by Email
+ */
+
+export function useFindUserByEmail<TData = Awaited<ReturnType<typeof findUserByEmail>>, TError = ErrorType<ErrorResponse>>(
+ params: FindUserByEmailParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findUserByEmail>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getFindUserByEmailQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+export const getAllUserProfiles = (
+    params: GetAllUserProfilesParams,
+ options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstanceFn<ApiResponsePageResponseUserSummaryProjection>(
+      {url: `/api/v1/users/all`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetAllUserProfilesQueryKey = (params?: GetAllUserProfilesParams,) => {
+    return [
+    `/api/v1/users/all`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getGetAllUserProfilesQueryOptions = <TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(params: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAllUserProfilesQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllUserProfiles>>> = ({ signal }) => getAllUserProfiles(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAllUserProfilesQueryResult = NonNullable<Awaited<ReturnType<typeof getAllUserProfiles>>>
+export type GetAllUserProfilesQueryError = ErrorType<ErrorResponse>
+
+
+export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(
+ params: GetAllUserProfilesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAllUserProfiles>>,
+          TError,
+          Awaited<ReturnType<typeof getAllUserProfiles>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(
+ params: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAllUserProfiles>>,
+          TError,
+          Awaited<ReturnType<typeof getAllUserProfiles>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(
+ params: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(
+ params: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAllUserProfilesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+

@@ -26,6 +26,7 @@ import {useGetMyProfile, useUpdateMyProfile} from "../../services/user-profile/u
 import {useGetMyWallet} from "../../services/wallet/wallet.ts";
 import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
 import ChangePasswordForm from "../../components/forms/change-password-form.tsx";
+import {useGetMyContacts} from "../../services/recipient-contacts/recipient-contacts.ts";
 
 
 const Setting = () => {
@@ -62,6 +63,7 @@ const Setting = () => {
         }
     })
     const wallet = useGetMyWallet();
+    const {data: contact} = useGetMyContacts();
     const {data, isError} = useGetMyProfile();
     const authStore = useAuthStore();
     useEffect(() => {
@@ -157,11 +159,11 @@ const Setting = () => {
                             </div>
                             <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
                         </div>
-                        <div className="w-full flex items-center justify-between p-4 hover:bg-muted">
+                        <div className="w-full flex items-center justify-between p-4 hover:bg-muted" onClick={() => router.navigate({to: "/contact-list"})}>
                             <LuBookMarked className="flex-shrink-0 text-brand w-5"/>
                             <div className="w-full  min-w-0 px-2">
                                 <p className="truncate">Contacts</p>
-                                <p className="caption text-muted-foreground truncate">99 contacts</p>
+                                <p className="caption text-muted-foreground truncate">{contact?.data?.totalElements || 0} contacts</p>
                             </div>
                             <LuChevronRight className="flex-shrink-0 text-muted-foreground w-5"/>
                         </div>

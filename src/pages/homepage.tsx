@@ -90,6 +90,12 @@ const QUICK_ACCESS_ACTIONS: QuickAccessAction[] = [
         route: "/depot",
     },
     {
+        id: "vehicle",
+        label: "Vehicles",
+        icon: <Truck className="size-6 " />,
+        route: "/vehicle",
+    },
+    {
         id: "roles",
         label: "Permis",
         icon: <ShieldCheck className="size-6 " />,

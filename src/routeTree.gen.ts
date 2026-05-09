@@ -25,6 +25,7 @@ import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-pas
 import { Route as authRecoveryRouteImport } from './routes/(auth)/recovery'
 import { Route as authMultiFactor0RouteImport } from './routes/(auth)/multi-factor-0'
 import { Route as authMultiFactorRouteImport } from './routes/(auth)/multi-factor'
+import { Route as AuthenticatedRouteVehicleIndexRouteImport } from './routes/_authenticatedRoute/vehicle/index'
 import { Route as AuthenticatedRouteUsersIndexRouteImport } from './routes/_authenticatedRoute/users/index'
 import { Route as AuthenticatedRouteRolesIndexRouteImport } from './routes/_authenticatedRoute/roles/index'
 import { Route as AuthenticatedRouteDepotIndexRouteImport } from './routes/_authenticatedRoute/depot/index'
@@ -118,6 +119,12 @@ const authMultiFactorRoute = authMultiFactorRouteImport.update({
   path: '/multi-factor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteVehicleIndexRoute =
+  AuthenticatedRouteVehicleIndexRouteImport.update({
+    id: '/vehicle/',
+    path: '/vehicle/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRouteUsersIndexRoute =
   AuthenticatedRouteUsersIndexRouteImport.update({
     id: '/users/',
@@ -191,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/depot/': typeof AuthenticatedRouteDepotIndexRoute
   '/roles/': typeof AuthenticatedRouteRolesIndexRoute
   '/users/': typeof AuthenticatedRouteUsersIndexRoute
+  '/vehicle/': typeof AuthenticatedRouteVehicleIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -216,6 +224,7 @@ export interface FileRoutesByTo {
   '/depot': typeof AuthenticatedRouteDepotIndexRoute
   '/roles': typeof AuthenticatedRouteRolesIndexRoute
   '/users': typeof AuthenticatedRouteUsersIndexRoute
+  '/vehicle': typeof AuthenticatedRouteVehicleIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -243,6 +252,7 @@ export interface FileRoutesById {
   '/_authenticatedRoute/depot/': typeof AuthenticatedRouteDepotIndexRoute
   '/_authenticatedRoute/roles/': typeof AuthenticatedRouteRolesIndexRoute
   '/_authenticatedRoute/users/': typeof AuthenticatedRouteUsersIndexRoute
+  '/_authenticatedRoute/vehicle/': typeof AuthenticatedRouteVehicleIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | '/depot/'
     | '/roles/'
     | '/users/'
+    | '/vehicle/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/depot'
     | '/roles'
     | '/users'
+    | '/vehicle'
   id:
     | '__root__'
     | '/'
@@ -321,6 +333,7 @@ export interface FileRouteTypes {
     | '/_authenticatedRoute/depot/'
     | '/_authenticatedRoute/roles/'
     | '/_authenticatedRoute/users/'
+    | '/_authenticatedRoute/vehicle/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -450,6 +463,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authMultiFactorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticatedRoute/vehicle/': {
+      id: '/_authenticatedRoute/vehicle/'
+      path: '/vehicle'
+      fullPath: '/vehicle/'
+      preLoaderRoute: typeof AuthenticatedRouteVehicleIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticatedRoute/users/': {
       id: '/_authenticatedRoute/users/'
       path: '/users'
@@ -524,6 +544,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRouteDepotIndexRoute: typeof AuthenticatedRouteDepotIndexRoute
   AuthenticatedRouteRolesIndexRoute: typeof AuthenticatedRouteRolesIndexRoute
   AuthenticatedRouteUsersIndexRoute: typeof AuthenticatedRouteUsersIndexRoute
+  AuthenticatedRouteVehicleIndexRoute: typeof AuthenticatedRouteVehicleIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -541,6 +562,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRouteDepotIndexRoute: AuthenticatedRouteDepotIndexRoute,
   AuthenticatedRouteRolesIndexRoute: AuthenticatedRouteRolesIndexRoute,
   AuthenticatedRouteUsersIndexRoute: AuthenticatedRouteUsersIndexRoute,
+  AuthenticatedRouteVehicleIndexRoute: AuthenticatedRouteVehicleIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
