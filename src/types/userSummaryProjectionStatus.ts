@@ -5,10 +5,10 @@
  * OpenAPI spec version: v0
  */
 
-export type UserSummaryProjectionUserStatus = typeof UserSummaryProjectionUserStatus[keyof typeof UserSummaryProjectionUserStatus];
+export type UserSummaryProjectionStatus = typeof UserSummaryProjectionStatus[keyof typeof UserSummaryProjectionStatus];
 
 
-export const UserSummaryProjectionUserStatus = {
+export const UserSummaryProjectionStatus = {
   UNVERIFIED: 'UNVERIFIED',
   ACTIVE: 'ACTIVE',
   BLOCKED: 'BLOCKED',

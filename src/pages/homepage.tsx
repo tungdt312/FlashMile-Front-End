@@ -10,7 +10,17 @@ import {Avatar, AvatarFallback, AvatarImage} from "../components/ui/avatar";
 import {Skeleton} from "../components/ui/skeleton";
 
 // Icons
-import {AlertTriangle, BarChart3, MapPin, Navigation, Package, ShieldCheck, Truck, Warehouse,} from "lucide-react";
+import {
+    AlertTriangle,
+    BarChart3,
+    MapPin,
+    Navigation,
+    Package,
+    ShieldCheck,
+    Truck,
+    UsersRound,
+    Warehouse,
+} from "lucide-react";
 
 // Animations
 import {motion} from "motion/react";
@@ -77,6 +87,12 @@ interface FleetStats {
 
 // ============ MOCK DATA ============
 const QUICK_ACCESS_ACTIONS: QuickAccessAction[] = [
+    {
+        id: "user",
+        label: "Users",
+        icon: <UsersRound className="size-6 " />,
+        route: "/users",
+    },
     {
         id: "area",
         label: "Areas",

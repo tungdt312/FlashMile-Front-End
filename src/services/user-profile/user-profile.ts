@@ -745,7 +745,7 @@ export function useFindUserByEmail<TData = Awaited<ReturnType<typeof findUserByE
 
 
 export const getAllUserProfiles = (
-    params: GetAllUserProfilesParams,
+    params?: GetAllUserProfilesParams,
  options?: SecondParameter<typeof axiosInstanceFn>,signal?: AbortSignal
 ) => {
       
@@ -767,7 +767,7 @@ export const getGetAllUserProfilesQueryKey = (params?: GetAllUserProfilesParams,
     }
 
     
-export const getGetAllUserProfilesQueryOptions = <TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(params: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+export const getGetAllUserProfilesQueryOptions = <TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(params?: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -790,7 +790,7 @@ export type GetAllUserProfilesQueryError = ErrorType<ErrorResponse>
 
 
 export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(
- params: GetAllUserProfilesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>> & Pick<
+ params: undefined |  GetAllUserProfilesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAllUserProfiles>>,
           TError,
@@ -800,7 +800,7 @@ export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUs
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(
- params: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>> & Pick<
+ params?: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAllUserProfiles>>,
           TError,
@@ -810,12 +810,12 @@ export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUs
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(
- params: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ params?: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetAllUserProfiles<TData = Awaited<ReturnType<typeof getAllUserProfiles>>, TError = ErrorType<ErrorResponse>>(
- params: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
+ params?: GetAllUserProfilesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllUserProfiles>>, TError, TData>>, request?: SecondParameter<typeof axiosInstanceFn>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

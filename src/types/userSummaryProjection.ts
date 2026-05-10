@@ -4,14 +4,13 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import type { Email } from './email';
-import type { PhoneNumber } from './phoneNumber';
-import type { UserSummaryProjectionUserStatus } from './userSummaryProjectionUserStatus';
+import type { UserSummaryProjectionStatus } from './userSummaryProjectionStatus';
 
 export interface UserSummaryProjection {
-  id?: number;
-  email?: Email;
-  phoneNumber?: PhoneNumber;
+  id?: string;
   fullname?: string;
-  userStatus?: UserSummaryProjectionUserStatus;
+  roleName?: string;
+  phoneNumber?: string;
+  email?: string;
+  status?: UserSummaryProjectionStatus;
 }

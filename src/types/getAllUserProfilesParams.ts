@@ -4,8 +4,10 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import type { SearchPageable } from './searchPageable';
 
 export type GetAllUserProfilesParams = {
-pageable: SearchPageable;
+filter?: string;
+sorts?: string[];
+page?: number;
+size?: number;
 };

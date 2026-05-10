@@ -151,15 +151,12 @@ export const GetUsersByStatusResponse = zod.object({
   "message": zod.string().optional(),
   "data": zod.object({
   "content": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "email": zod.object({
-  "value": zod.string().optional()
-}).optional(),
-  "phoneNumber": zod.object({
-  "value": zod.string().optional()
-}).optional(),
+  "id": zod.string().optional(),
   "fullname": zod.string().optional(),
-  "userStatus": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional()
+  "roleName": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "email": zod.string().optional(),
+  "status": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),
@@ -215,12 +212,10 @@ export const FindUserByEmailResponse = zod.object({
 })
 
 export const GetAllUserProfilesQueryParams = zod.object({
-  "pageable": zod.object({
   "filter": zod.string().optional(),
   "sorts": zod.array(zod.string()).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional()
-})
 })
 
 export const GetAllUserProfilesResponse = zod.object({
@@ -229,15 +224,12 @@ export const GetAllUserProfilesResponse = zod.object({
   "message": zod.string().optional(),
   "data": zod.object({
   "content": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "email": zod.object({
-  "value": zod.string().optional()
-}).optional(),
-  "phoneNumber": zod.object({
-  "value": zod.string().optional()
-}).optional(),
+  "id": zod.string().optional(),
   "fullname": zod.string().optional(),
-  "userStatus": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional()
+  "roleName": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "email": zod.string().optional(),
+  "status": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),

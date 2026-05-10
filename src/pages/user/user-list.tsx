@@ -1,4 +1,4 @@
-import {type UserSummaryProjection, UserSummaryProjectionUserStatus} from "../../types";
+import {type UserSummaryProjection, UserSummaryProjectionStatus} from "../../types";
 import {useRouter} from "@tanstack/react-router";
 import {Badge} from "../../components/ui/badge.tsx";
 import {useEffect, useState} from "react";
@@ -26,7 +26,7 @@ const UserList = ({search}: {search?: string}) => {
     useEffect(() => {
         const handler = setTimeout(() => {
             router.navigate({
-                to: "/depot",
+                to: "/users",
                 search: {search: inputValue || undefined},
                 replace: true // Replaces history entry so "Back" button isn't clogged with search steps
             });
@@ -117,28 +117,21 @@ export default UserList
 
 const UserCard = ({user}: {user: UserSummaryProjection}) => {
     const router = useRouter();
-    const badgeColor = () => {
-        switch (user.userStatus) {
-            case UserSummaryProjectionUserStatus.UNVERIFIED:
-                return "outline"
-            case UserSummaryProjectionUserStatus.ACTIVE:
-                return "default"
-            case UserSummaryProjectionUserStatus.BLOCKED:
-                return "secondary"
-            case UserSummaryProjectionUserStatus.DELETED:
-                return "destructive"
-            default:
-                return "outline";
-        }
-    }
-
+    const statusMap: Record<UserSummaryProjectionStatus, "default" | "outline" | "secondary" | "destructive"> = {
+        [UserSummaryProjectionStatus.UNVERIFIED]: "outline",
+        [UserSummaryProjectionStatus.ACTIVE]: "default",
+        [UserSummaryProjectionStatus.BLOCKED]: "secondary",
+        [UserSummaryProjectionStatus.DELETED]: "destructive",
+    };
+    const variant = user.status ? statusMap[user.status] : "default";
     return (
         <div className="w-full flex flex-col p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md"
-             onClick={() => router.navigate({to: `/user/${user.id}/`})}>
+             onClick={() => router.navigate({to: `/users/${user.id}/`})}>
+            <Badge variant={"outline"}>{user.roleName}</Badge>
             <div className="flex items-center justify-between">
                 <p className="font-bold text-primary"> {user.fullname}</p>
                 <div className={"flex gap-2"}>
-                    <Badge variant={badgeColor.toString()}>{user.userStatus}</Badge>
+                    <Badge variant={variant}>{user.status}</Badge>
                 </div>
             </div>
             <p className="caption text-muted-foreground w-full"> <b>Email:</b> {user.email}</p>
