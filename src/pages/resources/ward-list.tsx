@@ -105,7 +105,7 @@ const WardCard = ({ward}: { ward: WardSummaryProjection }) => {
              onClick={() => router.navigate({to: `/ward/${ward.id}/`})}>
             <div className="flex items-center justify-between w-full">
                 <p className="font-bold caption text-primary"> {ward.type}</p>
-                <p className="heading w-full"> {ward.name}</p>
+                <p className="w-full"> {ward.name}</p>
             </div>
         </div>
     )

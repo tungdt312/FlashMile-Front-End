@@ -124,7 +124,7 @@ const DepotCard = ({depot}: { depot: DepotSummaryProjection }) => {
                     {depot.isStartNode && <Badge className={"bg-primary-300 text-primary"}>Start node</Badge>}
                 </div>
             </div>
-            <p className="heading w-full"> {depot.name}</p>
+            <p className="w-full"> {depot.name}</p>
         </div>
     )
 };
