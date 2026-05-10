@@ -40,7 +40,7 @@ const DepotDetail = ({id}: { id: string }) => {
                             <DialogTrigger>
                                 <Button size={"icon-sm"} variant={"ghost"}><LuPencilLine className={"size-5"}/></Button>
                             </DialogTrigger>
-                            <DialogContent>
+                            <DialogContent className={"flex flex-col overflow-y-auto max-h-4/5"}>
                                 <AddDepotForm onSuccess={() => {
                                 }} initialData={{...depot.data?.data}}/>
                             </DialogContent>

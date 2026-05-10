@@ -7,6 +7,7 @@ import {Button} from "../ui/button.tsx";
 import {LuLoaderCircle} from "react-icons/lu";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../ui/select.tsx";
 import type {DepotResult} from "../../types";
+import Map from "../mapbox.tsx";
 
 
 interface DepotFormProps {
@@ -111,6 +112,7 @@ export const AddDepotForm = ({initialData, onSuccess}: DepotFormProps) => {
                 )}
             />
 
+            <Map/>
             <Button
                 type="submit"
                 disabled={createDepot.isPending || updateDepot.isPending}

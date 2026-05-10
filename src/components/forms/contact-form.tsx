@@ -1,5 +1,5 @@
 import z from "zod";
-import type {ContactId, CreateContactRequest} from "../../types";
+import type {ContactResult, CreateContactRequest} from "../../types";
 import {useQueryClient} from "@tanstack/react-query";
 import {
     getGetMyContactsQueryKey,
@@ -21,10 +21,9 @@ const ContactSchema = z.object({
     note: z.string().max(500, "Note is too long").or(z.undefined()),
 });
 
-type ContactFormValues = z.infer<typeof ContactSchema>;
 
 interface ContactFormProps {
-    initialData?: ContactFormValues & {id: ContactId} ;
+    initialData?: ContactResult;
     onSuccess?: () => void;
 }
 
@@ -73,9 +72,9 @@ export const ContactForm = ({ initialData, onSuccess }: ContactFormProps) => {
             onSubmit: ContactSchema,
         },
         onSubmit: async ({ value }) => {
-            if (isEditMode && initialData?.id.value) {
+            if (isEditMode && initialData?.id) {
                 updateContact.mutate({
-                    contactId:  initialData!.id!.value ,
+                    contactId:  initialData!.id!.value! ,
                     data: value as CreateContactRequest,
                 });
             } else {

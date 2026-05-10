@@ -83,7 +83,7 @@ const DepotList = ({search}: { search?: string }) => {
                     <DialogTrigger asChild>
                         <Button className={"w-full"}><LuPlus className={"size-6"}/> Create new Depot</Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent  className={"flex flex-col overflow-y-auto max-h-4/5"}>
                        <AddDepotForm onSuccess={refetch}/>
                     </DialogContent>
                 </Dialog>
