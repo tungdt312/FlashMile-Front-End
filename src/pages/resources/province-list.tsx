@@ -89,12 +89,12 @@ const ProvinceCard = ({province}: { province: ProvinceSummaryProjection }) => {
     const router = useRouter();
     return (
         <div className="w-full flex p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md"
-             onClick={() => router.navigate({to: `/province/${province.id}/`})}>
+             onClick={() => router.navigate({to: `/area/${province.id}/`})}>
             <div className={"p-1 rounded-xl size-8 bg-primary-200 text-primary border-primary border-1"}>
                 {province.type === ProvinceResultType.CITY ? <Building2 className={"size-full"}/> : <LandPlot className={"size-full"}/> }
             </div>
             <div className="flex flex-col items-center justify-between w-full pl-4">
-                <p className="font-bold caption text-primary"> {province.type}</p>
+                <p className="font-bold caption text-primary text-start"> {province.type}</p>
                 <p className="w-full"> {province.name}</p>
             </div>
         </div>
