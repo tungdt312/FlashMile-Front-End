@@ -103,7 +103,7 @@ const WardCard = ({ward}: { ward: WardSummaryProjection }) => {
     return (
         <div className="w-full flex p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md"
              onClick={() => router.navigate({to: `/ward/${ward.id}/`})}>
-            <div className="flex items-center justify-between w-full">
+            <div className="flex w-full">
                 <p className="font-bold caption text-primary"> {ward.type}</p>
                 <p className="w-full"> {ward.name}</p>
             </div>
