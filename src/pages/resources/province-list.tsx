@@ -88,7 +88,7 @@ export default ProvinceList
 const ProvinceCard = ({province}: { province: ProvinceSummaryProjection }) => {
     const router = useRouter();
     return (
-        <div className="w-full flex p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md"
+        <div className="w-full flex p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md items-center"
              onClick={() => router.navigate({to: `/area/${province.id}/`})}>
             <div className={"p-1 rounded-xl size-8 bg-primary-200 text-primary border-primary border-1"}>
                 {province.type === ProvinceResultType.CITY ? <Building2 className={"size-full"}/> : <LandPlot className={"size-full"}/> }
