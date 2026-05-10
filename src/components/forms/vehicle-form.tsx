@@ -1,6 +1,6 @@
 // src/components/forms/vehicle-form.tsx
 import z from "zod";
-import type {VehicleRequest} from "../../types";
+import type {VehicleRequest, VehicleSummaryProjection} from "../../types";
 import {useQueryClient} from "@tanstack/react-query";
 import {
     getGetAllVehiclesQueryKey,
@@ -19,15 +19,14 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "..
 const VehicleSchema = z.object({
     licensePlate: z.string().min(1, "License plate is required").toUpperCase(),
     type: z.string().min(1, "Vehicle type is required"),
-    maxWeight: z.number().min(0, "Max weight must be positive").or(z.undefined()),
-    maxVolume: z.number().min(0, "Max volume must be positive").or(z.undefined()),
+    maxWeight: z.number().min(0, "Max weight must be positive"),
+    maxVolume: z.number().min(0, "Max volume must be positive"),
     shipperId: z.string().or(z.undefined()),
 });
 
-type VehicleFormValues = z.infer<typeof VehicleSchema>;
 
 interface VehicleFormProps {
-    initialData?: VehicleFormValues & { id: string };
+    initialData?: VehicleSummaryProjection,
     onSuccess?: () => void;
 }
 
@@ -77,12 +76,12 @@ export const VehicleForm = ({ initialData, onSuccess }: VehicleFormProps) => {
         defaultValues: {
             licensePlate: initialData?.licensePlate ?? "",
             type: initialData?.type ?? "",
-            maxWeight: initialData?.maxWeight ,
-            maxVolume: initialData?.maxVolume ,
-            shipperId: initialData?.shipperId ,
+            maxWeight: initialData?.maxWeight ?? 0,
+            maxVolume: initialData?.maxVolume ?? 0,
+            shipperId: initialData?.shipperId,
         },
         validators: {
-            onSubmit: VehicleSchema,
+            onSubmit: VehicleSchema
         },
         onSubmit: async ({ value }) => {
             if (isEditMode && initialData?.id) {
@@ -167,9 +166,7 @@ export const VehicleForm = ({ initialData, onSuccess }: VehicleFormProps) => {
                                 value={field.state.value ?? ""}
                                 onBlur={field.handleBlur}
                                 onChange={(e) =>
-                                    field.handleChange(
-                                        e.target.value ? parseFloat(e.target.value) : undefined
-                                    )
+                                    field.handleChange(parseFloat(e.target.value))
                                 }
                                 disabled={isLoading}
                             />
@@ -195,9 +192,7 @@ export const VehicleForm = ({ initialData, onSuccess }: VehicleFormProps) => {
                                 value={field.state.value ?? ""}
                                 onBlur={field.handleBlur}
                                 onChange={(e) =>
-                                    field.handleChange(
-                                        e.target.value ? parseFloat(e.target.value) : undefined
-                                    )
+                                    field.handleChange(parseFloat(e.target.value))
                                 }
                                 disabled={isLoading}
                             />
