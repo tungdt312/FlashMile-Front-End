@@ -73,7 +73,7 @@ export const AddDepotForm = ({initialData, onSuccess}: DepotFormProps) => {
                 name="name"
                 children={(field) => (
                     <Field>
-                        <FieldLabel htmlFor={field.name}>Role Name</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>Depot Name</FieldLabel>
                         <Input
                             id={field.name}
                             autoComplete="off"

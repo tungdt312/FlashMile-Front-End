@@ -75,11 +75,11 @@ export const GetAllRolesResponse = zod.object({
   "message": zod.string().optional(),
   "data": zod.object({
   "content": zod.array(zod.object({
-  "isDefault": zod.boolean().optional(),
-  "systemRole": zod.boolean().optional(),
   "name": zod.string().optional(),
   "id": zod.string().optional(),
-  "description": zod.string().optional()
+  "description": zod.string().optional(),
+  "isDefault": zod.boolean().optional(),
+  "systemRole": zod.boolean().optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),

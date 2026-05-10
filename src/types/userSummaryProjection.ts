@@ -9,9 +9,9 @@ import type { PhoneNumber } from './phoneNumber';
 import type { UserSummaryProjectionUserStatus } from './userSummaryProjectionUserStatus';
 
 export interface UserSummaryProjection {
-  fullname?: string;
-  userStatus?: UserSummaryProjectionUserStatus;
   id?: number;
   email?: Email;
   phoneNumber?: PhoneNumber;
+  fullname?: string;
+  userStatus?: UserSummaryProjectionUserStatus;
 }

@@ -15,7 +15,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  ApiResponseInteger,
+  ApiResponseImportResult,
   ErrorResponse,
   ImportProvincesBody,
   ImportWardsBody
@@ -40,7 +40,7 @@ export const importWards = (
       const formData = new FormData();
 formData.append(`file`, importWardsBody.file);
 
-      return axiosInstanceFn<ApiResponseInteger>(
+      return axiosInstanceFn<ApiResponseImportResult>(
       {url: `/api/v1/admin/areas/wards/import`, method: 'POST',
        data: formData, signal
     },
@@ -104,7 +104,7 @@ export const importProvinces = (
       const formData = new FormData();
 formData.append(`file`, importProvincesBody.file);
 
-      return axiosInstanceFn<ApiResponseInteger>(
+      return axiosInstanceFn<ApiResponseImportResult>(
       {url: `/api/v1/admin/areas/provinces/import`, method: 'POST',
        data: formData, signal
     },

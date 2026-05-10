@@ -7,10 +7,10 @@
 import type { DepotSummaryProjectionType } from './depotSummaryProjectionType';
 
 export interface DepotSummaryProjection {
-  isStartNode?: boolean;
   name?: string;
   id?: string;
   type?: DepotSummaryProjectionType;
   lat?: number;
   lng?: number;
+  isStartNode?: boolean;
 }

@@ -2593,7 +2593,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponseInteger"
+                  "$ref": "#/components/schemas/ApiResponseImportResult"
                 }
               }
             }
@@ -2642,7 +2642,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponseInteger"
+                  "$ref": "#/components/schemas/ApiResponseImportResult"
                 }
               }
             }
@@ -5067,7 +5067,7 @@
           }
         }
       },
-      "ApiResponseInteger": {
+      "ApiResponseImportResult": {
         "type": "object",
         "properties": {
           "timestamp": {
@@ -5082,8 +5082,30 @@
             "type": "string"
           },
           "data": {
+            "$ref": "#/components/schemas/ImportResult"
+          }
+        }
+      },
+      "ImportResult": {
+        "type": "object",
+        "properties": {
+          "imported": {
             "type": "integer",
             "format": "int32"
+          },
+          "skipped": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -5279,6 +5301,16 @@
       "UserSummaryProjection": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "phoneNumber": {
+            "$ref": "#/components/schemas/PhoneNumber"
+          },
           "fullname": {
             "type": "string"
           },
@@ -5290,16 +5322,6 @@
               "BLOCKED",
               "DELETED"
             ]
-          },
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "email": {
-            "$ref": "#/components/schemas/Email"
-          },
-          "phoneNumber": {
-            "$ref": "#/components/schemas/PhoneNumber"
           }
         }
       },
@@ -5358,12 +5380,6 @@
       "RoleSummaryProjection": {
         "type": "object",
         "properties": {
-          "isDefault": {
-            "type": "boolean"
-          },
-          "systemRole": {
-            "type": "boolean"
-          },
           "name": {
             "type": "string"
           },
@@ -5372,6 +5388,12 @@
           },
           "description": {
             "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "systemRole": {
+            "type": "boolean"
           }
         }
       },
@@ -6009,9 +6031,6 @@
       "DepotSummaryProjection": {
         "type": "object",
         "properties": {
-          "isStartNode": {
-            "type": "boolean"
-          },
           "name": {
             "type": "string"
           },
@@ -6032,6 +6051,9 @@
           "lng": {
             "type": "number",
             "format": "double"
+          },
+          "isStartNode": {
+            "type": "boolean"
           }
         }
       },

@@ -151,15 +151,15 @@ export const GetUsersByStatusResponse = zod.object({
   "message": zod.string().optional(),
   "data": zod.object({
   "content": zod.array(zod.object({
-  "fullname": zod.string().optional(),
-  "userStatus": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional(),
   "id": zod.number().optional(),
   "email": zod.object({
   "value": zod.string().optional()
 }).optional(),
   "phoneNumber": zod.object({
   "value": zod.string().optional()
-}).optional()
+}).optional(),
+  "fullname": zod.string().optional(),
+  "userStatus": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),
@@ -229,15 +229,15 @@ export const GetAllUserProfilesResponse = zod.object({
   "message": zod.string().optional(),
   "data": zod.object({
   "content": zod.array(zod.object({
-  "fullname": zod.string().optional(),
-  "userStatus": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional(),
   "id": zod.number().optional(),
   "email": zod.object({
   "value": zod.string().optional()
 }).optional(),
   "phoneNumber": zod.object({
   "value": zod.string().optional()
-}).optional()
+}).optional(),
+  "fullname": zod.string().optional(),
+  "userStatus": zod.enum(['UNVERIFIED', 'ACTIVE', 'BLOCKED', 'DELETED']).optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),

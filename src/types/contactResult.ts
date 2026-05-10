@@ -7,9 +7,9 @@
 import type { ContactId } from './contactId';
 
 export interface ContactResult {
-  id: ContactId;
-  name: string;
-  phoneNumber: string;
-  address: string | undefined;
-  note: string | undefined;
+  id?: ContactId;
+  name?: string;
+  phoneNumber?: string;
+  address?: string;
+  note?: string;
 }

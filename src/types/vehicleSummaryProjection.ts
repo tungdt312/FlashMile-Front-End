@@ -6,10 +6,10 @@
  */
 
 export interface VehicleSummaryProjection {
-  id: string;
-  type: string;
-  licensePlate: string;
-  maxWeight: number;
-  maxVolume: number;
+  id?: string;
+  type?: string;
+  licensePlate?: string;
+  maxWeight?: number;
+  maxVolume?: number;
   shipperId?: string;
 }

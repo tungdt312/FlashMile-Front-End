@@ -4,10 +4,11 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import type { ImportResult } from './importResult';
 
-export interface ApiResponseInteger {
+export interface ApiResponseImportResult {
   timestamp?: string;
   status?: number;
   message?: string;
-  data?: number;
+  data?: ImportResult;
 }

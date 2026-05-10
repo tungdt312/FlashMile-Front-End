@@ -31,11 +31,9 @@ interface VehicleFormProps {
 }
 
 const VEHICLE_TYPES = [
-    { label: "Motorcycle", value: "MOTORCYCLE" },
-    { label: "Car", value: "CAR" },
+    { label: "Motorbike", value: "MOTORBIKE" },
     { label: "Van", value: "VAN" },
     { label: "Truck", value: "TRUCK" },
-    { label: "Pickup", value: "PICKUP" },
 ];
 
 // ============ VEHICLE FORM COMPONENT ============

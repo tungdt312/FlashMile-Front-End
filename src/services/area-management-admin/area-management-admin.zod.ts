@@ -18,7 +18,12 @@ export const ImportWardsResponse = zod.object({
   "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
-  "data": zod.number().optional()
+  "data": zod.object({
+  "imported": zod.number().optional(),
+  "skipped": zod.number().optional(),
+  "failed": zod.number().optional(),
+  "errors": zod.array(zod.string()).optional()
+}).optional()
 })
 
 /**
@@ -32,6 +37,11 @@ export const ImportProvincesResponse = zod.object({
   "timestamp": zod.iso.datetime({}).optional(),
   "status": zod.number().optional(),
   "message": zod.string().optional(),
-  "data": zod.number().optional()
+  "data": zod.object({
+  "imported": zod.number().optional(),
+  "skipped": zod.number().optional(),
+  "failed": zod.number().optional(),
+  "errors": zod.array(zod.string()).optional()
+}).optional()
 })
 
