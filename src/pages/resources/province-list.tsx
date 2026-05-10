@@ -94,7 +94,7 @@ const ProvinceCard = ({province}: { province: ProvinceSummaryProjection }) => {
                 {province.type === ProvinceResultType.CITY ? <Building2 className={"size-full"}/> : <LandPlot className={"size-full"}/> }
             </div>
             <div className="flex flex-col items-center justify-between w-full pl-4">
-                <p className="font-bold caption text-primary text-start"> {province.type}</p>
+                <p className="caption text-primary text-start"> {province.type}</p>
                 <p className="w-full"> {province.name}</p>
             </div>
         </div>
