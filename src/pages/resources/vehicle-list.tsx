@@ -8,7 +8,7 @@ import { Badge } from "../../components/ui/badge.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { useInView } from "react-intersection-observer";
 import type { VehicleSummaryProjection } from "../../types";
-import { Dialog, DialogContent, DialogTrigger } from "../../components/ui/dialog.tsx";
+import {Dialog, DialogContent, DialogTitle, DialogTrigger} from "../../components/ui/dialog.tsx";
 import { useGetAllVehicles } from "../../services/vehicle-management/vehicle-management.ts";
 import { VehicleForm } from "../../components/forms/vehicle-form.tsx";
 import { PenSquare, Truck, Weight, Package } from "lucide-react";
@@ -172,7 +172,8 @@ const VehicleCard = ({
                                 <PenSquare className={"size-6"} />
                             </Button>
                         </DialogTrigger>
-                        <DialogContent>
+                        <DialogContent className={"flex flex-col overflow-y-auto max-h-4/5"}>
+                            <DialogTitle>Add Vehicle</DialogTitle>
                             <VehicleForm
                                 onSuccess={onEdit}
                                 initialData={vehicle}

@@ -4,21 +4,19 @@ import {Badge} from "../../components/ui/badge.tsx";
 import {useEffect, useState} from "react";
 import {useInView} from "react-intersection-observer";
 import {Button} from "../../components/ui/button.tsx";
-import {LuArrowLeft, LuBell, LuPlus} from "react-icons/lu";
+import {LuArrowLeft, LuBell} from "react-icons/lu";
 import {Input} from "../../components/ui/input.tsx";
-import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
-import {AddDepotForm} from "../../components/forms/add-depot-form.tsx";
 import {Skeleton} from "../../components/ui/skeleton.tsx";
 import {useGetAllUserProfiles} from "../../services/user-profile/user-profile.ts";
 
 
-const UserList = ({search}: {search?: string}) => {
+const UserList = ({search}: { search?: string }) => {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState<number>(0);
     const {ref, inView} = useInView()
     const [content, setContent] = useState<UserSummaryProjection[]>([]);
     const [inputValue, setInputValue] = useState(search || "");
-    const {data, isLoading, isError, isFetching,refetch} = useGetAllUserProfiles({
+    const {data, isLoading, isError, isFetching} = useGetAllUserProfiles({
         page: currentPage,
         size: 10,
         filter: search ? `fullName==^*${search}*` : undefined
@@ -80,14 +78,6 @@ const UserList = ({search}: {search?: string}) => {
                     // Update URL params via your router to trigger the 'search' prop update
                     setInputValue(e.target.value);
                 }}/>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button className={"w-full"}><LuPlus className={"size-6"}/> Create new User</Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <AddDepotForm onSuccess={refetch}/>
-                    </DialogContent>
-                </Dialog>
 
                 <div className={"w-full flex-1 flex flex-col items-center justify-start gap-4"}>
                     {content.map((item, i) => <UserCard key={i} user={item}/>)}
@@ -115,7 +105,7 @@ const UserList = ({search}: {search?: string}) => {
 }
 export default UserList
 
-const UserCard = ({user}: {user: UserSummaryProjection}) => {
+const UserCard = ({user}: { user: UserSummaryProjection }) => {
     const router = useRouter();
     const statusMap: Record<UserSummaryProjectionStatus, "default" | "outline" | "secondary" | "destructive"> = {
         [UserSummaryProjectionStatus.UNVERIFIED]: "outline",
@@ -134,8 +124,8 @@ const UserCard = ({user}: {user: UserSummaryProjection}) => {
                     <Badge variant={variant}>{user.status}</Badge>
                 </div>
             </div>
-            <p className="caption text-muted-foreground w-full"> <b>Email:</b> {user.email}</p>
-            <p className="caption text-muted-foreground w-full"> <b>Phone:</b> {user.phoneNumber}</p>
+            <p className="caption text-muted-foreground w-full"><b>Email:</b> {user.email}</p>
+            <p className="caption text-muted-foreground w-full"><b>Phone:</b> {user.phoneNumber}</p>
 
         </div>
     )

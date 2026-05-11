@@ -8,6 +8,7 @@ import {LuLoaderCircle} from "react-icons/lu";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../ui/select.tsx";
 import type {DepotResult} from "../../types";
 import Map from "../mapbox.tsx";
+import {useState} from "react";
 
 
 interface DepotFormProps {
@@ -16,7 +17,10 @@ interface DepotFormProps {
 }
 export const AddDepotForm = ({initialData, onSuccess}: DepotFormProps) => {
     const isEditMode = !!initialData?.id;
-
+    const [mapCoords, setMapCoords] = useState({
+        lng: initialData?.lng ?? -71.06776,
+        lat: initialData?.lat ?? 42.35816
+    });
     // 1. Hook tạo mới
     const createDepot = useCreateDepot({
         mutation: {
@@ -45,20 +49,32 @@ export const AddDepotForm = ({initialData, onSuccess}: DepotFormProps) => {
         defaultValues: {
             name: initialData?.name ?? "",
             type: initialData?.type ?? "SOC",
+            lat: initialData?.lat ?? 42.35816, // NEW
+            lng: initialData?.lng ?? -71.06776, // NEW
         },
         onSubmit: async ({ value }) => {
+            const payloadData = {
+                ...value,
+            };
             if (isEditMode) {
                 updateDepot.mutate({
                     depotId: initialData?.id?.value || "",
-                    data: { ...value}
+                    data: payloadData
                 });
             } else {
                 createDepot.mutate({
-                    data: { ...value}
+                    data: payloadData
                 });
             }
         }
     });
+
+    const handleCoordinatesChange = (coords: { lng: number; lat: number }) => {
+        setMapCoords(coords);
+        // Optionally update form values
+        depotForm.setFieldValue('lat', coords.lat);
+        depotForm.setFieldValue('lng', coords.lng);
+    };
     return (
         <form
             id="depot-form"
@@ -112,7 +128,9 @@ export const AddDepotForm = ({initialData, onSuccess}: DepotFormProps) => {
                 )}
             />
 
-            <Map/>
+            <Map initialData={{lng: mapCoords.lng, lat: mapCoords.lat }}
+                 onCoordinatesChange={handleCoordinatesChange}
+            />
             <Button
                 type="submit"
                 disabled={createDepot.isPending || updateDepot.isPending}

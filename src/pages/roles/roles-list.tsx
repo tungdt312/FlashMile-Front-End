@@ -9,7 +9,7 @@ import {Skeleton} from "../../components/ui/skeleton.tsx";
 import {useInView} from "react-intersection-observer";
 import type {RoleSummaryProjection} from "../../types";
 import RoleForm from "../../components/forms/add-role-form.tsx";
-import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
+import {Dialog, DialogContent, DialogTitle, DialogTrigger} from "../../components/ui/dialog.tsx";
 
 const RolesList = ({search}: { search?: string }) => {
     const router = useRouter();
@@ -83,7 +83,8 @@ const RolesList = ({search}: { search?: string }) => {
                     <DialogTrigger asChild>
                         <Button className={"w-full"}><LuPlus className={"size-6"}/> Create new role</Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className={"flex flex-col overflow-y-auto max-h-4/5"}>
+                        <DialogTitle>Create Role</DialogTitle>
                         <RoleForm onSuccess={() => refetch()}/>
                     </DialogContent>
                 </Dialog>

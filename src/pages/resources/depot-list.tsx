@@ -4,7 +4,7 @@ import {useInView} from "react-intersection-observer";
 import {Button} from "../../components/ui/button.tsx";
 import {LuArrowLeft, LuBell, LuPlus} from "react-icons/lu";
 import {Input} from "../../components/ui/input.tsx";
-import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
+import {Dialog, DialogContent, DialogTitle, DialogTrigger} from "../../components/ui/dialog.tsx";
 import {Skeleton} from "../../components/ui/skeleton.tsx";
 import {Badge} from "../../components/ui/badge.tsx";
 import type {DepotSummaryProjection} from "../../types";
@@ -84,6 +84,7 @@ const DepotList = ({search}: { search?: string }) => {
                         <Button className={"w-full"}><LuPlus className={"size-6"}/> Create new Depot</Button>
                     </DialogTrigger>
                     <DialogContent  className={"flex flex-col overflow-y-auto max-h-4/5"}>
+                        <DialogTitle>Create Depot</DialogTitle>
                        <AddDepotForm onSuccess={refetch}/>
                     </DialogContent>
                 </Dialog>

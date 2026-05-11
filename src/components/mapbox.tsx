@@ -9,10 +9,10 @@ interface MapProps {
         lng: number;
         lat: number;
     }; // Nếu có id -> Edit Mode
-    onMove?: () => void;
+    onCoordinatesChange?: (coords: { lng: number; lat: number }) => void;
 }
 
-const Map = ({initialData, onMove}: MapProps ) => {
+const Map = ({initialData, onCoordinatesChange}: MapProps ) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
@@ -37,19 +37,20 @@ const Map = ({initialData, onMove}: MapProps ) => {
         navigator.geolocation.getCurrentPosition((pos) => {
             const { longitude, latitude } = pos.coords;
             map.flyTo({ center: [longitude, latitude], zoom: 14 });
-            setCoords({ lng: longitude, lat: latitude });
+            const newCoords = { lng: longitude, lat: latitude };
+            setCoords(newCoords);
+            onCoordinatesChange?.(newCoords);
         });
 
         // --- 2. LISTEN FOR SCROLL/DRAG ---
         map.on('move', () => {
             const center = map.getCenter();
-            setCoords({
+            const newCoords = {
                 lng: Number(center.lng.toFixed(5)),
                 lat: Number(center.lat.toFixed(5))
-            });
-            if (onMove) {
-                onMove()
-            }
+            };
+            setCoords(newCoords);
+            onCoordinatesChange?.(newCoords);
         });
 
         return () => {

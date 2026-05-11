@@ -7,7 +7,7 @@ import {Badge} from "../../components/ui/badge.tsx";
 import {Skeleton} from "../../components/ui/skeleton.tsx";
 import {useInView} from "react-intersection-observer";
 import type {ContactResult} from "../../types";
-import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
+import {Dialog, DialogContent, DialogTitle, DialogTrigger} from "../../components/ui/dialog.tsx";
 import {useGetMyContacts} from "../../services/recipient-contacts/recipient-contacts.ts";
 import {ContactForm} from "../../components/forms/contact-form.tsx";
 import {PenSquare} from "lucide-react";
@@ -125,7 +125,8 @@ const ContactCard = ({contact, onEdit}: { contact: ContactResult, onEdit: ()=> v
                         <DialogTrigger asChild>
                             <Button size={"icon-sm"}><PenSquare className={"size-6"}/></Button>
                         </DialogTrigger>
-                        <DialogContent>
+                        <DialogContent className={"flex flex-col overflow-y-auto max-h-4/5"}>
+                            <DialogTitle>Add Contact</DialogTitle>
                             <ContactForm onSuccess={onEdit} initialData={contact}/>
                         </DialogContent>
                     </Dialog>
