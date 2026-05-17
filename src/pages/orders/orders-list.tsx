@@ -10,17 +10,35 @@ import {Skeleton} from "../../components/ui/skeleton.tsx";
 import {useGetAllOrders} from "../../services/order-management/order-management.ts";
 import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
 import CreateOrderForm from "../../components/forms/create-order-form.tsx";
+import {useAuthStore} from "../../lib/global.ts";
 
 const OrdersList = ({search}: {search?: string}) => {
     const router = useRouter();
+    const user = useAuthStore()
     const [currentPage, setCurrentPage] = useState<number>(0);
     const {ref, inView} = useInView()
     const [content, setContent] = useState<OrderSummaryProjection[]>([]);
     const [inputValue, setInputValue] = useState(search || "");
+    const searching = () => {
+        const filters = [];
+
+        if (search) {
+            filters.push(`id==^*${search}*`);
+        }
+
+        if (user.permissionCodes[0] == "USER") {
+            filters.push(`customerID==^*${user.user?.id}*`);
+        }
+        if (user.permissionCodes[0] == "DELIVERER") {
+            filters.push(`assignedDriverId==^*${user.user?.id}*`);
+        }
+
+        return filters.length > 0 ? filters.join(' and ') : '';
+    }
     const {data, isLoading, isError, isFetching} = useGetAllOrders({
         page: currentPage,
         size: 10,
-        filter: search ? `id==^*${search}*` : undefined
+        filter: searching()
     });
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -37,6 +55,7 @@ const OrdersList = ({search}: {search?: string}) => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setContent([]);
         setCurrentPage(0);
+
     }, [search]);
 
     useEffect(() => {
