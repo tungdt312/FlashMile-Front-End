@@ -4,10 +4,12 @@ import {useRouter} from "@tanstack/react-router";
 import {useEffect, useState} from "react";
 import {useInView} from "react-intersection-observer";
 import {Button} from "../../components/ui/button.tsx";
-import {LuArrowLeft, LuBell} from "react-icons/lu";
+import {LuArrowLeft, LuBell, LuPlus} from "react-icons/lu";
 import {Input} from "../../components/ui/input.tsx";
 import {Skeleton} from "../../components/ui/skeleton.tsx";
 import {useGetAllOrders} from "../../services/order-management/order-management.ts";
+import {Dialog, DialogContent, DialogTrigger} from "../../components/ui/dialog.tsx";
+import CreateOrderForm from "../../components/forms/create-order-form.tsx";
 
 const OrdersList = ({search}: {search?: string}) => {
     const router = useRouter();
@@ -77,7 +79,14 @@ const OrdersList = ({search}: {search?: string}) => {
                     // Update URL params via your router to trigger the 'search' prop update
                     setInputValue(e.target.value);
                 }}/>
-
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button className={"w-full"}><LuPlus className={"size-6"}/> Create new Order</Button>
+                    </DialogTrigger>
+                    <DialogContent  className={"flex flex-col overflow-y-auto max-h-4/5"}>
+                        <CreateOrderForm/>
+                    </DialogContent>
+                </Dialog>
                 <div className={"w-full flex-1 flex flex-col items-center justify-start gap-4"}>
                     {content.map((item, i) => <OrderItem key={i} order={item}/>)}
                     {(isLoading || isFetching) &&
