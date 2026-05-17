@@ -15,7 +15,7 @@ import {
     BarChart3,
     MapPin,
     Navigation,
-    Package,
+    Package, PackageSearch,
     ShieldCheck,
     Truck,
     UsersRound,
@@ -92,6 +92,12 @@ const QUICK_ACCESS_ACTIONS: QuickAccessAction[] = [
         label: "Users",
         icon: <UsersRound className="size-6 " />,
         route: "/users",
+    },
+    {
+        id: "orders",
+        label: "Orders",
+        icon: <PackageSearch className="size-6 " />,
+        route: "/orders",
     },
     {
         id: "area",
