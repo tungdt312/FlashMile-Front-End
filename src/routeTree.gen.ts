@@ -28,10 +28,14 @@ import { Route as authMultiFactorRouteImport } from './routes/(auth)/multi-facto
 import { Route as AuthenticatedRouteVehicleIndexRouteImport } from './routes/_authenticatedRoute/vehicle/index'
 import { Route as AuthenticatedRouteUsersIndexRouteImport } from './routes/_authenticatedRoute/users/index'
 import { Route as AuthenticatedRouteRolesIndexRouteImport } from './routes/_authenticatedRoute/roles/index'
+import { Route as AuthenticatedRouteOrdersIndexRouteImport } from './routes/_authenticatedRoute/orders/index'
 import { Route as AuthenticatedRouteDepotIndexRouteImport } from './routes/_authenticatedRoute/depot/index'
 import { Route as AuthenticatedRouteAreaIndexRouteImport } from './routes/_authenticatedRoute/area/index'
 import { Route as AuthenticatedRouteUsersUserIdRouteImport } from './routes/_authenticatedRoute/users/$userId'
 import { Route as AuthenticatedRouteRolesRoleIdRouteImport } from './routes/_authenticatedRoute/roles/$roleId'
+import { Route as AuthenticatedRouteOrdersTrackingRouteImport } from './routes/_authenticatedRoute/orders/tracking'
+import { Route as AuthenticatedRouteOrdersCreateRouteImport } from './routes/_authenticatedRoute/orders/create'
+import { Route as AuthenticatedRouteOrdersIdRouteImport } from './routes/_authenticatedRoute/orders/$id'
 import { Route as AuthenticatedRouteDepotDepotIdRouteImport } from './routes/_authenticatedRoute/depot/$depotId'
 import { Route as AuthenticatedRouteAreaProvinceIdRouteImport } from './routes/_authenticatedRoute/area/$provinceId'
 
@@ -137,6 +141,12 @@ const AuthenticatedRouteRolesIndexRoute =
     path: '/roles/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedRouteOrdersIndexRoute =
+  AuthenticatedRouteOrdersIndexRouteImport.update({
+    id: '/orders/',
+    path: '/orders/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRouteDepotIndexRoute =
   AuthenticatedRouteDepotIndexRouteImport.update({
     id: '/depot/',
@@ -159,6 +169,24 @@ const AuthenticatedRouteRolesRoleIdRoute =
   AuthenticatedRouteRolesRoleIdRouteImport.update({
     id: '/roles/$roleId',
     path: '/roles/$roleId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRouteOrdersTrackingRoute =
+  AuthenticatedRouteOrdersTrackingRouteImport.update({
+    id: '/orders/tracking',
+    path: '/orders/tracking',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRouteOrdersCreateRoute =
+  AuthenticatedRouteOrdersCreateRouteImport.update({
+    id: '/orders/create',
+    path: '/orders/create',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRouteOrdersIdRoute =
+  AuthenticatedRouteOrdersIdRouteImport.update({
+    id: '/orders/$id',
+    path: '/orders/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedRouteDepotDepotIdRoute =
@@ -192,10 +220,14 @@ export interface FileRoutesByFullPath {
   '/oauth2/callback': typeof Oauth2CallbackRoute
   '/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
   '/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
+  '/orders/$id': typeof AuthenticatedRouteOrdersIdRoute
+  '/orders/create': typeof AuthenticatedRouteOrdersCreateRoute
+  '/orders/tracking': typeof AuthenticatedRouteOrdersTrackingRoute
   '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/area/': typeof AuthenticatedRouteAreaIndexRoute
   '/depot/': typeof AuthenticatedRouteDepotIndexRoute
+  '/orders/': typeof AuthenticatedRouteOrdersIndexRoute
   '/roles/': typeof AuthenticatedRouteRolesIndexRoute
   '/users/': typeof AuthenticatedRouteUsersIndexRoute
   '/vehicle/': typeof AuthenticatedRouteVehicleIndexRoute
@@ -218,10 +250,14 @@ export interface FileRoutesByTo {
   '/oauth2/callback': typeof Oauth2CallbackRoute
   '/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
   '/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
+  '/orders/$id': typeof AuthenticatedRouteOrdersIdRoute
+  '/orders/create': typeof AuthenticatedRouteOrdersCreateRoute
+  '/orders/tracking': typeof AuthenticatedRouteOrdersTrackingRoute
   '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/area': typeof AuthenticatedRouteAreaIndexRoute
   '/depot': typeof AuthenticatedRouteDepotIndexRoute
+  '/orders': typeof AuthenticatedRouteOrdersIndexRoute
   '/roles': typeof AuthenticatedRouteRolesIndexRoute
   '/users': typeof AuthenticatedRouteUsersIndexRoute
   '/vehicle': typeof AuthenticatedRouteVehicleIndexRoute
@@ -246,10 +282,14 @@ export interface FileRoutesById {
   '/oauth2/callback': typeof Oauth2CallbackRoute
   '/_authenticatedRoute/area/$provinceId': typeof AuthenticatedRouteAreaProvinceIdRoute
   '/_authenticatedRoute/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
+  '/_authenticatedRoute/orders/$id': typeof AuthenticatedRouteOrdersIdRoute
+  '/_authenticatedRoute/orders/create': typeof AuthenticatedRouteOrdersCreateRoute
+  '/_authenticatedRoute/orders/tracking': typeof AuthenticatedRouteOrdersTrackingRoute
   '/_authenticatedRoute/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/_authenticatedRoute/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/_authenticatedRoute/area/': typeof AuthenticatedRouteAreaIndexRoute
   '/_authenticatedRoute/depot/': typeof AuthenticatedRouteDepotIndexRoute
+  '/_authenticatedRoute/orders/': typeof AuthenticatedRouteOrdersIndexRoute
   '/_authenticatedRoute/roles/': typeof AuthenticatedRouteRolesIndexRoute
   '/_authenticatedRoute/users/': typeof AuthenticatedRouteUsersIndexRoute
   '/_authenticatedRoute/vehicle/': typeof AuthenticatedRouteVehicleIndexRoute
@@ -274,10 +314,14 @@ export interface FileRouteTypes {
     | '/oauth2/callback'
     | '/area/$provinceId'
     | '/depot/$depotId'
+    | '/orders/$id'
+    | '/orders/create'
+    | '/orders/tracking'
     | '/roles/$roleId'
     | '/users/$userId'
     | '/area/'
     | '/depot/'
+    | '/orders/'
     | '/roles/'
     | '/users/'
     | '/vehicle/'
@@ -300,10 +344,14 @@ export interface FileRouteTypes {
     | '/oauth2/callback'
     | '/area/$provinceId'
     | '/depot/$depotId'
+    | '/orders/$id'
+    | '/orders/create'
+    | '/orders/tracking'
     | '/roles/$roleId'
     | '/users/$userId'
     | '/area'
     | '/depot'
+    | '/orders'
     | '/roles'
     | '/users'
     | '/vehicle'
@@ -327,10 +375,14 @@ export interface FileRouteTypes {
     | '/oauth2/callback'
     | '/_authenticatedRoute/area/$provinceId'
     | '/_authenticatedRoute/depot/$depotId'
+    | '/_authenticatedRoute/orders/$id'
+    | '/_authenticatedRoute/orders/create'
+    | '/_authenticatedRoute/orders/tracking'
     | '/_authenticatedRoute/roles/$roleId'
     | '/_authenticatedRoute/users/$userId'
     | '/_authenticatedRoute/area/'
     | '/_authenticatedRoute/depot/'
+    | '/_authenticatedRoute/orders/'
     | '/_authenticatedRoute/roles/'
     | '/_authenticatedRoute/users/'
     | '/_authenticatedRoute/vehicle/'
@@ -484,6 +536,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRolesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticatedRoute/orders/': {
+      id: '/_authenticatedRoute/orders/'
+      path: '/orders'
+      fullPath: '/orders/'
+      preLoaderRoute: typeof AuthenticatedRouteOrdersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticatedRoute/depot/': {
       id: '/_authenticatedRoute/depot/'
       path: '/depot'
@@ -512,6 +571,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRolesRoleIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticatedRoute/orders/tracking': {
+      id: '/_authenticatedRoute/orders/tracking'
+      path: '/orders/tracking'
+      fullPath: '/orders/tracking'
+      preLoaderRoute: typeof AuthenticatedRouteOrdersTrackingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticatedRoute/orders/create': {
+      id: '/_authenticatedRoute/orders/create'
+      path: '/orders/create'
+      fullPath: '/orders/create'
+      preLoaderRoute: typeof AuthenticatedRouteOrdersCreateRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticatedRoute/orders/$id': {
+      id: '/_authenticatedRoute/orders/$id'
+      path: '/orders/$id'
+      fullPath: '/orders/$id'
+      preLoaderRoute: typeof AuthenticatedRouteOrdersIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticatedRoute/depot/$depotId': {
       id: '/_authenticatedRoute/depot/$depotId'
       path: '/depot/$depotId'
@@ -538,10 +618,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRoutePaymentResultRoute: typeof AuthenticatedRoutePaymentResultRoute
   AuthenticatedRouteAreaProvinceIdRoute: typeof AuthenticatedRouteAreaProvinceIdRoute
   AuthenticatedRouteDepotDepotIdRoute: typeof AuthenticatedRouteDepotDepotIdRoute
+  AuthenticatedRouteOrdersIdRoute: typeof AuthenticatedRouteOrdersIdRoute
+  AuthenticatedRouteOrdersCreateRoute: typeof AuthenticatedRouteOrdersCreateRoute
+  AuthenticatedRouteOrdersTrackingRoute: typeof AuthenticatedRouteOrdersTrackingRoute
   AuthenticatedRouteRolesRoleIdRoute: typeof AuthenticatedRouteRolesRoleIdRoute
   AuthenticatedRouteUsersUserIdRoute: typeof AuthenticatedRouteUsersUserIdRoute
   AuthenticatedRouteAreaIndexRoute: typeof AuthenticatedRouteAreaIndexRoute
   AuthenticatedRouteDepotIndexRoute: typeof AuthenticatedRouteDepotIndexRoute
+  AuthenticatedRouteOrdersIndexRoute: typeof AuthenticatedRouteOrdersIndexRoute
   AuthenticatedRouteRolesIndexRoute: typeof AuthenticatedRouteRolesIndexRoute
   AuthenticatedRouteUsersIndexRoute: typeof AuthenticatedRouteUsersIndexRoute
   AuthenticatedRouteVehicleIndexRoute: typeof AuthenticatedRouteVehicleIndexRoute
@@ -556,10 +640,14 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRoutePaymentResultRoute: AuthenticatedRoutePaymentResultRoute,
   AuthenticatedRouteAreaProvinceIdRoute: AuthenticatedRouteAreaProvinceIdRoute,
   AuthenticatedRouteDepotDepotIdRoute: AuthenticatedRouteDepotDepotIdRoute,
+  AuthenticatedRouteOrdersIdRoute: AuthenticatedRouteOrdersIdRoute,
+  AuthenticatedRouteOrdersCreateRoute: AuthenticatedRouteOrdersCreateRoute,
+  AuthenticatedRouteOrdersTrackingRoute: AuthenticatedRouteOrdersTrackingRoute,
   AuthenticatedRouteRolesRoleIdRoute: AuthenticatedRouteRolesRoleIdRoute,
   AuthenticatedRouteUsersUserIdRoute: AuthenticatedRouteUsersUserIdRoute,
   AuthenticatedRouteAreaIndexRoute: AuthenticatedRouteAreaIndexRoute,
   AuthenticatedRouteDepotIndexRoute: AuthenticatedRouteDepotIndexRoute,
+  AuthenticatedRouteOrdersIndexRoute: AuthenticatedRouteOrdersIndexRoute,
   AuthenticatedRouteRolesIndexRoute: AuthenticatedRouteRolesIndexRoute,
   AuthenticatedRouteUsersIndexRoute: AuthenticatedRouteUsersIndexRoute,
   AuthenticatedRouteVehicleIndexRoute: AuthenticatedRouteVehicleIndexRoute,

@@ -3836,6 +3836,9 @@
           "status": {
             "type": "string"
           },
+          "roleName": {
+            "type": "string"
+          },
           "phoneVerified": {
             "type": "boolean"
           },

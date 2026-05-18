@@ -28,6 +28,7 @@ export const UpdateUserRoleResponse = zod.object({
   "email": zod.string().optional(),
   "phoneNumber": zod.string().optional(),
   "status": zod.string().optional(),
+  "roleName": zod.string().optional(),
   "phoneVerified": zod.boolean().optional(),
   "emailVerified": zod.boolean().optional()
 }).optional()
@@ -46,6 +47,7 @@ export const GetMyProfileResponse = zod.object({
   "email": zod.string().optional(),
   "phoneNumber": zod.string().optional(),
   "status": zod.string().optional(),
+  "roleName": zod.string().optional(),
   "phoneVerified": zod.boolean().optional(),
   "emailVerified": zod.boolean().optional()
 }).optional()
@@ -68,6 +70,7 @@ export const UpdateMyProfileResponse = zod.object({
   "email": zod.string().optional(),
   "phoneNumber": zod.string().optional(),
   "status": zod.string().optional(),
+  "roleName": zod.string().optional(),
   "phoneVerified": zod.boolean().optional(),
   "emailVerified": zod.boolean().optional()
 }).optional()
@@ -94,6 +97,7 @@ export const UpdateUserStatusResponse = zod.object({
   "email": zod.string().optional(),
   "phoneNumber": zod.string().optional(),
   "status": zod.string().optional(),
+  "roleName": zod.string().optional(),
   "phoneVerified": zod.boolean().optional(),
   "emailVerified": zod.boolean().optional()
 }).optional()
@@ -113,6 +117,7 @@ export const GetUserProfileResponse = zod.object({
   "email": zod.string().optional(),
   "phoneNumber": zod.string().optional(),
   "status": zod.string().optional(),
+  "roleName": zod.string().optional(),
   "phoneVerified": zod.boolean().optional(),
   "emailVerified": zod.boolean().optional()
 }).optional()
@@ -184,6 +189,7 @@ export const FindUserByPhoneResponse = zod.object({
   "email": zod.string().optional(),
   "phoneNumber": zod.string().optional(),
   "status": zod.string().optional(),
+  "roleName": zod.string().optional(),
   "phoneVerified": zod.boolean().optional(),
   "emailVerified": zod.boolean().optional()
 }).optional()
@@ -206,6 +212,7 @@ export const FindUserByEmailResponse = zod.object({
   "email": zod.string().optional(),
   "phoneNumber": zod.string().optional(),
   "status": zod.string().optional(),
+  "roleName": zod.string().optional(),
   "phoneVerified": zod.boolean().optional(),
   "emailVerified": zod.boolean().optional()
 }).optional()

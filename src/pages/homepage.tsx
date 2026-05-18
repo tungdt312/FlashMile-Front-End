@@ -15,7 +15,7 @@ import {
     BarChart3,
     MapPin,
     Navigation,
-    Package,
+    Package, PackagePlus, PackageSearch,
     ShieldCheck,
     Truck,
     UsersRound,
@@ -88,16 +88,34 @@ interface FleetStats {
 // ============ MOCK DATA ============
 const QUICK_ACCESS_ACTIONS: QuickAccessAction[] = [
     {
-        id: "user",
-        label: "Users",
-        icon: <UsersRound className="size-6 " />,
-        route: "/users",
+        id: "orders-create",
+        label: "New Order",
+        icon: <PackagePlus className="size-6 " />,
+        route: "/orders/create",
+    },
+    {
+        id: "orders",
+        label: "Orders",
+        icon: <Package className="size-6 " />,
+        route: "/orders",
+    },
+    {
+        id: "orders-tracking",
+        label: "Tracking",
+        icon: <PackageSearch className="size-6 " />,
+        route: "/orders/tracking",
     },
     {
         id: "area",
         label: "Areas",
         icon: <MapPin className="size-6 " />,
         route: "/area",
+    },
+    {
+        id: "user",
+        label: "Users",
+        icon: <UsersRound className="size-6 " />,
+        route: "/users",
     },
     {
         id: "depot",

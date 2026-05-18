@@ -11,6 +11,7 @@ export interface UserProfileResult {
   email?: string;
   phoneNumber?: string;
   status?: string;
+  roleName?: string;
   phoneVerified?: boolean;
   emailVerified?: boolean;
 }
