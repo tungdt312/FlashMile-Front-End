@@ -6,8 +6,6 @@ import {UserSummaryProjectionStatus} from "../../types";
 import {useEffect, useState} from "react";
 import {toast} from "sonner";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../../components/ui/select.tsx";
-import {Badge} from "../../components/ui/badge.tsx";
-import {ChevronDown} from "lucide-react";
 import {useGetAllRoles} from "../../services/role/role.ts";
 
 
