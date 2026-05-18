@@ -33,6 +33,7 @@ import { Route as AuthenticatedRouteDepotIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedRouteAreaIndexRouteImport } from './routes/_authenticatedRoute/area/index'
 import { Route as AuthenticatedRouteUsersUserIdRouteImport } from './routes/_authenticatedRoute/users/$userId'
 import { Route as AuthenticatedRouteRolesRoleIdRouteImport } from './routes/_authenticatedRoute/roles/$roleId'
+import { Route as AuthenticatedRouteOrdersTrackingRouteImport } from './routes/_authenticatedRoute/orders/tracking'
 import { Route as AuthenticatedRouteOrdersCreateRouteImport } from './routes/_authenticatedRoute/orders/create'
 import { Route as AuthenticatedRouteOrdersIdRouteImport } from './routes/_authenticatedRoute/orders/$id'
 import { Route as AuthenticatedRouteDepotDepotIdRouteImport } from './routes/_authenticatedRoute/depot/$depotId'
@@ -170,6 +171,12 @@ const AuthenticatedRouteRolesRoleIdRoute =
     path: '/roles/$roleId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedRouteOrdersTrackingRoute =
+  AuthenticatedRouteOrdersTrackingRouteImport.update({
+    id: '/orders/tracking',
+    path: '/orders/tracking',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRouteOrdersCreateRoute =
   AuthenticatedRouteOrdersCreateRouteImport.update({
     id: '/orders/create',
@@ -215,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
   '/orders/$id': typeof AuthenticatedRouteOrdersIdRoute
   '/orders/create': typeof AuthenticatedRouteOrdersCreateRoute
+  '/orders/tracking': typeof AuthenticatedRouteOrdersTrackingRoute
   '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/area/': typeof AuthenticatedRouteAreaIndexRoute
@@ -244,6 +252,7 @@ export interface FileRoutesByTo {
   '/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
   '/orders/$id': typeof AuthenticatedRouteOrdersIdRoute
   '/orders/create': typeof AuthenticatedRouteOrdersCreateRoute
+  '/orders/tracking': typeof AuthenticatedRouteOrdersTrackingRoute
   '/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/area': typeof AuthenticatedRouteAreaIndexRoute
@@ -275,6 +284,7 @@ export interface FileRoutesById {
   '/_authenticatedRoute/depot/$depotId': typeof AuthenticatedRouteDepotDepotIdRoute
   '/_authenticatedRoute/orders/$id': typeof AuthenticatedRouteOrdersIdRoute
   '/_authenticatedRoute/orders/create': typeof AuthenticatedRouteOrdersCreateRoute
+  '/_authenticatedRoute/orders/tracking': typeof AuthenticatedRouteOrdersTrackingRoute
   '/_authenticatedRoute/roles/$roleId': typeof AuthenticatedRouteRolesRoleIdRoute
   '/_authenticatedRoute/users/$userId': typeof AuthenticatedRouteUsersUserIdRoute
   '/_authenticatedRoute/area/': typeof AuthenticatedRouteAreaIndexRoute
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/depot/$depotId'
     | '/orders/$id'
     | '/orders/create'
+    | '/orders/tracking'
     | '/roles/$roleId'
     | '/users/$userId'
     | '/area/'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/depot/$depotId'
     | '/orders/$id'
     | '/orders/create'
+    | '/orders/tracking'
     | '/roles/$roleId'
     | '/users/$userId'
     | '/area'
@@ -365,6 +377,7 @@ export interface FileRouteTypes {
     | '/_authenticatedRoute/depot/$depotId'
     | '/_authenticatedRoute/orders/$id'
     | '/_authenticatedRoute/orders/create'
+    | '/_authenticatedRoute/orders/tracking'
     | '/_authenticatedRoute/roles/$roleId'
     | '/_authenticatedRoute/users/$userId'
     | '/_authenticatedRoute/area/'
@@ -558,6 +571,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRolesRoleIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticatedRoute/orders/tracking': {
+      id: '/_authenticatedRoute/orders/tracking'
+      path: '/orders/tracking'
+      fullPath: '/orders/tracking'
+      preLoaderRoute: typeof AuthenticatedRouteOrdersTrackingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticatedRoute/orders/create': {
       id: '/_authenticatedRoute/orders/create'
       path: '/orders/create'
@@ -600,6 +620,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRouteDepotDepotIdRoute: typeof AuthenticatedRouteDepotDepotIdRoute
   AuthenticatedRouteOrdersIdRoute: typeof AuthenticatedRouteOrdersIdRoute
   AuthenticatedRouteOrdersCreateRoute: typeof AuthenticatedRouteOrdersCreateRoute
+  AuthenticatedRouteOrdersTrackingRoute: typeof AuthenticatedRouteOrdersTrackingRoute
   AuthenticatedRouteRolesRoleIdRoute: typeof AuthenticatedRouteRolesRoleIdRoute
   AuthenticatedRouteUsersUserIdRoute: typeof AuthenticatedRouteUsersUserIdRoute
   AuthenticatedRouteAreaIndexRoute: typeof AuthenticatedRouteAreaIndexRoute
@@ -621,6 +642,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRouteDepotDepotIdRoute: AuthenticatedRouteDepotDepotIdRoute,
   AuthenticatedRouteOrdersIdRoute: AuthenticatedRouteOrdersIdRoute,
   AuthenticatedRouteOrdersCreateRoute: AuthenticatedRouteOrdersCreateRoute,
+  AuthenticatedRouteOrdersTrackingRoute: AuthenticatedRouteOrdersTrackingRoute,
   AuthenticatedRouteRolesRoleIdRoute: AuthenticatedRouteRolesRoleIdRoute,
   AuthenticatedRouteUsersUserIdRoute: AuthenticatedRouteUsersUserIdRoute,
   AuthenticatedRouteAreaIndexRoute: AuthenticatedRouteAreaIndexRoute,
