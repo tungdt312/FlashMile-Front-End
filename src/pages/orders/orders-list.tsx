@@ -23,14 +23,14 @@ const OrdersList = ({search}: {search?: string}) => {
         const filters = [];
 
         if (search) {
-            filters.push(`id==^*${search}*`);
+            filters.push(`id=='^*${search}*'`);
         }
 
         if (user.permissionCodes[0] == "USER") {
-            filters.push(`customerID==^*${user.user?.id}*`);
+            filters.push(`customerID=='^*${user.user?.id}*'`);
         }
         if (user.permissionCodes[0] == "DELIVERER") {
-            filters.push(`assignedDriverId==^*${user.user?.id}*`);
+            filters.push(`assignedDriverId=='^*${user.user?.id}*'`);
         }
 
         return filters.length > 0 ? filters.join(' and ') : undefined;

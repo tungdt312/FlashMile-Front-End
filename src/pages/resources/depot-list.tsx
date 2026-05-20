@@ -20,7 +20,7 @@ const DepotList = ({search}: { search?: string }) => {
     const {data, isLoading, isError, isFetching,refetch} = useGetAllDepots({
         page: currentPage,
         size: 10,
-        filter: search ? `name==^*${search}*` : undefined
+        filter: search ? `name=='^*${search}*'` : undefined
     });
     useEffect(() => {
         const handler = setTimeout(() => {

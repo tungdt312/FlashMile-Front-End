@@ -16,11 +16,11 @@ const WardList = ({search, provinceName}: { search?: string, provinceName?: stri
         const filters = [];
 
         if (search) {
-            filters.push(`name==^*${search}*`);
+            filters.push(`name=='^*${search}*'`);
         }
 
         if (provinceName) {
-            filters.push(`provinceName==^*${provinceName}*`);
+            filters.push(`provinceName=='^*${provinceName}*'`);
         }
 
         return filters.length > 0 ? filters.join(' and ') : undefined;

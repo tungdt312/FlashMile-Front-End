@@ -23,7 +23,7 @@ const VehiclesList = ({ search }: { search?: string }) => {
     const { data, isLoading, isError, isFetching, refetch } = useGetAllVehicles({
         page: currentPage,
         size: 10,
-        filter: search ? `licensePlate==^*${search}*` : undefined,
+        filter: search ? `licensePlate=='^*${search}*'` : undefined,
     });
 
     useEffect(() => {
