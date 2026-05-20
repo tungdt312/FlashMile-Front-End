@@ -1301,6 +1301,47 @@
         }
       }
     },
+    "/api/v1/payments/orders/{orderId}/pay": {
+      "post": {
+        "tags": [
+          "Payment Management"
+        ],
+        "summary": "Pay for an Order using Wallet",
+        "operationId": "payOrder",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/orders": {
       "get": {
         "tags": [
@@ -4595,6 +4636,7 @@
             "type": "string",
             "enum": [
               "PENDING",
+              "PAID",
               "CONFIRMED",
               "ASSIGNED",
               "IN_TRANSIT",
@@ -5398,6 +5440,12 @@
       "RoleSummaryProjection": {
         "type": "object",
         "properties": {
+          "isDefault": {
+            "type": "boolean"
+          },
+          "systemRole": {
+            "type": "boolean"
+          },
           "name": {
             "type": "string"
           },
@@ -5406,12 +5454,6 @@
           },
           "description": {
             "type": "string"
-          },
-          "isDefault": {
-            "type": "boolean"
-          },
-          "systemRole": {
-            "type": "boolean"
           }
         }
       },
@@ -5497,6 +5539,7 @@
             "type": "string",
             "enum": [
               "PENDING",
+              "PAID",
               "CONFIRMED",
               "ASSIGNED",
               "IN_TRANSIT",
@@ -5604,6 +5647,7 @@
             "type": "string",
             "enum": [
               "PENDING",
+              "PAID",
               "CONFIRMED",
               "ASSIGNED",
               "IN_TRANSIT",
@@ -6049,6 +6093,9 @@
       "DepotSummaryProjection": {
         "type": "object",
         "properties": {
+          "isStartNode": {
+            "type": "boolean"
+          },
           "name": {
             "type": "string"
           },
@@ -6069,9 +6116,6 @@
           "lng": {
             "type": "number",
             "format": "double"
-          },
-          "isStartNode": {
-            "type": "boolean"
           }
         }
       },

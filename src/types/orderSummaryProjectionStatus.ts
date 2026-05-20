@@ -10,6 +10,7 @@ export type OrderSummaryProjectionStatus = typeof OrderSummaryProjectionStatus[k
 
 export const OrderSummaryProjectionStatus = {
   PENDING: 'PENDING',
+  PAID: 'PAID',
   CONFIRMED: 'CONFIRMED',
   ASSIGNED: 'ASSIGNED',
   IN_TRANSIT: 'IN_TRANSIT',

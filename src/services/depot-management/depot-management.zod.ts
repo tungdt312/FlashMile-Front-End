@@ -90,12 +90,12 @@ export const GetAllDepotsResponse = zod.object({
   "message": zod.string().optional(),
   "data": zod.object({
   "content": zod.array(zod.object({
+  "isStartNode": zod.boolean().optional(),
   "name": zod.string().optional(),
   "id": zod.string().optional(),
   "type": zod.enum(['BGD', 'SOC']).optional(),
   "lat": zod.number().optional(),
-  "lng": zod.number().optional(),
-  "isStartNode": zod.boolean().optional()
+  "lng": zod.number().optional()
 })).optional(),
   "page": zod.number().optional(),
   "size": zod.number().optional(),

@@ -1,29 +1,24 @@
 // src/components/forms/create-order-form.tsx
 import z from "zod";
-import { useEffect } from "react";
-import type { CreateOrderCommand, ProvinceSummaryProjection, WardResult } from "../../types";
-import { CreateOrderCommandType } from "../../types";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-    getGetAllOrdersQueryKey,
-    useCreateOrder
-} from "../../services/order-management/order-management";
-import {
-    useGetAllProvinces,
-} from "../../services/province-management/province-management";
-import { useAuthStore } from "../../lib/global";
-import { toast } from "sonner";
-import { useForm } from "@tanstack/react-form";
-import { useRouter } from "@tanstack/react-router";
-import { Field, FieldError, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input.tsx";
-import { InputGroup, InputGroupTextarea } from "../ui/input-group.tsx";
-import { Button } from "../ui/button.tsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select.tsx";
-import { Card } from "../ui/card.tsx";
-import { Switch } from "../ui/switch.tsx";
-import { LuLoaderCircle } from "react-icons/lu";
+import {useEffect} from "react";
+import type {CreateOrderCommand, ProvinceSummaryProjection} from "../../types";
+import {CreateOrderCommandType} from "../../types";
+import {useQueryClient} from "@tanstack/react-query";
+import {useAuthStore} from "../../lib/global";
+import {toast} from "sonner";
+import {useForm} from "@tanstack/react-form";
+import {useRouter} from "@tanstack/react-router";
+import {Field, FieldError, FieldLabel} from "../ui/field";
+import {Input} from "../ui/input.tsx";
+import {InputGroup, InputGroupTextarea} from "../ui/input-group.tsx";
+import {Button} from "../ui/button.tsx";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../ui/select.tsx";
+import {Card} from "../ui/card.tsx";
+import {Switch} from "../ui/switch.tsx";
+import {LuLoaderCircle} from "react-icons/lu";
+import {useGetAllProvinces} from "../../services/province-management/province-management.ts";
 import {useGetAllWards} from "../../services/ward-management/ward-management.ts";
+import {getGetAllOrdersQueryKey, useCreateOrder} from "../../services/order-management/order-management.ts";
 
 // Validation Schema
 const CreateOrderSchema = z.object({
@@ -58,16 +53,16 @@ interface CreateOrderFormProps {
 }
 
 const SERVICE_TYPES = [
-    { label: "Express", value: CreateOrderCommandType.EXPRESS },
-    { label: "Standard", value: CreateOrderCommandType.STANDARD },
-    { label: "Economy", value: CreateOrderCommandType.ECONOMY },
+    {label: "Express", value: CreateOrderCommandType.EXPRESS},
+    {label: "Standard", value: CreateOrderCommandType.STANDARD},
+    {label: "Economy", value: CreateOrderCommandType.ECONOMY},
 ];
 
 // ============ CREATE ORDER FORM COMPONENT ============
-export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
+export const CreateOrderForm = ({onSuccess}: CreateOrderFormProps) => {
     const router = useRouter();
     const queryClient = useQueryClient();
-    const { user } = useAuthStore();
+    const {user} = useAuthStore();
     const orderForm = useForm({
         defaultValues: {
             trackingCode: "",
@@ -98,7 +93,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
         validators: {
             onSubmit: CreateOrderSchema,
         },
-        onSubmit: async ({ value }) => {
+        onSubmit: async ({value}) => {
             createOrder.mutate({
                 data: value as CreateOrderCommand,
             });
@@ -106,45 +101,47 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
     });
 
     // Fetch all provinces
-    const { data: provincesData, isLoading: provincesLoading } = useGetAllProvinces({
+    const {data: provincesData, isLoading: provincesLoading} = useGetAllProvinces({
         page: 0,
         size: 100
     });
     const provinces = (provincesData?.data?.content || []) as ProvinceSummaryProjection[];
 
     // Fetch wards - separate for sender and recipient
-    const { data: senderWardsData } = useGetAllWards(
+    const {data: senderWardsData, refetch: senderWardRefetch, isLoading: senderWardsLoading} = useGetAllWards(
         orderForm.getFieldValue("senderProvinceId")
-            ? { page: 0,
+            ? {
+                page: 0,
                 size: 100,
-                filter: `provinceId==${orderForm.getFieldValue("senderProvinceId")}` }
+                filter: `provinceId==${orderForm.getFieldValue("senderProvinceId")}`
+            }
             : {
                 page: 0,
                 size: 100
             }
     );
-    const senderWards = (senderWardsData?.data?.content || []) as WardResult[];
 
-    const { data: recipientWardsData, isLoading: recipientWardsLoading } = useGetAllWards(
+    const {data: recipientWardsData, refetch: recipientWardRefetch, isLoading: recipientWardsLoading} = useGetAllWards(
         orderForm.getFieldValue("recipientProvinceId")
-            ? {  page: 0,
+            ? {
+                page: 0,
                 size: 100,
-                filter: `provinceId==${orderForm.getFieldValue("recipientProvinceId")}` }
+                filter: `provinceId==${orderForm.getFieldValue("recipientProvinceId")}`
+            }
             : {
                 page: 0,
                 size: 100
             }
     );
-    const recipientWards = (recipientWardsData?.data?.content || []) as WardResult[];
 
     const createOrder = useCreateOrder({
         mutation: {
             onSuccess: () => {
                 toast.success("Order created successfully!");
-                queryClient.invalidateQueries({ queryKey: getGetAllOrdersQueryKey() });
+                queryClient.invalidateQueries({queryKey: getGetAllOrdersQueryKey()});
                 onSuccess?.();
                 orderForm.reset();
-                router.navigate({ to: "/orders" });
+                router.navigate({to: "/orders"});
             },
             onError: () => {
                 toast.error("Failed to create order");
@@ -165,6 +162,12 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
         }
     }, [user]);
 
+    useEffect(() => {
+        senderWardRefetch()
+    }, [orderForm.getFieldValue("senderProvinceId")]);
+    useEffect(() => {
+        recipientWardRefetch()
+    }, [orderForm.getFieldValue("recipientProvinceId")]);
     return (
         <form
             onSubmit={(e) => {
@@ -212,7 +215,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                                     disabled={isLoading}
                                 >
                                     <SelectTrigger id="type">
-                                        <SelectValue placeholder="Select service type" />
+                                        <SelectValue placeholder="Select service type"/>
                                     </SelectTrigger>
                                     <SelectContent>
                                         {SERVICE_TYPES.map((type) => (
@@ -316,7 +319,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                                     disabled={isLoading || provincesLoading}
                                 >
                                     <SelectTrigger id="senderProvinceId">
-                                        <SelectValue placeholder="Select province" />
+                                        <SelectValue placeholder="Select province"/>
                                     </SelectTrigger>
                                     <SelectContent>
                                         {provinces.map((province) => (
@@ -341,7 +344,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                                 <Select
                                     value={field.state.value}
                                     onValueChange={field.handleChange}
-                                    disabled={isLoading}
+                                    disabled={isLoading || senderWardsLoading || !orderForm.getFieldValue("senderProvinceId")}
                                 >
                                     <SelectTrigger id="senderWardId">
                                         <SelectValue
@@ -349,9 +352,9 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                                         />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {senderWards.map((ward) => {
-                                            if (ward.id?.value) return (
-                                                <SelectItem key={ward.id?.value} value={ward.id?.value}>
+                                        {senderWardsData?.data?.content?.map((ward) => {
+                                            if (ward.id) return (
+                                                <SelectItem key={ward.id} value={ward.id}>
                                                     {ward.name}
                                                 </SelectItem>
                                             )
@@ -453,7 +456,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                                     disabled={isLoading}
                                 >
                                     <SelectTrigger id="recipientProvinceId">
-                                        <SelectValue placeholder="Select province" />
+                                        <SelectValue placeholder="Select province"/>
                                     </SelectTrigger>
                                     <SelectContent>
                                         {provinces.map((province) => (
@@ -486,9 +489,9 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                                         />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {recipientWards.map((ward) => {
-                                            if (ward.id?.value) return (
-                                                <SelectItem key={ward.id?.value} value={ward.id?.value}>
+                                        {recipientWardsData?.data?.content?.map((ward) => {
+                                            if (ward.id) return (
+                                                <SelectItem key={ward.id} value={ward.id}>
                                                     {ward.name}
                                                 </SelectItem>
                                             )
@@ -742,7 +745,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                     size="lg"
                     className="flex-1"
                 >
-                    {isLoading && <LuLoaderCircle className="animate-spin" />}
+                    {isLoading && <LuLoaderCircle className="animate-spin"/>}
                     {isLoading ? "Creating Order..." : "Create Order"}
                 </Button>
                 <Button
@@ -750,7 +753,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                     variant="outline"
                     size="lg"
                     disabled={isLoading}
-                    onClick={() => router.navigate({ to: "/orders" })}
+                    onClick={() => router.navigate({to: "/orders"})}
                 >
                     Cancel
                 </Button>

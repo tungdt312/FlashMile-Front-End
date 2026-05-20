@@ -10,6 +10,7 @@ export type OrderResultStatus = typeof OrderResultStatus[keyof typeof OrderResul
 
 export const OrderResultStatus = {
   PENDING: 'PENDING',
+  PAID: 'PAID',
   CONFIRMED: 'CONFIRMED',
   ASSIGNED: 'ASSIGNED',
   IN_TRANSIT: 'IN_TRANSIT',
