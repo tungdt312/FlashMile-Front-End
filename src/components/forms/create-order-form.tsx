@@ -113,7 +113,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
     const provinces = (provincesData?.data?.content || []) as ProvinceSummaryProjection[];
 
     // Fetch wards - separate for sender and recipient
-    const { data: senderWardsData, isLoading: senderWardsLoading } = useGetAllWards(
+    const { data: senderWardsData } = useGetAllWards(
         orderForm.getFieldValue("senderProvinceId")
             ? { page: 0,
                 size: 100,
