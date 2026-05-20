@@ -49,7 +49,7 @@ const VerifyEmail = ({code}: { code: string }) => {
                 code: code,
             }
             verifyService.mutate({data: data})
-        
+
     }, [code])
     useEffect(() => {
         if (counter <= 0) return;

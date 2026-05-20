@@ -23,7 +23,7 @@ const WardList = ({search, provinceName}: { search?: string, provinceName?: stri
             filters.push(`provinceName==^*${provinceName}*`);
         }
 
-        return filters.length > 0 ? filters.join(' and ') : '';
+        return filters.length > 0 ? filters.join(' and ') : undefined;
     }
     const {data, isLoading, isError, isFetching} = useGetAllWards({
         page: currentPage,

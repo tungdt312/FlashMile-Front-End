@@ -33,7 +33,7 @@ const OrdersList = ({search}: {search?: string}) => {
             filters.push(`assignedDriverId==^*${user.user?.id}*`);
         }
 
-        return filters.length > 0 ? filters.join(' and ') : '';
+        return filters.length > 0 ? filters.join(' and ') : undefined;
     }
     const {data, isLoading, isError, isFetching} = useGetAllOrders({
         page: currentPage,
