@@ -44,13 +44,12 @@ const VerifyEmail = ({code}: { code: string }) => {
         sendVerificationService.mutate({data: data})
     }
     useEffect(() => {
-        if(code){
             const data: ProcessVerificationQuery = {
                 purpose: "EMAIL_VERIFICATION",
                 code: code,
             }
             verifyService.mutate({data: data})
-        }
+        
     }, [code])
     useEffect(() => {
         if (counter <= 0) return;
