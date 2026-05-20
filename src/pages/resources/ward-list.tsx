@@ -99,11 +99,9 @@ const WardList = ({search, provinceName}: { search?: string, provinceName?: stri
 }
 export default WardList
 const WardCard = ({ward}: { ward: WardSummaryProjection }) => {
-    const router = useRouter();
     return (
-        <div className="w-full flex p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md"
-             onClick={() => router.navigate({to: `/ward/${ward.id}/`})}>
-            <div className="flex w-full">
+        <div className="w-full flex p-4 hover:bg-muted rounded-2xl ring-accent ring-1 shadow-md">
+            <div className="flex flex-col w-full">
                 <p className="font-bold caption text-primary"> {ward.type}</p>
                 <p className="w-full"> {ward.name}</p>
             </div>
