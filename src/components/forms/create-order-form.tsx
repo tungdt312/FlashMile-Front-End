@@ -341,7 +341,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                                 <Select
                                     value={field.state.value}
                                     onValueChange={field.handleChange}
-                                    disabled={isLoading || senderWardsLoading}
+                                    disabled={isLoading}
                                 >
                                     <SelectTrigger id="senderWardId">
                                         <SelectValue
@@ -450,7 +450,7 @@ export const CreateOrderForm = ({ onSuccess }: CreateOrderFormProps) => {
                                 <Select
                                     value={field.state.value}
                                     onValueChange={field.handleChange}
-                                    disabled={isLoading || provincesLoading}
+                                    disabled={isLoading}
                                 >
                                     <SelectTrigger id="recipientProvinceId">
                                         <SelectValue placeholder="Select province" />
