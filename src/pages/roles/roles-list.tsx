@@ -20,7 +20,7 @@ const RolesList = ({search}: { search?: string }) => {
     const {data, isLoading, isError, isFetching, refetch} = useGetAllRoles({
         page: currentPage,
         size: 10,
-        filter: search ? `name==^*${search}*` : undefined
+        filter: search ? `name=='^*${search}*'` : undefined
     });
     useEffect(() => {
         const handler = setTimeout(() => {

@@ -19,7 +19,7 @@ const UserList = ({search}: { search?: string }) => {
     const {data, isLoading, isError, isFetching} = useGetAllUserProfiles({
         page: currentPage,
         size: 10,
-        filter: search ? `fullName==^*${search}*` : undefined
+        filter: search ? `fullName=='^*${search}*'` : undefined
     });
     useEffect(() => {
         const handler = setTimeout(() => {
